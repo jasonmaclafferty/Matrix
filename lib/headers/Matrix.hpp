@@ -22,35 +22,36 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "MatrixBase.hpp"
 
-namespace MatrixAlgebra
+template <typename ElemType>
+class Matrix : public MatrixBase<ElemType>
 {
-    class Matrix : public MatrixBase
-    {
-        public:
-            Matrix(unsigned numberOfRows, unsigned numberOfColumns);
+    public:
+        Matrix(unsigned numberOfRows, unsigned numberOfColumns);
 
-            Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
+        Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
 
-            void power(unsigned exponent);
+        void power(unsigned exponent);
 
-            void multiply(const Matrix& matrix2);
+        void multiply(const Matrix<ElemType>& matrix2);
 
-            void add(const Matrix& matrix2);
+        void add(const Matrix<ElemType>& matrix2);
 
-            void subtract(const Matrix& matrix2);
+        void subtract(const Matrix<ElemType>& matrix2);
 
-            void multiplyRange(const Matrix& matrix2, unsigned rowStart, unsigned rowEnd);
+        void multiplyRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
 
-            void addRange(const Matrix& matrix2, unsigned rowStart, unsigned rowEnd);
+        void addRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
 
-            void subtractRange(const Matrix& matrix2, unsigned rowStart, unsigned rowEnd);
+        void subtractRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
+        
+        template <typename T>
+        void scale(T scaleFactor);
 
-            Matrix& operator+(const Matrix& matrix1, const Matrix& matrix2);
+        Matrix<ElemType>& operator+(const Matrix<ElemType>& matrix2);
 
-            Matrix& operator-(const Matrix& matrix1, const Matrix& matrix2);
+        Matrix<ElemType>& operator-(const Matrix<ElemType>& matrix2);
 
-            Matrix& operator*(const Matrix& matrix1, const Matrix& matrix2);
-    }
-}
+        Matrix<ElemType>& operator*(const Matrix<ElemType>& matrix2);
+};
 
 #endif

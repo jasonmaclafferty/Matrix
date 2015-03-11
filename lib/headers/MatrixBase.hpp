@@ -23,43 +23,41 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <ostream>
 #include <vector>
 
-namespace MatrixAlgebra
+template <typename ElemType>
+class MatrixBase
 {
-    template <typename ElemType>
-    class MatrixBase
-    {
-        protected:
-            std::vector< std::vector<ElemType> > data;
+    protected:
+        std::vector< std::vector<ElemType> > data;
 
-            unsigned numOfRows, numOfColumns;
+        unsigned numOfRows, numOfColumns;
 
-        public:
-            MatrixBase(unsigned numberOfRows, unsigned numberOfColumns);
+    public:
+        MatrixBase(unsigned numberOfRows, unsigned numberOfColumns);
 
-            MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
+        MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
 
-            bool isIdentity();
+        bool isIdentity();
 
-            bool isZero();
+        bool isZero();
 
-            inline bool isSquare();
+        inline bool isSquare();
 
-            inline ElemType getElement(unsigned row, unsigned col);
+        inline ElemType getElement(unsigned row, unsigned col);
 
-            void setElement(unsigned row, unsigned col, ElemType newElemVal);
+        void setElement(unsigned row, unsigned col, ElemType newElemVal);
 
-            bool equal(const MatrixBase& matrix);
+        bool equal(const MatrixBase<ElemType>& matrix);
 
-            std::ostream& operator<<(std::ostream& out, const MatrixBase& matrix);
+        bool operator==(const MatrixBase<ElemType>& matrix2);
 
-            bool& operator==(const MatrixBase& matrix1, const MatrixBase& matrix2);
+        MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix2);
 
-            MatrixBase& operator=(MatrixBase& matrix1, const MatrixBase& matrix2);
+        inline unsigned getNumOfRows();
 
-            unsigned getNumOfRows();
+        inline unsigned getNumOfColumns();
+};
 
-            unsigned getNumOfColumns();
-    }
-}
+template <typename ElemType>
+std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix);
 
 #endif
