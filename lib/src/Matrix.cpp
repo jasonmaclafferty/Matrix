@@ -74,7 +74,7 @@ void Matrix<ElemType>::subtractRange(const Matrix<ElemType>& matrix2, unsigned r
 }
 
 template <typename ElemType>
-void Matrix<ElemType>::scale(T scaleFactor)
+void Matrix<ElemType>::scale(ElemType scaleFactor)
 {
 
 }

@@ -33,7 +33,7 @@ MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns
     std::vector<ElemType> temp;
 
     for (unsigned i = 0; i < numberOfColumns; i++)
-        temp.push_back(0);
+        temp.push_back(elemInitVal);
 
     for (unsigned i = 0; i < numberOfRows; i++)
         this->data.push_back(temp);
@@ -54,11 +54,7 @@ bool MatrixBase<ElemType>::isZero()
 }
 
 template <typename ElemType>
-inline bool MatrixBase<ElemType>::isSquare()
-{
-
-    return true; // stub
-}
+inline bool MatrixBase<ElemType>::isSquare() { return this->numOfRows == this->numOfColumns; }
 
 template <typename ElemType>
 inline ElemType MatrixBase<ElemType>::getElement(unsigned row, unsigned col) { return this->data[row][col]; }
@@ -69,8 +65,19 @@ void MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newEl
 template <typename ElemType>
 bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix)
 {
+    if (this->getNumOfRows() == matrix.getNumOfRows() && this->getNumOfColumns() == matrix.getNumOfColumns())
+    {
+        for (unsigned row = 0U; row < this->getNumOfRows(); row++)
+            for (unsigned col = 0U; col < this->getNumOfColumns(); col++)
+                if (this->getElement(row, col) != matrix.getElement(row, col))
+                    return false; // matrices are not equal because one of the pairs of matrix elements are not equal
+    }
+    else
+    {
+        return false; // matrices are not equal because the dimensions are not equal
+    }
 
-    return true; // stub
+    return true; // if the dimensions match and all the elements are equal, then the matrices are equal
 }
 
 template <typename ElemType>

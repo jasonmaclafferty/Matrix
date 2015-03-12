@@ -1,8 +1,0 @@
-# ignore license header stub file
-license_file_header
-
-# ignore bin directory
-./bin
-
-# ignore backup files
-*.*.*.swp

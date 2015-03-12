@@ -44,8 +44,7 @@ class Matrix : public MatrixBase<ElemType>
 
         void subtractRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
         
-        template <typename T>
-        void scale(T scaleFactor);
+        void scale(ElemType scaleFactor);
 
         Matrix<ElemType>& operator+(const Matrix<ElemType>& matrix2);
 
