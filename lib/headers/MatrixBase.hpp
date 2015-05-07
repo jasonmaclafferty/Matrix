@@ -40,21 +40,21 @@ class MatrixBase
 
         bool isZero();
 
-        inline bool isSquare();
+        inline bool isSquare() { return this->numOfRows == this->numOfColumns; }
 
-        inline ElemType getElement(unsigned row, unsigned col);
+        inline ElemType getElement(unsigned row, unsigned col) const { return this->data[row][col]; } 
 
-        void setElement(unsigned row, unsigned col, ElemType newElemVal);
+        void setElement(unsigned row, unsigned col, ElemType newElemVal) { this->data[row][col] = newElemVal; }
 
-        bool equal(const MatrixBase<ElemType>& matrix);
+        bool equal(const MatrixBase<ElemType>& matrix) const;
 
         bool operator==(const MatrixBase<ElemType>& matrix2);
 
         MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix2);
 
-        inline unsigned getNumOfRows();
+        inline unsigned getNumOfRows() const { return this->numOfRows; }
 
-        inline unsigned getNumOfColumns();
+        inline unsigned getNumOfColumns() const { return this->numOfColumns; }
 };
 
 template <typename ElemType>

@@ -54,16 +54,7 @@ bool MatrixBase<ElemType>::isZero()
 }
 
 template <typename ElemType>
-inline bool MatrixBase<ElemType>::isSquare() { return this->numOfRows == this->numOfColumns; }
-
-template <typename ElemType>
-inline ElemType MatrixBase<ElemType>::getElement(unsigned row, unsigned col) { return this->data[row][col]; }
-
-template <typename ElemType>
-void MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newElemVal) { this->data[row][col] = newElemVal; }
-
-template <typename ElemType>
-bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix)
+bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix) const
 {
     if (this->getNumOfRows() == matrix.getNumOfRows() && this->getNumOfColumns() == matrix.getNumOfColumns())
     {
@@ -98,11 +89,10 @@ template <typename ElemType>
 MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>& matrix2)
 {
 
-    return this;
+    return *this;
 }
 
-template <typename ElemType>
-inline unsigned MatrixBase<ElemType>::getNumOfRows() { return this->numOfRows; }
-
-template <typename ElemType>
-inline unsigned MatrixBase<ElemType>::getNumOfColumns() { return this->numOfColumns; }
+template class MatrixBase<int>;
+template class MatrixBase<double>;
+template class MatrixBase<unsigned>;
+template class MatrixBase<float>;

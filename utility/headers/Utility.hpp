@@ -22,7 +22,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <cmath>
 
-template <typename T>
-bool isCloseEnough(T expectedVal, T actualVal, T degreeOfAccuracy);
+bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy);
 
 #endif

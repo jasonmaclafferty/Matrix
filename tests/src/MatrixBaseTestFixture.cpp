@@ -31,9 +31,11 @@ void MatrixBaseTestFixture::setUp()
     this->matrix1->setElement(1, 1, 1);
     this->matrix1->setElement(2, 2, 1);
 
-    std::vector<float> temp = { 3.14, 5.17, 1.007, 2.30, 10.1, 1.25, 3.37, 2.718, 5.23, 7.09 };
-    for (unsigned row = 0U; row < this->matrix4->getNumOfRows(); row++)
-        for (unsigned col = 0U; col < this->matrix4->getNumOfColumns(); col++)
+    std::vector<float> temp     =   { 3.14, 5.17, 1.007, 2.30, 10.1, 1.25, 3.37, 2.718, 5.23, 7.09 };
+    unsigned numOfRows          =   this->matrix4->getNumOfRows();
+    unsigned numOfColumns       =   this->matrix4->getNumOfColumns();
+    for (unsigned row = 0U; row < numOfRows; row++)
+        for (unsigned col = 0U; col < numOfColumns; col++)
             this->matrix4->setElement(row, col, temp[col]);
 }
 
@@ -69,27 +71,35 @@ void MatrixBaseTestFixture::testConstructor()
 {
     CPPUNIT_ASSERT(this->matrix1->getNumOfRows() == 3U && this->matrix1->getNumOfColumns() == 3U);
 
-    CPPUNIT_ASSERT(this->matrix2->getNumOfRows() == 2U && this->matrix2->getNumOfColumns() == 5U);
-    for (unsigned row = 0U; row < this->matrix2->getNumOfRows(); row++)
-        for (unsigned col = 0U; col < this->matrix2->getNumOfColumns(); col++)
-            CPPUNIT_ASSERT(isCloseEnough<double>(3.141592653, this->matrix2->getElement(row, col), 0.000000001));
+    unsigned matrix2NumOfCols   =   this->matrix2->getNumOfColumns();
+    unsigned matrix2NumOfRows   =   this->matrix2->getNumOfRows();
+    CPPUNIT_ASSERT(matrix2NumOfRows == 2U && matrix2NumOfCols == 5U);
+    for (unsigned row = 0U; row < matrix2NumOfRows; row++)
+        for (unsigned col = 0U; col < matrix2NumOfCols; col++)
+            CPPUNIT_ASSERT(isCloseEnough(3.141592653, this->matrix2->getElement(row, col), 0.000000001));
 
-    for (unsigned row = 0U; row < this->matrix3->getNumOfRows(); row++)
-        for (unsigned col = 0U; col < this->matrix3->getNumOfColumns(); col++)
+    unsigned matrix3NumOfColumns   =   this->matrix3->getNumOfColumns();
+    unsigned matrix3NumOfRows   =   this->matrix3->getNumOfRows();
+    for (unsigned row = 0U; row < matrix3NumOfRows; row++)
+        for (unsigned col = 0U; col < matrix3NumOfColumns; col++)
             CPPUNIT_ASSERT(this->matrix3->getElement(row, col) == 0U);
 
+    unsigned matrix4NumOfColumns   =   this->matrix4->getNumOfColumns();
+    unsigned matrix4NumOfRows   =   this->matrix2->getNumOfRows();
     std::vector<float> temp = { 3.14, 5.17, 1.007, 2.30, 10.1, 1.25, 3.37, 2.718, 5.23, 7.09 };
-    for (unsigned row = 0U; row < this->matrix4->getNumOfRows(); row++)
-        for (unsigned col = 0U; col < this->matrix4->getNumOfColumns(); col++)
-            CPPUNIT_ASSERT(isCloseEnough<float>(temp[col], this->matrix4->getElement(row, col), 0.000001));
+    for (unsigned row = 0U; row < matrix4NumOfRows; row++)
+        for (unsigned col = 0U; col < matrix4NumOfColumns; col++)
+            CPPUNIT_ASSERT(isCloseEnough(temp[col], this->matrix4->getElement(row, col), 0.000001));
 }
 
-static CppUnit::TestSuite* suite()
+CppUnit::TestSuite* MatrixBaseTestFixture::suite()
 {
     CppUnit::TestSuite* suite = new CppUnit::TestSuite("MatrixBaseTestFixture");
     suite->addTest(new CppUnit::TestCaller<MatrixBaseTestFixture>("testConstructor", &MatrixBaseTestFixture::testConstructor));
     suite->addTest(new CppUnit::TestCaller<MatrixBaseTestFixture>("testEqual", &MatrixBaseTestFixture::testEqual));
     suite->addTest(new CppUnit::TestCaller<MatrixBaseTestFixture>("testIsSquare", &MatrixBaseTestFixture::testIsSquare));
+
+    return suite;
 }
 
 void MatrixBaseTestFixture::testGetElement()

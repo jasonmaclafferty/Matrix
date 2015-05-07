@@ -26,13 +26,9 @@ Arg2: T actualVal--actual float or double value
 Arg3: T degreeOfAccuracy--float or double value indicating degree of accuracy for comparison of floating point values
 Description: Returns a Boolean value indicating whether the input values of type float or double are close enough to the accepted degree of accuracy.
 */
-bool isCloseEnough(T expectedVal, T actualVal, T degreeOfAccuracy)
+bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy)
 {
-    double castedExpectedVal        =   static_cast<double>(expectedVal);
-    double castedActualVal          =   static_cast<double>(actualVal);
-    double castedDegreeOfAccuracy   =   static_cast<double>(degreeOfAccuracy);
-
-    if (fabs(castedExpectedVal - castedActualVal) <= castedDegreeOfAccuracy)
+    if (fabs(expectedVal - actualVal) <= degreeOfAccuracy)
         return true;
     else
         return false;

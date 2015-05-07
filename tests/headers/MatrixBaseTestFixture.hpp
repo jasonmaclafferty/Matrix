@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef _MATRIXBASETESTFIXTURE_HPP_
+#define _MATRIXBASETESTFIXTURE_HPP_
+
 #include <cppunit/TestCase.h>
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/TestSuite.h>
@@ -61,3 +64,5 @@ class MatrixBaseTestFixture : public CppUnit::TestFixture
 
         static CppUnit::TestSuite* suite();
 };
+
+#endif
