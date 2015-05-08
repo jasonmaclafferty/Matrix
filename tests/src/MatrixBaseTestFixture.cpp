@@ -24,6 +24,7 @@ void MatrixBaseTestFixture::setUp()
     this->matrix1   =   std::make_shared< MatrixBase<int> >(3, 3);
     this->matrix2   =   std::make_shared< MatrixBase<double> >(2, 5, 3.141592653);
     this->matrix3   =   std::make_shared< MatrixBase<unsigned> >(5, 7);
+    auto matrix3NumOfRows = this->matrix3->getNumOfRows();
     this->matrix4   =   std::make_shared< MatrixBase<float> >(10, 10);
     this->matrix5   =   std::make_shared< MatrixBase<double> >(2, 5, 3.141492653);
 

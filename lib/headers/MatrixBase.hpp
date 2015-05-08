@@ -31,6 +31,8 @@ class MatrixBase
 
         unsigned numOfRows, numOfColumns;
 
+        void init(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
+
     public:
         MatrixBase(unsigned numberOfRows, unsigned numberOfColumns);
 
@@ -40,24 +42,25 @@ class MatrixBase
 
         bool isZero();
 
-        inline bool isSquare() { return this->numOfRows == this->numOfColumns; }
+        bool isSquare();
 
-        inline ElemType getElement(unsigned row, unsigned col) const { return this->data[row][col]; } 
+        ElemType getElement(unsigned row, unsigned col) const; 
 
-        void setElement(unsigned row, unsigned col, ElemType newElemVal) { this->data[row][col] = newElemVal; }
+        void setElement(unsigned row, unsigned col, ElemType newElemVal);
 
         bool equal(const MatrixBase<ElemType>& matrix) const;
 
-        bool operator==(const MatrixBase<ElemType>& matrix2);
-
         MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix2);
 
-        inline unsigned getNumOfRows() const { return this->numOfRows; }
+        unsigned getNumOfRows() const;
 
-        inline unsigned getNumOfColumns() const { return this->numOfColumns; }
+        unsigned getNumOfColumns() const;
 };
 
 template <typename ElemType>
 std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix);
+
+template <typename ElemType>
+bool operator==(const MatrixBase<ElemType>& matrix1, const MatrixBase<ElemType>& matrix2);
 
 #endif

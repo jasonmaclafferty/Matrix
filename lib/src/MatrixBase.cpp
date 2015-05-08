@@ -20,13 +20,36 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "MatrixBase.hpp"
 
 template <typename ElemType>
-MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns)
+void MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newElemVal)
 {
-    MatrixBase<ElemType>(numberOfRows, numberOfColumns, 0);
+    if (row < this->getNumOfRows() && col < this->getNumOfColumns())
+        this->data[row][col] = newElemVal;
 }
 
 template <typename ElemType>
-MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal)
+ElemType MatrixBase<ElemType>::getElement(unsigned row, unsigned col) const
+{
+    ElemType retval;
+    if (row < this->getNumOfRows() && col < this->getNumOfColumns())
+        retval = this->data[row][col];
+
+    return retval;
+}
+
+template <typename ElemType>
+MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns)
+{
+    this->init(numberOfRows, numberOfColumns, 0);
+}
+
+template <typename ElemType>
+MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal) 
+{ 
+    this->init(numberOfRows, numberOfColumns, elemInitVal); 
+}
+
+template <typename ElemType>
+void MatrixBase<ElemType>::init(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal)
 {
     this->numOfRows     =   numberOfRows;
     this->numOfColumns  =   numberOfColumns;
@@ -75,22 +98,31 @@ template <typename ElemType>
 std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
 {
 
-    return out;
+    return out; // stub to implement later
 }
 
 template <typename ElemType>
-bool MatrixBase<ElemType>::operator==(const MatrixBase<ElemType>& matrix2)
+bool operator==(const MatrixBase<ElemType>& matrix1, const MatrixBase<ElemType>& matrix2)
 {
 
-    return true;
+    return true;// stub to implement later
 }
 
 template <typename ElemType>
 MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>& matrix2)
 {
 
-    return *this;
+    return *this; // stub to implement later
 }
+
+template <typename ElemType>
+unsigned MatrixBase<ElemType>::getNumOfRows() const { return this->numOfRows; }
+
+template <typename ElemType>
+unsigned MatrixBase<ElemType>::getNumOfColumns() const { return this->numOfColumns; }
+
+template <typename ElemType>
+bool MatrixBase<ElemType>::isSquare() { return this->numOfColumns == this->numOfRows; }
 
 template class MatrixBase<int>;
 template class MatrixBase<double>;
