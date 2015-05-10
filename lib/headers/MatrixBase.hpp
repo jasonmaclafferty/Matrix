@@ -55,12 +55,17 @@ class MatrixBase
         unsigned getNumOfRows() const;
 
         unsigned getNumOfColumns() const;
+        
+        bool operator==(const MatrixBase<ElemType>& matrix);
+
+        bool operator!=(const MatrixBase<ElemType>& matrix);
+
+        std::vector<ElemType>& operator[](std::size_t row);
+
+        const std::vector<ElemType>& operator[](std::size_t row) const;
 };
 
 template <typename ElemType>
 std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix);
-
-template <typename ElemType>
-bool operator==(const MatrixBase<ElemType>& matrix1, const MatrixBase<ElemType>& matrix2);
 
 #endif

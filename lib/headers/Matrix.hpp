@@ -26,10 +26,6 @@ template <typename ElemType>
 class Matrix : public MatrixBase<ElemType>
 {
     public:
-        Matrix(unsigned numberOfRows, unsigned numberOfColumns);
-
-        Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
-
         void power(unsigned exponent);
 
         void multiply(const Matrix<ElemType>& matrix2);

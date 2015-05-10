@@ -43,6 +43,16 @@ class MatrixBaseTestFixture : public CppUnit::TestFixture
 
         std::shared_ptr< MatrixBase<double> > matrix5;
 
+        std::shared_ptr< MatrixBase<int> > matrix6;
+
+        std::shared_ptr< MatrixBase<unsigned> > matrix7;
+
+        std::shared_ptr< MatrixBase<float> > matrix8;
+
+        std::shared_ptr< MatrixBase<int> > matrix9;
+
+        std::shared_ptr< MatrixBase<double> > matrix10;
+
     public:
         void setUp();
 

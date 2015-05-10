@@ -22,3 +22,30 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include <cppunit/TestAssert.h>
+#include <memory>
+
+#include "Matrix.hpp"
+
+class MatrixTestFixture : public CppUnit::TestFixture
+{
+    public:
+        void testSetUp();
+
+        void testPower();
+
+        void testMultiply();
+
+        void testAdd();
+
+        void testSubtract();
+
+        void testMultiplyRange();
+
+        void testAddRange();
+
+        void testSubtractRange();
+        
+        void testScale();
+
+        static CppUnit::TestSuite* suite();
+};

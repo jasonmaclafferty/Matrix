@@ -20,18 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "Matrix.hpp"
 
 template <typename ElemType>
-Matrix<ElemType>::Matrix(unsigned numberOfRows, unsigned numberOfColumns)
-{
-    MatrixBase<ElemType>(numberOfRows, numberOfColumns);
-}
-
-template <typename ElemType>
-Matrix<ElemType>::Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal)
-{
-    MatrixBase<ElemType>(numberOfRows, numberOfColumns, elemInitVal);
-}
-
-template <typename ElemType>
 void Matrix<ElemType>::power(unsigned exponent)
 {
 
@@ -77,27 +65,6 @@ template <typename ElemType>
 void Matrix<ElemType>::scale(ElemType scaleFactor)
 {
 
-}
-
-template <typename ElemType>
-Matrix<ElemType>& Matrix<ElemType>::operator+(const Matrix<ElemType>& matrix2)
-{
-
-    return *this;
-}
-
-template <typename ElemType>
-Matrix<ElemType>& Matrix<ElemType>::operator-(const Matrix<ElemType>& matrix2)
-{
-
-    return *this;
-}
-
-template <typename ElemType>
-Matrix<ElemType>& Matrix<ElemType>::operator*(const Matrix<ElemType>& matrix2)
-{
-
-    return *this;
 }
 
 template class Matrix<int>;
