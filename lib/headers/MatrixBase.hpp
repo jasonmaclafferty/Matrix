@@ -50,7 +50,7 @@ class MatrixBase
 
         bool equal(const MatrixBase<ElemType>& matrix) const;
 
-        MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix2);
+        MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix);
 
         unsigned getNumOfRows() const;
 

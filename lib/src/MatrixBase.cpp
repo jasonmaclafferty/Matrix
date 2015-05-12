@@ -152,10 +152,12 @@ bool MatrixBase<ElemType>::operator!=(const MatrixBase<ElemType>& matrix)
 
 // Overload operator= to allow copying the contents of one matrix to another.
 template <typename ElemType>
-MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>& matrix2)
+MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>& matrix)
 {
+    unsigned matrixNumOfRows       =   matrix.getNumOfRows();
+    unsigned matrixNumOfColumns    =   matrix.getNumOfColumns();
 
-    return *this; // Stub to implement later.
+    return *this;
 }
 
 // Overload operator[] to allow indexing of a matrix like this MatrixBaseInstance[row][col]
