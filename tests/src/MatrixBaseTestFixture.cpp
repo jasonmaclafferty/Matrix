@@ -119,7 +119,16 @@ void MatrixBaseTestFixture::testEqual()
 
 void MatrixBaseTestFixture::testAssignmentOverload()
 {
+    *(this->matrix1)  = *(this->matrix6);
+    CPPUNIT_ASSERT(*(this->matrix1) == *(this->matrix6)); // the contents of matrix6 should have been copied to matrix1
 
+    *(this->matrix1) = *(this->matrix9);
+    for (int row = 0; row < 3; row++)
+        for (int col = 0; col < 3; col++)
+            CPPUNIT_ASSERT((*(this->matrix1))[row][col] == 2);
+
+    *(this->matrix5) = *(this->matrix10);
+    CPPUNIT_ASSERT(*(this->matrix5) == *(this->matrix10));
 }
 
 void MatrixBaseTestFixture::testConstructor()
@@ -157,6 +166,7 @@ CppUnit::TestSuite* MatrixBaseTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixBaseTestFixture>("testSetElement", &MatrixBaseTestFixture::testSetElement));
     suite->addTest(new CppUnit::TestCaller<MatrixBaseTestFixture>("testIsZero", &MatrixBaseTestFixture::testIsZero));
     suite->addTest(new CppUnit::TestCaller<MatrixBaseTestFixture>("testIsIdentity", &MatrixBaseTestFixture::testIsIdentity));
+    suite->addTest(new CppUnit::TestCaller<MatrixBaseTestFixture>("testAssignmentOverload", &MatrixBaseTestFixture::testAssignmentOverload));
 
     return suite;
 }
@@ -189,11 +199,4 @@ void MatrixBaseTestFixture::testSetElement()
         this->matrix9->setElement(row, 0, 297);
         CPPUNIT_ASSERT(this->matrix9->getElement(row, 0) == 297);
     }
-}
-
-int main()
-{
-    CppUnit::TextUi::TestRunner runner;
-    runner.addTest(MatrixBaseTestFixture::suite());
-    runner.run();
 }

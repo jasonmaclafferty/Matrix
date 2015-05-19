@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 template <typename ElemType>
 void MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newElemVal)
 {
-    if (row < this->getNumOfRows() && col < this->getNumOfColumns())
+    if (row < this->numOfRows && col < this->numOfColumns)
         this->data[row][col] = newElemVal;
 }
 
@@ -33,7 +33,7 @@ template <typename ElemType>
 ElemType MatrixBase<ElemType>::getElement(unsigned row, unsigned col) const
 {
     ElemType retval;
-    if (row < this->getNumOfRows() && col < this->getNumOfColumns())
+    if (row < this->numOfRows && col < this->numOfColumns)
         retval = this->data[row][col];
 
     return retval;
@@ -113,10 +113,10 @@ bool MatrixBase<ElemType>::isZero()
 template <typename ElemType>
 bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix) const
 {
-    if (this->getNumOfRows() == matrix.getNumOfRows() && this->getNumOfColumns() == matrix.getNumOfColumns())
+    if (this->numOfRows == matrix.getNumOfRows() && this->numOfColumns == matrix.getNumOfColumns())
     {
-        for (unsigned row = 0U; row < this->getNumOfRows(); row++)
-            for (unsigned col = 0U; col < this->getNumOfColumns(); col++)
+        for (unsigned row = 0U; row < this->numOfRows; row++)
+            for (unsigned col = 0U; col < this->numOfColumns; col++)
                 if (!isCloseEnough(static_cast<double>(this->getElement(row, col)), static_cast<double>(matrix[row][col]), 0.000000000001))
                     return false; // Matrices are not equal because one of the pairs of matrix elements are not equal.
     }
@@ -152,10 +152,68 @@ bool MatrixBase<ElemType>::operator!=(const MatrixBase<ElemType>& matrix)
 
 // Overload operator= to allow copying the contents of one matrix to another.
 template <typename ElemType>
-MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>& matrix)
+MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>& matrix2)
 {
-    unsigned matrixNumOfRows       =   matrix.getNumOfRows();
-    unsigned matrixNumOfColumns    =   matrix.getNumOfColumns();
+    unsigned matrix2NumOfRows       =   matrix2.getNumOfRows();
+    unsigned matrix2NumOfColumns    =   matrix2.getNumOfColumns();
+
+    if (matrix2NumOfColumns > this->numOfColumns && matrix2NumOfRows > this->numOfRows)
+    {
+        for (unsigned row = 0; row < this->numOfRows; row++)
+            for (unsigned col = 0; col < matrix2NumOfColumns; col++)
+                if (col < this->numOfColumns)
+                    (*this)[row][col] = matrix2[row][col];
+                else
+                    (*this)[row].push_back(matrix2[row][col]);
+
+        std::vector<ElemType> temp;
+        for (unsigned i = 0; i < matrix2NumOfColumns; i++)
+            temp.push_back(0);
+        for (unsigned j = this->numOfRows; j < matrix2NumOfRows; j++)
+            this->data.push_back(temp);
+
+        for (unsigned row = this->numOfRows; row < matrix2NumOfRows; row++)
+            for (unsigned col = 0; col < matrix2NumOfColumns; col++)
+                (*this)[row][col] = matrix2[row][col];
+
+        this->numOfRows     =   matrix2NumOfRows;    // "this" now the same number of rows and columns as "matrix2"
+        this->numOfColumns  =   matrix2NumOfColumns; //
+    }
+    else if (matrix2NumOfColumns > this->numOfColumns && matrix2NumOfRows <= this->numOfRows)
+    {
+        for (unsigned row = 0; row < matrix2NumOfRows; row++)
+            for (unsigned col = 0; col < matrix2NumOfColumns; col++)
+                if (col < this->numOfColumns)
+                    (*this)[row][col] = matrix2[row][col];
+                else
+                    (*this)[row].push_back(matrix2[row][col]);
+
+        for (unsigned row = matrix2NumOfRows; row < this->numOfRows; row++)
+            for (unsigned i = this->numOfColumns; i < matrix2NumOfColumns; i++)
+                (*this)[row].push_back(0);
+
+        this->numOfColumns = matrix2NumOfColumns; // "this" now has the same number of columns as "matrix2"
+    }
+    else if (matrix2NumOfRows > this->numOfRows && matrix2NumOfColumns <= this->numOfColumns)
+    {
+        std::vector<ElemType> temp;
+        for (unsigned i = 0; i < this->numOfColumns; i++)
+            temp.push_back(0);
+        for (unsigned i = this->numOfRows; i < matrix2NumOfRows; i++)
+            this->data.push_back(temp);
+
+        for (unsigned row = 0; row < matrix2NumOfRows; row++)
+            for (unsigned col = 0; col < matrix2NumOfColumns; col++)
+                (*this)[row][col] = matrix2[row][col];
+
+        this->numOfRows = matrix2NumOfRows; // "this" now has the same number of Rows as "matrix2"
+    }
+    else // "matrix2" has less than or equal to the number of rows and columns as "this".
+    {
+        for (unsigned row = 0; row < matrix2NumOfRows; row++)
+            for (unsigned col = 0; col < matrix2NumOfColumns; col++)
+                (*this)[row][col] = matrix2[row][col];
+    }
 
     return *this;
 }
