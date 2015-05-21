@@ -3,5 +3,6 @@ One of the design goals of the project is to eventually support doing matrix alg
 
 Compile the shared library and unit tests from the current code base with the supplied build script (build.csh).
 The build script currently only supports Mac OS X. You will need the OS X Commandline Developer Tools installed to build the library with the build script.
+The CppUnit C++ unit testing framework must also be installed on your system for the build script to work. The assumption is that you installed CppUnit with homebrew and that your homebrew installation is in /usr/local.
 
 Once you have cloned the git repo, you will need to set the executable bit on the shell script. Then you should be ready to build the code.

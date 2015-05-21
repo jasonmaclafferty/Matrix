@@ -136,7 +136,7 @@ std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
     return out; // Stub to implement later.
 }
 
-// A convenient operator overload to compare to matrix objects for equality.
+// A convenient operator overload to compare two matrix objects for equality.
 template <typename ElemType>
 bool MatrixBase<ElemType>::operator==(const MatrixBase<ElemType>& matrix)
 {

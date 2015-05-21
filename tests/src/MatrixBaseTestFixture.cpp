@@ -119,16 +119,57 @@ void MatrixBaseTestFixture::testEqual()
 
 void MatrixBaseTestFixture::testAssignmentOverload()
 {
-    *(this->matrix1)  = *(this->matrix6);
-    CPPUNIT_ASSERT(*(this->matrix1) == *(this->matrix6)); // the contents of matrix6 should have been copied to matrix1
+    *(this->matrix1)  = *(this->matrix6); // equal number of rows and columns 
+    CPPUNIT_ASSERT(*(this->matrix1) == *(this->matrix6)); 
+    *(this->matrix4) = *(this->matrix8);
+    CPPUNIT_ASSERT(*(this->matrix4) == *(this->matrix8));
 
-    *(this->matrix1) = *(this->matrix9);
+    *(this->matrix1) = *(this->matrix9); // matrix9 has more rows and columns than matrix1.
     for (int row = 0; row < 3; row++)
         for (int col = 0; col < 3; col++)
             CPPUNIT_ASSERT((*(this->matrix1))[row][col] == 2);
+    MatrixBase<unsigned> matrix4d(3, 3, 25);
+    MatrixBase<unsigned> matrix5e(5, 5, 1);
+    matrix4d = matrix5e;
+    CPPUNIT_ASSERT(matrix4d == matrix5e);
 
     *(this->matrix5) = *(this->matrix10);
-    CPPUNIT_ASSERT(*(this->matrix5) == *(this->matrix10));
+    CPPUNIT_ASSERT(*(this->matrix5) == *(this->matrix10)); // matrix10 has more rows than matrix5 and an equal number of columns.
+    MatrixBase<double> matrix6f(10, 5, 6.719001);
+    *(this->matrix5) = matrix6f;
+    CPPUNIT_ASSERT(*(this->matrix5) == matrix6f);
+
+    MatrixBase<int> matrix2b(4, 7, 7);
+    MatrixBase<double> matrix3c(5, 3, 1.00001);
+    matrix3c = *(this->matrix5); // matrix5 has more columns and the same number of rows as matrix3c.
+    CPPUNIT_ASSERT(matrix3c == *(this->matrix5));
+    matrix2b = *(this->matrix9);
+    CPPUNIT_ASSERT(matrix2b == *(this->matrix9));
+
+    MatrixBase<double> matrix7g(7, 2, 3.14);
+    matrix3c = matrix7g; // matrix7g has more rows and less columns than matrix3c
+    CPPUNIT_ASSERT(matrix3c != matrix7g);
+    for (unsigned row = 0; row < 7U; row++)
+        for (unsigned col = 0; col < 2U; col++)
+            CPPUNIT_ASSERT(isCloseEnough(matrix3c[row][col], 3.14, 0.0001));
+
+    MatrixBase<int> matrix1a(2, 2, 2);
+    matrix2b = matrix1a;                  // matrix1a has less rows and columns than matrix2b.
+    for (unsigned row = 0; row < 4U; row++)
+        for (unsigned col = 0; col < 7U; col++)
+                CPPUNIT_ASSERT(matrix2b[row][col] == 2);
+    matrix1a = *(this->matrix9);
+    CPPUNIT_ASSERT(matrix1a == *(this->matrix9));
+
+    MatrixBase<float> matrix9j(12, 15, 0.0001);
+    MatrixBase<float> matrix10k(9, 20, 0.12);
+    matrix9j = matrix10k; // matrix10k has less rows and more columns than matrix9j
+    for (unsigned row = 0; row < 12U; row++)
+        for (unsigned col = 0; col < 20U; col++)
+            if (row < 9U)
+                CPPUNIT_ASSERT(isCloseEnough(matrix9j[row][col], 0.12, 0.0001));
+            else
+                CPPUNIT_ASSERT(isCloseEnough(matrix9j[row][col], 0.0001, 0.0001));
 }
 
 void MatrixBaseTestFixture::testConstructor()
@@ -142,8 +183,8 @@ void MatrixBaseTestFixture::testConstructor()
         for (unsigned col = 0U; col < matrix2NumOfCols; col++)
             CPPUNIT_ASSERT(isCloseEnough(3.141592653, this->matrix2->getElement(row, col), 0.000000001));
 
-    unsigned matrix3NumOfColumns   =   this->matrix3->getNumOfColumns();
-    unsigned matrix3NumOfRows   =   this->matrix3->getNumOfRows();
+    unsigned matrix3NumOfColumns    =   this->matrix3->getNumOfColumns();
+    unsigned matrix3NumOfRows       =   this->matrix3->getNumOfRows();
     for (unsigned row = 0U; row < matrix3NumOfRows; row++)
         for (unsigned col = 0U; col < matrix3NumOfColumns; col++)
             CPPUNIT_ASSERT(this->matrix3->getElement(row, col) == 0U);
