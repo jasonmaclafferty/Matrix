@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <ostream>
 #include <vector>
+#include <iomanip>
 
 template <typename ElemType>
 class MatrixBase
@@ -63,6 +64,8 @@ class MatrixBase
         std::vector<ElemType>& operator[](std::size_t row);
 
         const std::vector<ElemType>& operator[](std::size_t row) const;
+
+        void outputMatrix(std::ostream& out, int fieldWidth);
 };
 
 template <typename ElemType>
