@@ -66,9 +66,8 @@ class MatrixBase
         const std::vector<ElemType>& operator[](std::size_t row) const;
 
         void outputMatrix(std::ostream& out, int fieldWidth);
-};
 
-template <typename ElemType>
-std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix);
+        friend std::ostream& operator<< <>(std::ostream& out, const MatrixBase<ElemType>& matrix);
+};
 
 #endif

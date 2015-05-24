@@ -17,8 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "MatrixBase.hpp"
-#include "Utility.hpp"
+#include <MatrixBase.hpp>
+#include <Utility.hpp>
 
 // Assigns the value "newElemVal" to the matrix element at position "row", "col" if a valid row and column are given--otherwise nothing is done.
 template <typename ElemType>

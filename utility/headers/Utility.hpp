@@ -21,7 +21,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #define _UTILITY_HPP_
 
 #include <cmath>
+#include <random>
+#include <functional>
+#include <MatrixBase.hpp>
 
 bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy);
+
+void createRandomIntMatrix(MatrixBase<int>& matrix);
 
 #endif

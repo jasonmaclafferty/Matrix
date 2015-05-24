@@ -17,13 +17,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-set libraryBuildCmd     =   "clang++ -W -std=c++11 -shared -o lib/bin/libMatrix.dylib -Iutility/headers -Ilib/headers utility/src/Utility.cpp lib/src/*.cpp"
-set testProgBuildCmd    =   "clang++ -W -std=c++11 -o tests/bin/tester -Ilib/headers -Iutility/headers -Itests/headers tests/src/*.cpp utility/src/Utility.cpp -L/usr/local/lib -Llib/bin -lcppunit -lMatrix"
+# check for the existance of the build directores and if necessary, create them.
+if (!(-e ./lib/bin)) then
+    mkdir ./lib/bin
+endif
+if (!(-e ./tests/bin)) then
+    mkdir ./tests/bin
+endif
 
-if ($argv[1] == DEBUG || $argv[1] == debug || $argv[1] == d || $argv[1] == D || $argv[1] == Debug) then
-    set libraryBuildCmd     =   "$libraryBuildCmd -g"
-    set testProgBuildCmd    =   "$testProgBuildCmd -g"
+set ioTestsBuildCmd     =   "clang++ -W -std=c++11 -o tests/bin/IOTests -Iutility/headers -Ilib/headers utility/src/Utility.cpp tests/src/MatrixBaseIOTest.cpp -Llib/bin -lMatrix"
+set libraryBuildCmd     =   "clang++ -W -std=c++11 -shared -o lib/bin/libMatrix.dylib -Iutility/headers -Ilib/headers utility/src/Utility.cpp lib/src/*.cpp"
+set unitTestsBuildCmd   =   "clang++ -W -std=c++11 -o tests/bin/UnitTests -Ilib/headers -Iutility/headers -Itests/headers tests/src/*TestFixture.cpp utility/src/Utility.cpp -L/usr/local/lib -Llib/bin -lcppunit -lMatrix"
+
+# check if the user specified a debug build
+if ($#argv > 1) then
+    if ($argv[1] == DEBUG || $argv[1] == debug || $argv[1] == d || $argv[1] == D || $argv[1] == Debug) then
+        set libraryBuildCmd     =   "$libraryBuildCmd -g"
+        set unitTestsBuildCmd   =   "$unitTestsBuildCmd -g"
+        set ioTestsBuildCmd     =   "$ioTestsBuildCmd -g"
+    endif
 endif
 
 eval $libraryBuildCmd # build the library
-eval $testProgBuildCmd # build the unit tests
+eval $unitTestsBuildCmd # build the unit tests
+eval $ioTestsBuildCmd   # build the IO tests

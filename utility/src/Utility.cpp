@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Utility.hpp"
+#include <Utility.hpp>
 
 /*
 Function Name: isCloseEnough
@@ -32,4 +32,18 @@ bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy
         return true;
     else
         return false;
+}
+
+// fills a supplied matrix with pseudo random integers
+void createRandomIntMatrix(MatrixBase<int>& matrix)
+{
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(-2000000000, 2000000000);
+    auto dice                       =   std::bind(distribution, generator);
+    unsigned matrixNumOfRows        =   matrix.getNumOfRows();
+    unsigned matrixNumOfColumns     =   matrix.getNumOfColumns();
+
+    for (unsigned row = 0U; row < matrixNumOfRows; row++)
+        for (unsigned col = 0U; col < matrixNumOfColumns; col++)
+            matrix[row][col] = dice();
 }
