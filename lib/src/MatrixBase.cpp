@@ -128,23 +128,6 @@ bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix) const
     return true; // If the dimensions match and all the elements are equal, then the matrices are equal.
 }
 
-// Overload for operator<< to allow writing a matrix to an output stream such as a file or the console.
-template <typename ElemType>
-std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
-{
-    unsigned matrixNumOfRows    =   matrix.getNumOfRows();
-    unsigned matrixNumOfColumns =   matrix.getNumOfColumns();
-
-    for (unsigned row = 0U; row < matrixNumOfRows; row++)
-    {
-        for (unsigned col = 0U; col < matrixNumOfColumns; col++)
-            out << std::setw(15) << matrix[row][col] << ' ';
-        out << std::endl;
-    }
-
-    return out; 
-}
-
 // write matrix to an output stream with the specified field width
 template <typename ElemType>
 void MatrixBase<ElemType>::outputMatrix(std::ostream& out, int fieldWidth)

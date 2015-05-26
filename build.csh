@@ -25,9 +25,9 @@ if (!(-e ./tests/bin)) then
     mkdir ./tests/bin
 endif
 
+set unitTestsBuildCmd   =   "clang++ -W -std=c++11 -o tests/bin/UnitTests -Ilib/headers -Iutility/headers -Itests/headers tests/src/TestRunner.cpp tests/src/*TestFixture.cpp utility/src/Utility.cpp -L/usr/local/lib -lcppunit -Llib/bin -lMatrix"
 set ioTestsBuildCmd     =   "clang++ -W -std=c++11 -o tests/bin/IOTests -Iutility/headers -Ilib/headers utility/src/Utility.cpp tests/src/MatrixBaseIOTest.cpp -Llib/bin -lMatrix"
 set libraryBuildCmd     =   "clang++ -W -std=c++11 -shared -o lib/bin/libMatrix.dylib -Iutility/headers -Ilib/headers utility/src/Utility.cpp lib/src/*.cpp"
-set unitTestsBuildCmd   =   "clang++ -W -std=c++11 -o tests/bin/UnitTests -Ilib/headers -Iutility/headers -Itests/headers tests/src/*TestFixture.cpp utility/src/Utility.cpp -L/usr/local/lib -Llib/bin -lcppunit -lMatrix"
 
 # check if the user specified a debug build
 if ($#argv > 1) then

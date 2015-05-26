@@ -67,7 +67,18 @@ class MatrixBase
 
         void outputMatrix(std::ostream& out, int fieldWidth);
 
-        friend std::ostream& operator<< <>(std::ostream& out, const MatrixBase<ElemType>& matrix);
+        // Overload for operator<< to allow writing a matrix to an output stream such as a file or the console.
+        friend std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
+        {
+            for (unsigned row = 0U; row < matrix.numOfRows; row++)
+            {
+                for (unsigned col = 0U; col < matrix.numOfColumns; col++)
+                    out << std::setw(15) << matrix[row][col] << ' ';
+                out << std::endl;
+            }
+
+            return out; 
+        }
 };
 
 #endif
