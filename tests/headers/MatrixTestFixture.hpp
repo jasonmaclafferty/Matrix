@@ -24,13 +24,24 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cppunit/TestAssert.h>
 #include <memory>
 
-#include "Matrix.hpp"
+#include <Matrix.hpp>
 
 class MatrixTestFixture : public CppUnit::TestFixture
 {
-    public:
-        void testSetUp();
+    protected:
+        std::shared_ptr< Matrix<int> > testMatrix1;
 
+        std::shared_ptr< Matrix<int> > testMatrix2;
+        
+        std::shared_ptr< Matrix<int> > testMatrix3;
+
+        std::shared_ptr< Matrix<double> > testMatrix4;
+
+        std::shared_ptr< Matrix<double> > testMatrix5;
+
+        std::shared_ptr< Matrix<double> > testMatrix6;
+
+    public:
         void testPower();
 
         void testMultiply();
@@ -46,6 +57,8 @@ class MatrixTestFixture : public CppUnit::TestFixture
         void testSubtractRange();
         
         void testScale();
+
+        void testAssignmentOverload();
 
         static CppUnit::TestSuite* suite();
 };

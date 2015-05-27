@@ -35,10 +35,10 @@ bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy
 }
 
 // fills a supplied matrix with pseudo random integers
-void createRandomIntMatrix(MatrixBase<int>& matrix)
+void createRandomIntMatrix(MatrixBase<int>& matrix, int lowerBound, int upperBound)
 {
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> distribution(-2000000000, 2000000000);
+    std::linear_congruential_engine<std::uint_fast32_t, 48271, 0, 2147483647> generator;
+    std::uniform_int_distribution<int> distribution(lowerBound, upperBound);
     auto dice                       =   std::bind(distribution, generator);
     unsigned matrixNumOfRows        =   matrix.getNumOfRows();
     unsigned matrixNumOfColumns     =   matrix.getNumOfColumns();

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Matrix.hpp"
+#include <Matrix.hpp>
 
 template <typename ElemType>
 void Matrix<ElemType>::power(unsigned exponent)
@@ -65,6 +65,16 @@ template <typename ElemType>
 void Matrix<ElemType>::scale(ElemType scaleFactor)
 {
 
+}
+
+template <typename ElemType>
+Matrix<ElemType>& Matrix<ElemType>::operator=(Matrix<ElemType>& matrix2)
+{
+    MatrixBase<ElemType>& matrix2Temp    =  matrix2; 
+    MatrixBase<ElemType>& thisTemp       =  *this; 
+    thisTemp                             =   matrix2Temp;
+
+    return dynamic_cast< Matrix<ElemType>& >(thisTemp);
 }
 
 template class Matrix<int>;

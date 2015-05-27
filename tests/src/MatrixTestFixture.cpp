@@ -17,4 +17,17 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "MatrixTestFixture.hpp"
+#include <MatrixTestFixture.hpp>
+
+CppUnit::TestSuite* MatrixTestFixture::suite()
+{
+    CppUnit::TestSuite* suite = new CppUnit::TestSuite("MatrixTestFixture");
+    suite->addTest("testAssignmentOverload", &MatrixTestFixture::testAssignmentOverload);
+
+    return suite;
+}
+
+void MatrixTestFixture::testAssignmentOverload()
+{
+
+}

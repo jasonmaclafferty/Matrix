@@ -45,27 +45,27 @@ class MatrixBase
 
         bool isSquare();
 
-        ElemType getElement(unsigned row, unsigned col) const; 
+        virtual ElemType getElement(unsigned row, unsigned col) const; 
 
-        void setElement(unsigned row, unsigned col, ElemType newElemVal);
+        virtual void setElement(unsigned row, unsigned col, ElemType newElemVal);
 
-        bool equal(const MatrixBase<ElemType>& matrix) const;
+        virtual bool equal(const MatrixBase<ElemType>& matrix) const;
 
-        MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix);
+        virtual MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix);
 
         unsigned getNumOfRows() const;
 
         unsigned getNumOfColumns() const;
         
-        bool operator==(const MatrixBase<ElemType>& matrix);
+        virtual bool operator==(const MatrixBase<ElemType>& matrix);
 
-        bool operator!=(const MatrixBase<ElemType>& matrix);
+        virtual bool operator!=(const MatrixBase<ElemType>& matrix);
 
-        std::vector<ElemType>& operator[](std::size_t row);
+        virtual std::vector<ElemType>& operator[](std::size_t row);
 
-        const std::vector<ElemType>& operator[](std::size_t row) const;
+        virtual const std::vector<ElemType>& operator[](std::size_t row) const;
 
-        void outputMatrix(std::ostream& out, int fieldWidth);
+        virtual void output(std::ostream& out, int fieldWidth);
 
         // Overload for operator<< to allow writing a matrix to an output stream such as a file or the console.
         friend std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)

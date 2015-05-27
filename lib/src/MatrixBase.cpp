@@ -130,7 +130,7 @@ bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix) const
 
 // write matrix to an output stream with the specified field width
 template <typename ElemType>
-void MatrixBase<ElemType>::outputMatrix(std::ostream& out, int fieldWidth)
+void MatrixBase<ElemType>::output(std::ostream& out, int fieldWidth)
 {
     for (unsigned row = 0U; row < this->numOfRows; row++)
     {

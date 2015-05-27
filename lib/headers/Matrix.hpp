@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef _MATRIX_HPP_
 #define _MATRIX_HPP_
 
-#include "MatrixBase.hpp"
+#include <MatrixBase.hpp>
 
 template <typename ElemType>
 class Matrix : public MatrixBase<ElemType>
@@ -47,6 +47,13 @@ class Matrix : public MatrixBase<ElemType>
         Matrix<ElemType>& operator-(const Matrix<ElemType>& matrix2);
 
         Matrix<ElemType>& operator*(const Matrix<ElemType>& matrix2);
+
+        Matrix<ElemType>& operator=(Matrix<ElemType>& matrix2);
+
+        friend std::ostream& operator<<(std::ostream& out, const Matrix<ElemType>& matrix) 
+        { 
+            return out << dynamic_cast< MatrixBase<ElemType> >(matrix); 
+        }
 };
 
 #endif
