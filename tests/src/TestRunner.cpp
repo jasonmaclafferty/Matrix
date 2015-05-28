@@ -17,13 +17,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "MatrixBaseTestFixture.hpp"
-#include "MatrixTestFixture.hpp"
+#include <MatrixBaseTestFixture.hpp>
+#include <MatrixTestFixture.hpp>
 
 
 int main()
 {
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(MatrixBaseTestFixture::suite());
+    runner.addTest(MatrixTestFixture::suite());
     runner.run();
 }

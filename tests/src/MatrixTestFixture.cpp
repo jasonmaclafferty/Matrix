@@ -22,12 +22,39 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 CppUnit::TestSuite* MatrixTestFixture::suite()
 {
     CppUnit::TestSuite* suite = new CppUnit::TestSuite("MatrixTestFixture");
-    suite->addTest("testAssignmentOverload", &MatrixTestFixture::testAssignmentOverload);
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAssignmentOverload", &MatrixTestFixture::testAssignmentOverload));
 
     return suite;
 }
 
 void MatrixTestFixture::testAssignmentOverload()
 {
+    *(this->testMatrix1) = *(this->testMatrix2); // testMatrix2 has more rows and columns than testMatrix1
+    CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix2));
 
+    *(this->testMatrix2) = *(this->testMatrix1); // testMatrix1 has less columns and rows than testMatrix2
+    for (unsigned row = 0U; row < 5U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == 1);
+
+    *(this->testMatrix1) = *(this->testMatrix3); // testMatrix3 has more columns and the same number of rows as testMatrix1
+    CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix3));
+
+    *(this->testMatrix2) = *(this->testMatrix7); // testMatrix7 has more rows and the same number of columns as testMatrix2
+    CPPUNIT_ASSERT(*(this->testMatrix2) == *(this->testMatrix7));
+}
+
+void MatrixTestFixture::setUp()
+{
+    this->testMatrix1   =   std::make_shared< Matrix<int> >(5, 5, 1);
+    
+    this->testMatrix2   =   std::make_shared< Matrix<int> >(10, 10);
+    std::vector<int> temp {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    for (unsigned row = 0U; row < 10U; row++)
+        for (unsigned col = 0U; col < 10U; col++)
+            (*(this->testMatrix2))[row][col] = temp[col];
+
+    this->testMatrix4   =   std::make_shared< Matrix<double> >(4, 4, 3.141592653);
+    this->testMatrix3   =   std::make_shared< Matrix<int> >(5, 7, 2);
+    this->testMatrix7   =   std::make_shared< Matrix<int> >(11, 10, 3);
 }
