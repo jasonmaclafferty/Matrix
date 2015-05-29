@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <fstream>
 #include <MatrixBase.hpp>
+#include <Matrix.hpp>
 #include <Utility.hpp>
 
 int main()
@@ -31,20 +32,37 @@ int main()
     MatrixBase<int> matrix3(5, 7);
     MatrixBase<double> matrix4(10, 10);
     MatrixBase<int> matrix5(3, 3);
+    Matrix<int> matrix1a(9, 9, 5);
+    Matrix<double> matrix4d(10, 10);
+    Matrix<int> matrix2b(10, 10);
+    Matrix<int> matrix3c(7, 6);
 
     createRandomIntMatrix(matrix2, -2000000000, 2000000000);
+    createRandomIntMatrix(matrix2b,-2000000000, 2000000000);
     createRandomIntMatrix(matrix3, -2000000000, 2000000000);
+    createRandomIntMatrix(matrix3c, -2000, 10000);
     for (unsigned row = 0U; row < 10; row++)
+    {
         for (unsigned col = 0U; col < 10; col++)
-            matrix4[row][col] = static_cast<double>(matrix2[row][col]) / 3.1588;
+        {
+            matrix4[row][col]   =   static_cast<double>(matrix2[row][col]) / 3.1588;
+            matrix4d[row][col]  =   static_cast<double>(matrix2b[row][col]) / 3.1588;
+        }
+    }
     createRandomIntMatrix(matrix5, -2000000000, 2000000000);
 
     std::cout << "Test operator<< overload with std::cout" << std::endl;
+    std::cout << "For MatrixBase<ElemType>" << std::endl;
     std::cout << matrix1 << std::endl;
     std::cout << matrix2 << std::endl;
     std::cout << matrix3 << std::endl;
     std::cout << matrix4 << std::endl;
     std::cout << matrix5 << std::endl;
+    std::cout << "For Matrix<ElemType>" << std::endl;
+    std::cout << matrix1a << std::endl;
+    std::cout << matrix2b << std::endl;
+    std::cout << matrix3c << std::endl;
+    std::cout << matrix4d << std::endl;
 
     createRandomIntMatrix(matrix2, 5, 20);
     createRandomIntMatrix(matrix3, -5, 100);
@@ -55,11 +73,17 @@ int main()
 
     std::ofstream ioTestFile("IOTestFile");
     ioTestFile << "Test operator<< overload for file streams." << std::endl;
+    ioTestFile << "For MatrixBase<ElemType>" << std::endl;
     ioTestFile << matrix1 << std::endl;
     ioTestFile << matrix2 << std::endl;
     ioTestFile << matrix3 << std::endl;
     ioTestFile << matrix4 << std::endl;
     ioTestFile << matrix5 << std::endl;
+    ioTestFile << "For Matrix<ElemType>" << std::endl;
+    ioTestFile << matrix1a << std::endl;
+    ioTestFile << matrix2b << std::endl;
+    ioTestFile << matrix3c << std::endl;
+    ioTestFile << matrix4d << std::endl;
 
     ioTestFile << "Test the MatrixBase::output member function." << std::endl;
     matrix1.output(ioTestFile, 15);
@@ -67,6 +91,8 @@ int main()
     matrix3.output(ioTestFile, 3);
     matrix4.output(ioTestFile, 8);
     matrix5.output(ioTestFile, 6);
+    ioTestFile << "Test calling MatrixBase::output from its child class Matrix." << std::endl;
+    matrix4d.output(ioTestFile, 15);
     ioTestFile.close();
 
     std::cout << "Finished testing IO capabilities of the MatrixBase class." << std::endl;

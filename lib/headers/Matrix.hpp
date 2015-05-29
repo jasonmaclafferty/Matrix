@@ -38,7 +38,7 @@ class Matrix : public MatrixBase<ElemType>
 
         void subtract(const Matrix<ElemType>& matrix2);
 
-        void multiplyRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
+        void multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd);
 
         void addRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
 
@@ -54,9 +54,9 @@ class Matrix : public MatrixBase<ElemType>
 
         Matrix<ElemType>& operator=(Matrix<ElemType>& matrix2);
 
-        friend std::ostream& operator<<(std::ostream& out, const Matrix<ElemType>& matrix) 
+        friend std::ostream& operator<<(std::ostream& out, Matrix<ElemType>& matrix) 
         { 
-            return out << dynamic_cast< MatrixBase<ElemType> >(matrix); 
+            return out << dynamic_cast< MatrixBase<ElemType>& >(matrix); 
         }
 };
 

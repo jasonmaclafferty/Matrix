@@ -44,7 +44,7 @@ void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2)
 }
 
 template <typename ElemType>
-void Matrix<ElemType>::multiplyRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd)
+void multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd)
 {
 
 }
@@ -64,7 +64,9 @@ void Matrix<ElemType>::subtractRange(const Matrix<ElemType>& matrix2, unsigned r
 template <typename ElemType>
 void Matrix<ElemType>::scale(ElemType scaleFactor)
 {
-
+    for (unsigned row = 0U; row < this->numOfRows; row++)
+        for (unsigned col = 0U; col < this->numOfColumns; col++)
+            (*this)[row][col] *= scaleFactor;
 }
 
 template <typename ElemType>

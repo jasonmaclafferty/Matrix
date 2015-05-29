@@ -29,16 +29,17 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
 
 void MatrixTestFixture::testAssignmentOverload()
 {
-    *(this->testMatrix1) = *(this->testMatrix2); // testMatrix2 has more rows and columns than testMatrix1
-    CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix2));
-
     *(this->testMatrix2) = *(this->testMatrix1); // testMatrix1 has less columns and rows than testMatrix2
     for (unsigned row = 0U; row < 5U; row++)
         for (unsigned col = 0U; col < 5U; col++)
             CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == 1);
 
-    *(this->testMatrix1) = *(this->testMatrix3); // testMatrix3 has more columns and the same number of rows as testMatrix1
-    CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix3));
+    *(this->testMatrix1) = *(this->testMatrix2); // testMatrix2 has more rows and columns than testMatrix1
+    CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix2));
+
+    Matrix<int> matrix1(5, 5, 1);
+    matrix1 = *(this->testMatrix3); // testMatrix3 has more columns and the same number of rows as testMatrix1
+    CPPUNIT_ASSERT(matrix1 == *(this->testMatrix3));
 
     *(this->testMatrix2) = *(this->testMatrix7); // testMatrix7 has more rows and the same number of columns as testMatrix2
     CPPUNIT_ASSERT(*(this->testMatrix2) == *(this->testMatrix7));
@@ -57,4 +58,32 @@ void MatrixTestFixture::setUp()
     this->testMatrix4   =   std::make_shared< Matrix<double> >(4, 4, 3.141592653);
     this->testMatrix3   =   std::make_shared< Matrix<int> >(5, 7, 2);
     this->testMatrix7   =   std::make_shared< Matrix<int> >(11, 10, 3);
+    this->testMatrix5   =   std::make_shared< Matrix<double> >(5, 4, 2.71812);
+    this->testMatrix6   =   std::make_shared< Matrix<double> >(7, 5);
+    std::vector<double> temp2 {0.00001, 0.00002, 0.00003, 0.00004, 0.00005, 0.00006, 0.00007};
+    for (unsigned row = 0U; row < 7U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            (*(this->testMatrix6))[row][col] = temp2[row];
+}
+
+void MatrixTestFixture::testScale()
+{
+    this->testMatrix1->scale(2);
+    for (unsigned row = 0U; row < 5U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 2);
+
+    std::vector<int> temp {3, 6, 9, 12, 15, 18, 21, 24, 27, 30};
+    this->testMatrix2->scale(3);
+    for (unsigned row = 0U; row < 10U; row++)
+        for (unsigned col = 0U; col < 10U; col++)
+            CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == temp[col]);
+
+    this->testMatrix3->scale(1);
+    for (unsigned row = 0U; row < 5U; row++)
+        for (unsigned col = 0U; col < 7U; col++)
+            CPPUNIT_ASSERT((*(this->testMatrix3))[row][col] == 2);
+
+    this->testMatrix4->scale(2);
+    CPPUNIT_ASSERT(allMatrixElementsAre((*(this->testMatrix4)), 6.28319));
 }

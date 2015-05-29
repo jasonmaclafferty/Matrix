@@ -47,3 +47,19 @@ void createRandomIntMatrix(MatrixBase<int>& matrix, int lowerBound, int upperBou
         for (unsigned col = 0U; col < matrixNumOfColumns; col++)
             matrix[row][col] = dice();
 }
+
+// checks if all of the elements of the matrix have the specified value
+template <typename ElemType>
+bool allMatrixElementsAre(const MatrixBase<ElemType>& matrix, ElemType val)
+{
+    double doubleVal            =   static_cast<double>(val);
+    unsigned numberOfRows       =   matrix.getNumOfRows();
+    unsigned numberOfColumns    =   matrix.getNumOfColumns();
+
+    for (unsigned row = 0U; row < numberOfRows; row++)
+        for (unsigned col = 0U; col < numberOfColumns; col++)
+            if (!isCloseEnough(static_cast<double>(matrix[row][col]), doubleVal, 0.0000001))
+                return false;
+    
+    return true;
+}

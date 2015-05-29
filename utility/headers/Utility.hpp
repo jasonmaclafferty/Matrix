@@ -29,4 +29,7 @@ bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy
 
 void createRandomIntMatrix(MatrixBase<int>& matrix, int lowerBound, int upperBound);
 
+template <typename ElemType>
+bool allMatrixElementsAre(const MatrixBase<ElemType>& matrix, ElemType val);
+
 #endif
