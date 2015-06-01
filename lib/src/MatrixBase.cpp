@@ -242,6 +242,20 @@ unsigned MatrixBase<ElemType>::getNumOfColumns() const { return this->numOfColum
 template <typename ElemType>
 bool MatrixBase<ElemType>::isSquare() { return this->numOfColumns == this->numOfRows; }
 
+// checks if all of the elements of the matrix have the specified value
+template <typename ElemType>
+bool MatrixBase<ElemType>::allElementsAre(ElemType val)
+{
+    double doubleVal = static_cast<double>(val);
+
+    for (unsigned row = 0U; row < this->numOfRows; row++)
+        for (unsigned col = 0U; col < this->numOfColumns; col++)
+            if (!isCloseEnough(doubleVal, static_cast<double>((*this)[row][col]), 0.0000001))
+                return false;
+    
+    return true;
+}
+
 template class MatrixBase<int>;
 template class MatrixBase<double>;
 template class MatrixBase<unsigned>;

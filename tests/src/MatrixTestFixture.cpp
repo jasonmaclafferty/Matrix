@@ -23,6 +23,8 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
 {
     CppUnit::TestSuite* suite = new CppUnit::TestSuite("MatrixTestFixture");
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAssignmentOverload", &MatrixTestFixture::testAssignmentOverload));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testScale", &MatrixTestFixture::testScale));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testPower", &MatrixTestFixture::testPower));
 
     return suite;
 }
@@ -84,6 +86,32 @@ void MatrixTestFixture::testScale()
         for (unsigned col = 0U; col < 7U; col++)
             CPPUNIT_ASSERT((*(this->testMatrix3))[row][col] == 2);
 
-    this->testMatrix4->scale(2);
-    CPPUNIT_ASSERT(allMatrixElementsAre((*(this->testMatrix4)), 6.28319));
+    this->testMatrix4->scale(2.00);
+    CPPUNIT_ASSERT(this->testMatrix4->allElementsAre(6.283185306));
+
+    this->testMatrix5->scale(2.71812);
+    CPPUNIT_ASSERT(this->testMatrix5->allElementsAre(7.3881763344));
+
+    for (unsigned row = 0U; row < 7U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            this->testMatrix6->scale((*(this->testMatrix6))[row][col]);
+    std::vector<double> temp2 {1e-10, 4e-10, 9e-10, 1.6e-9, 2.5e-9, 3.6e-9, 4.9e-9};
+    for (unsigned row = 0U; row < 7U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            CPPUNIT_ASSERT(isCloseEnough(temp2[row], (*(this->testMatrix6))[row][col], 0.0000001));
+}
+
+void MatrixTestFixture::testPower()
+{
+    this->testMatrix1->power(2.00);
+    CPPUNIT_ASSERT(this->testMatrix1->allElementsAre(1)); 
+
+    this->testMatrix2->power(0.5); // you can even do square roots!
+    std::vector<int> temp {1, 1, 1, 2, 2, 2, 2, 2, 3, 3};
+    for (unsigned row = 0U; row < 10U; row++)
+        for (unsigned col = 0U; col < 10U; col++)
+            CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == temp[col]);
+
+    this->testMatrix3->power(3.00);
+    CPPUNIT_ASSERT(this->testMatrix3->allElementsAre(3.00));
 }

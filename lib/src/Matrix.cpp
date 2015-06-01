@@ -19,16 +19,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <Matrix.hpp>
 
+// Raises each element of the matrix pointed to by "this" to the power given.
 template <typename ElemType>
-void Matrix<ElemType>::power(unsigned exponent)
+void Matrix<ElemType>::power(double exponent)
 {
-
-}
-
-template <typename ElemType>
-void Matrix<ElemType>::multiply(const Matrix<ElemType>& matrix2)
-{
-
+    for (unsigned row = 0U; row < this->numOfRows; row++)
+        for (unsigned col = 0U; col < this->numOfColumns; col++)
+            (*this)[row][col] = static_cast<ElemType>(pow(static_cast<double>((*this)[row][col]), exponent));
 }
 
 template <typename ElemType>
@@ -44,7 +41,13 @@ void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2)
 }
 
 template <typename ElemType>
-void multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd)
+Matrix<ElemType>& multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd)
+{
+
+}
+
+template <typename ElemType>
+Matrix<ElemType>& multiply(const Matrix<ElemType>& matrix2)
 {
 
 }

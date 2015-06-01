@@ -67,6 +67,8 @@ class MatrixBase
 
         virtual void output(std::ostream& out, int fieldWidth);
 
+        virtual bool allElementsAre(ElemType val);
+
         // Overload for operator<< to allow writing a matrix to an output stream such as a file or the console.
         friend std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
         {

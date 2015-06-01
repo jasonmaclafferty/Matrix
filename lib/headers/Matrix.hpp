@@ -20,6 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef _MATRIX_HPP_
 #define _MATRIX_HPP_
 
+#include <cmath>
 #include <MatrixBase.hpp>
 
 template <typename ElemType>
@@ -30,15 +31,15 @@ class Matrix : public MatrixBase<ElemType>
         
         Matrix(unsigned numberOfRows, unsigned numberOfColumns) : MatrixBase<ElemType>(numberOfRows, numberOfColumns) {}
 
-        void power(unsigned exponent);
+        void power(double exponent);
 
-        void multiply(const Matrix<ElemType>& matrix2);
+        Matrix<ElemType>& multiply(const Matrix<ElemType>& matrix2);
 
         void add(const Matrix<ElemType>& matrix2);
 
         void subtract(const Matrix<ElemType>& matrix2);
 
-        void multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd);
+        Matrix<ElemType>& multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd);
 
         void addRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
 
