@@ -25,25 +25,26 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAssignmentOverload", &MatrixTestFixture::testAssignmentOverload));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testScale", &MatrixTestFixture::testScale));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testPower", &MatrixTestFixture::testPower));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAddRange", &MatrixTestFixture::testAddRange));
 
     return suite;
 }
 
 void MatrixTestFixture::testAssignmentOverload()
 {
-    *(this->testMatrix2) = *(this->testMatrix1); // testMatrix1 has less columns and rows than testMatrix2
+    *(this->testMatrix2) = *(this->testMatrix1); // testMatrix1 has less columns and rows than testMatrix2.
     for (unsigned row = 0U; row < 5U; row++)
         for (unsigned col = 0U; col < 5U; col++)
             CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == 1);
 
-    *(this->testMatrix1) = *(this->testMatrix2); // testMatrix2 has more rows and columns than testMatrix1
+    *(this->testMatrix1) = *(this->testMatrix2); // testMatrix2 has more rows and columns than testMatrix1.
     CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix2));
 
     Matrix<int> matrix1(5, 5, 1);
-    matrix1 = *(this->testMatrix3); // testMatrix3 has more columns and the same number of rows as testMatrix1
+    matrix1 = *(this->testMatrix3); // testMatrix3 has more columns and the same number of rows as testMatrix1.
     CPPUNIT_ASSERT(matrix1 == *(this->testMatrix3));
 
-    *(this->testMatrix2) = *(this->testMatrix7); // testMatrix7 has more rows and the same number of columns as testMatrix2
+    *(this->testMatrix2) = *(this->testMatrix7); // testMatrix7 has more rows and the same number of columns as testMatrix2.
     CPPUNIT_ASSERT(*(this->testMatrix2) == *(this->testMatrix7));
 }
 
@@ -66,6 +67,22 @@ void MatrixTestFixture::setUp()
     for (unsigned row = 0U; row < 7U; row++)
         for (unsigned col = 0U; col < 5U; col++)
             (*(this->testMatrix6))[row][col] = temp2[row];
+
+    this->testMatrix11 = std::make_shared< Matrix<int> >(5, 5, 3);
+
+    std::vector<int> temp3 {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+    this->testMatrix8 = std::make_shared< Matrix<int> >(10, 10);
+    for (unsigned row = 0U; row < 10U; row++)
+        for (unsigned col = 0U; col < 10U; col++)
+            (*(this->testMatrix8))[row][col] = temp3[col];
+
+    this->testMatrix9 = std::make_shared< Matrix<double> >(4, 4, 3.141592653);
+
+    this->testMatrix10 = std::make_shared< Matrix<double> >(7, 5);
+    std::vector<double> temp4 {-1e-5, -2e-5, -3e-5, -4e-5, -5e-5, -6e-5, -7e-5};
+    for (unsigned row = 0U; row < 7U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+        (*(this->testMatrix10))[row][col] = temp4[row];
 }
 
 void MatrixTestFixture::testScale()
@@ -103,7 +120,7 @@ void MatrixTestFixture::testScale()
 
 void MatrixTestFixture::testPower()
 {
-    this->testMatrix1->power(2.00);
+    this->testMatrix1->power(2.00); // matrix^2
     CPPUNIT_ASSERT(this->testMatrix1->allElementsAre(1)); 
 
     this->testMatrix2->power(0.5); // you can even do square roots!
@@ -112,6 +129,50 @@ void MatrixTestFixture::testPower()
         for (unsigned col = 0U; col < 10U; col++)
             CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == temp[col]);
 
-    this->testMatrix3->power(3.00);
-    CPPUNIT_ASSERT(this->testMatrix3->allElementsAre(3.00));
+    this->testMatrix3->power(3.00); // matrix^3
+    CPPUNIT_ASSERT(this->testMatrix3->allElementsAre(8));
+
+    this->testMatrix4->power(3.141592653); // crazy fractional exponents
+    CPPUNIT_ASSERT(this->testMatrix4->allElementsAre(36.462159561085));
+
+    this->testMatrix5->power(1.00); // matrix^1 should equal matrix (itself without modifications).
+    CPPUNIT_ASSERT(this->testMatrix5->allElementsAre(2.71812));
+
+    this->testMatrix6->power(0.00); // matrix^0 should yield a matrix of all 1's.
+    CPPUNIT_ASSERT(this->testMatrix6->allElementsAre(1.00));
+}
+
+void MatrixTestFixture::testAddRange()
+{
+    this->testMatrix1->addRange(*(this->testMatrix11), 0, 2); // Add a valid row range of two matrices.
+    for (unsigned row = 0U; row < 5U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            if (row <= 2U)
+                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 4);
+            else
+                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 1);
+
+    this->testMatrix4->addRange(*(this->testMatrix9), 0, 0); // Try adding only a single row of each matrix together.
+    for (unsigned col = 0U; col < 4U; col++)
+        CPPUNIT_ASSERT(isCloseEnough(6.283185306, (*(this->testMatrix4))[0][col], 0.000000001)); 
+
+    this->testMatrix2->addRange(*(this->testMatrix8), 0, 9); // Add two entire matrices.
+    CPPUNIT_ASSERT(this->testMatrix2->allElementsAre(10));
+
+    this->testMatrix6->addRange(*(this->testMatrix10), 0, 6); // "
+    CPPUNIT_ASSERT(this->testMatrix6->allElementsAre(0.00));
+
+    this->testMatrix11->addRange(*(this->testMatrix1), 4, 5); // Try an out of range row end index. Nothing should happen.
+    CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
+
+    this->testMatrix6->addRange(*(this->testMatrix9), 0, 2); // Try adding two matrices with an unequal number of columns. Expect nothing to happen.
+    for (unsigned row = 0U; row < 7U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            CPPUNIT_ASSERT(isCloseEnough(static_cast<double>(row + 1) * 1e-5, (*(this->testMatrix6))[row][col], 1e-8));
+
+    this->testMatrix11->addRange(*(this->testMatrix1), 3, 2); // Try specifying a row start index greater than the row end index. Nothing should happen.
+    CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
+
+    this->testMatrix11->addRange(*(this->testMatrix1), 5, 2); // Try specifying an out of range row start index. Nothing should happen.
+    CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
 }

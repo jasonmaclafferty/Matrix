@@ -44,16 +44,18 @@ class MatrixTestFixture : public CppUnit::TestFixture
 
         std::shared_ptr< Matrix<int> > testMatrix7;
 
+        std::shared_ptr< Matrix<int> > testMatrix8;
+
+        std::shared_ptr< Matrix<double> > testMatrix9;
+
+        std::shared_ptr< Matrix<double> > testMatrix10;
+
+        std::shared_ptr< Matrix<int> > testMatrix11;
+
     public:
         void testPower();
 
         void setUp();
-
-        void testMultiply();
-
-        void testAdd();
-
-        void testSubtract();
 
         void testMultiplyRange();
 
