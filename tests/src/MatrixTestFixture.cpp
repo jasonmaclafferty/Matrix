@@ -144,14 +144,6 @@ void MatrixTestFixture::testPower()
 
 void MatrixTestFixture::testAddRange()
 {
-    this->testMatrix1->addRange(*(this->testMatrix11), 0, 2); // Add a valid row range of two matrices.
-    for (unsigned row = 0U; row < 5U; row++)
-        for (unsigned col = 0U; col < 5U; col++)
-            if (row <= 2U)
-                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 4);
-            else
-                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 1);
-
     this->testMatrix4->addRange(*(this->testMatrix9), 0, 0); // Try adding only a single row of each matrix together.
     for (unsigned col = 0U; col < 4U; col++)
         CPPUNIT_ASSERT(isCloseEnough(6.283185306, (*(this->testMatrix4))[0][col], 0.000000001)); 
@@ -165,14 +157,28 @@ void MatrixTestFixture::testAddRange()
     this->testMatrix11->addRange(*(this->testMatrix1), 4, 5); // Try an out of range row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
 
-    this->testMatrix6->addRange(*(this->testMatrix9), 0, 2); // Try adding two matrices with an unequal number of columns. Expect nothing to happen.
-    for (unsigned row = 0U; row < 7U; row++)
-        for (unsigned col = 0U; col < 5U; col++)
-            CPPUNIT_ASSERT(isCloseEnough(static_cast<double>(row + 1) * 1e-5, (*(this->testMatrix6))[row][col], 1e-8));
+    this->testMatrix6->addRange(*(this->testMatrix9), 0, 2); // Try adding two matrices with unequal dimensions. Expect nothing to happen.
+    CPPUNIT_ASSERT(this->testMatrix6->allElementsAre(0.00)); 
 
     this->testMatrix11->addRange(*(this->testMatrix1), 3, 2); // Try specifying a row start index greater than the row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
 
     this->testMatrix11->addRange(*(this->testMatrix1), 5, 2); // Try specifying an out of range row start index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
+
+    this->testMatrix7->addRange(*(this->testMatrix8), 0, 10); // Try adding matrices with a different number of rows and the same number of columns. 
+                                                              // Expect nothing to happen.
+    CPPUNIT_ASSERT(this->testMatrix7->allElementsAre(3));
+
+    this->testMatrix1->addRange(*(this->testMatrix3), 0, 4); // Try adding two matrices with the same number of rows and a different number of columns. 
+                                                             // Expect nothing to happen.
+    CPPUNIT_ASSERT(this->testMatrix1->allElementsAre(1));
+
+    this->testMatrix1->addRange(*(this->testMatrix11), 0, 2); // Add a valid row range of two matrices.
+    for (unsigned row = 0U; row < 5U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            if (row <= 2U)
+                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 4);
+            else
+                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 1);
 }
