@@ -65,10 +65,17 @@ void Matrix<ElemType>::addRange(const Matrix<ElemType>& matrix2, unsigned rowSta
                     (*this)[row][col] += matrix2[row][col];   
 }
 
+// Subtracts the specified rows of the matrices referred to by "this" and "matrix2" and stores the result in the "this" matrix.
+// "rowStart" and "rowEnd" are zero-based indices for the desired rows of both matrices to be added.
+// The matrices referred to by "this" and "matrix2" must have the same dimensions or the member function will do nothing.
 template <typename ElemType>
 void Matrix<ElemType>::subtractRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd)
 {
-
+    if (this->numOfColumns == matrix2.getNumOfColumns() && this->numOfRows == matrix2.getNumOfRows())
+        if (rowEnd < this->numOfRows)
+            for (unsigned row = rowStart; row <= rowEnd; row++)
+                for (unsigned col = 0U; col < this->numOfColumns; col++)
+                    (*this)[row][col] -= matrix2[row][col];   
 }
 
 template <typename ElemType>
