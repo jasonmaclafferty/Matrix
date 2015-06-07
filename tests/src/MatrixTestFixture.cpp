@@ -186,41 +186,53 @@ void MatrixTestFixture::testAddRange()
 
 void MatrixTestFixture::testSubtractRange()
 {
-    this->testMatrix4->SubtractRange(*(this->testMatrix9), 0, 0); // Try subtracting only a single row of each matrix together.
-    for (unsigned col = 0U; col < 4U; col++)
-        CPPUNIT_ASSERT(isCloseEnough(6.283185306, (*(this->testMatrix4))[0][col], 0.000000001)); 
+    this->testMatrix4->subtractRange(*(this->testMatrix9), 0, 0); // Try subtracting only a single row of each matrix together.
+    for (unsigned row = 0U; row < 4U; row++)
+        for (unsigned col = 0U; col < 4U; col++)
+            if (row == 0)
+                CPPUNIT_ASSERT(isCloseEnough(0.00, (*(this->testMatrix4))[row][col], 0.000000001));
+            else
+                CPPUNIT_ASSERT(isCloseEnough(3.141592653, (*this->testMatrix4)[row][col], 0.000000001));
 
-    this->testMatrix2->SubtractRange(*(this->testMatrix8), 0, 9); // Subtract two entire matrices.
-    CPPUNIT_ASSERT(this->testMatrix2->allElementsAre(10));
+    this->testMatrix8->subtractRange(*(this->testMatrix2), 0, 9); // Subtract two entire matrices.
+    std::vector<int> temp {8, 6, 4, 2, 0, -2, -4, -6, -8, -10};
+    for (unsigned row = 0U; row <= 9; row++)
+        for (unsigned col = 0U; col <= 9; col++)
+            CPPUNIT_ASSERT((*(this->testMatrix8))[row][col] == temp[col]);
 
-    this->testMatrix6->SubtractRange(*(this->testMatrix10), 0, 6); // "
-    CPPUNIT_ASSERT(this->testMatrix6->allElementsAre(0.00));
+    this->testMatrix6->subtractRange(*(this->testMatrix10), 0, 6); // "
+    std::vector<double> temp2 {1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5};
+    for (unsigned row = 0U; row <= 6; row++)
+        for (unsigned col = 0U; col <= 4; col++)
+            CPPUNIT_ASSERT(isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8));
 
-    this->testMatrix11->SubtractRange(*(this->testMatrix1), 4, 5); // Try an out of range row end index. Nothing should happen.
+    this->testMatrix11->subtractRange(*(this->testMatrix1), 4, 5); // Try an out of range row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
 
-    this->testMatrix6->SubtractRange(*(this->testMatrix9), 0, 2); // Try subtracting two matrices with unequal dimensions. Expect nothing to happen.
-    CPPUNIT_ASSERT(this->testMatrix6->allElementsAre(0.00)); 
+    this->testMatrix6->subtractRange(*(this->testMatrix9), 0, 2); // Try subtracting two matrices with unequal dimensions. Expect nothing to happen.
+    for (unsigned row = 0U; row <= 6; row++)
+        for (unsigned col = 0U; col <= 4; col++)
+            CPPUNIT_ASSERT(isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8)); 
 
-    this->testMatrix11->SubtractRange(*(this->testMatrix1), 3, 2); // Try specifying a row start index greater than the row end index. Nothing should happen.
+    this->testMatrix11->subtractRange(*(this->testMatrix1), 3, 2); // Try specifying a row start index greater than the row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
 
-    this->testMatrix11->SubtractRange(*(this->testMatrix1), 5, 2); // Try specifying an out of range row start index. Nothing should happen.
+    this->testMatrix11->subtractRange(*(this->testMatrix1), 5, 2); // Try specifying an out of range row start index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
 
-    this->testMatrix7->SubtractRange(*(this->testMatrix8), 0, 10); // Try subtracting matrices with a different number of rows and the same number of columns. 
+    this->testMatrix7->subtractRange(*(this->testMatrix8), 0, 10); // Try subtracting matrices with a different number of rows and the same number of columns. 
                                                               // Expect nothing to happen.
     CPPUNIT_ASSERT(this->testMatrix7->allElementsAre(3));
 
-    this->testMatrix1->SubtractRange(*(this->testMatrix3), 0, 4); // Try subtracting two matrices with the same number of rows and a different number of columns. 
+    this->testMatrix1->subtractRange(*(this->testMatrix3), 0, 4); // Try subtracting two matrices with the same number of rows and a different number of columns. 
                                                              // Expect nothing to happen.
     CPPUNIT_ASSERT(this->testMatrix1->allElementsAre(1));
 
-    this->testMatrix1->SubtractRange(*(this->testMatrix11), 0, 2); // Subtract a valid row range of two matrices.
+    this->testMatrix1->subtractRange(*(this->testMatrix11), 0, 2); // Subtract a valid row range of two matrices.
     for (unsigned row = 0U; row < 5U; row++)
         for (unsigned col = 0U; col < 5U; col++)
             if (row <= 2U)
-                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 4);
+                CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == -2);
             else
                 CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 1);
 }

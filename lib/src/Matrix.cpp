@@ -37,7 +37,7 @@ void Matrix<ElemType>::add(const Matrix<ElemType>& matrix2)
 template <typename ElemType>
 void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2)
 {
-
+    this->subtractRange(matrix2, 0, this->numOfRows - 1);
 }
 
 template <typename ElemType>
