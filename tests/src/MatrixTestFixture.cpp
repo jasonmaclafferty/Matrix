@@ -27,6 +27,7 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testPower", &MatrixTestFixture::testPower));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAddRange", &MatrixTestFixture::testAddRange));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testSubtractRange", &MatrixTestFixture::testSubtractRange));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testMultiplyRange", &MatrixTestFixture::testMultiplyRange));
 
     return suite;
 }
@@ -235,4 +236,64 @@ void MatrixTestFixture::testSubtractRange()
                 CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == -2);
             else
                 CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 1);
+}
+
+void MatrixTestFixture::testMultiplyRange()
+{
+    Matrix<int> testOutput1(10, 10);
+    std::vector<int> temp {45, 90, 135, 180, 225, 270, 315, 360, 405, 450};
+    this->testMatrix8->multiplyRange(0, 9, *(this->testMatrix2), 0, 9, testOutput1); // Multiply two entire matrices.
+    for (unsigned row = 0; row < 10U; row++)
+        for (unsigned col = 0; col < 10U; col++)
+            CPPUNIT_ASSERT(testOutput1[row][col] == temp[col]);
+
+    Matrix<int> testOutput2(5, 7);
+    this->testMatrix1->multiplyRange(1, 3, *(this->testMatrix3), 1, 3, testOutput2); // Multiply a part of two matrices.
+    for (unsigned row = 0; row < 5U; row++)
+        for (unsigned col = 0; col < 7U; col++)
+            if (row >= 1 && row <= 3 && col >= 1 && col <= 3)
+                CPPUNIT_ASSERT(testOutput2[row][col] == 10);
+            else
+                CPPUNIT_ASSERT(testOutput2[row][col] == 0);
+
+    testOutput2.multiplyRange(9, 3, testOutput2, 9, 3, testOutput2); // Try an invalid start index. Nothing should happen.
+    for (unsigned row = 0; row < 5U; row++)
+        for (unsigned col = 0; col < 7U; col++)
+            if (row >= 1 && row <= 3 && col >= 1 && col <= 3)
+                CPPUNIT_ASSERT(testOutput2[row][col] == 10);
+            else
+                CPPUNIT_ASSERT(testOutput2[row][col] == 0);
+
+    testOutput2.multiplyRange(0, 8, testOutput2, 0, 8, testOutput2); // Try an invalid end index. Nothing should happen.
+    for (unsigned row = 0; row < 5U; row++)
+        for (unsigned col = 0; col < 7U; col++)
+            if (row >= 1 && row <= 3 && col >= 1 && col <= 3)
+                CPPUNIT_ASSERT(testOutput2[row][col] == 10);
+            else
+                CPPUNIT_ASSERT(testOutput2[row][col] == 0);
+
+    Matrix<double> testOutput3(7, 4);
+    this->testMatrix6->multiplyRange(4, 6, *(this->testMatrix5), 0, 2, testOutput3); // Multiply two different ranges of two different matrices.
+    for (unsigned row = 0; row < 7U; row++)
+    {
+        for (unsigned col = 0; col < 4U; col++)
+        {
+            if (row >= 4 && row <= 6 && col <= 2)
+            {
+                switch (row)
+                {
+                    case 4:
+                        CPPUNIT_ASSERT(isCloseEnough(0.00067953, testOutput3[row][col], 0.0000000001));
+                    case 5:
+                        CPPUNIT_ASSERT(isCloseEnough(0.000815436, testOutput3[row][col], 0.000000001));
+                    case 6:
+                        CPPUNIT_ASSERT(isCloseEnough(0.000951342, testOutput3[row][col], 0.0000000001));
+                }
+            }
+            else
+            {
+                CPPUNIT_ASSERT(isCloseEnough(0.00, testOutput3[row][col], 0.000000001));
+            }
+        }
+    }
 }

@@ -29,27 +29,53 @@ void Matrix<ElemType>::power(double exponent)
 }
 
 template <typename ElemType>
-void Matrix<ElemType>::add(const Matrix<ElemType>& matrix2)
+void Matrix<ElemType>::add(const Matrix<ElemType>& matrix2){ this->addRange(matrix2, 0, this->numOfRows - 1); }
+
+template <typename ElemType>
+void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2){ this->subtractRange(matrix2, 0, this->numOfRows - 1); }
+
+// Multiplies the specified row/column ranges of two matrices, "this" and "matrix2", and stores the result in the matrix refered to by "out".
+// The member function will do nothing if given row/column indices which are out of range or the matrix "out" has the incorrect dimensions.
+// indices specified by "thisRowStart", "thisRowEnd", "matrix2ColStart", and "matrix2ColEnd" are zero-based.
+template <typename ElemType>
+void Matrix<ElemType>::multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, 
+                                     unsigned matrix2ColStart, unsigned matrix2ColEnd, Matrix<ElemType>& out)
 {
-    this->addRange(matrix2, 0, this->numOfRows - 1);
+    if (out.getNumOfRows() == this->numOfRows && out.getNumOfColumns() == matrix2.getNumOfColumns())
+    {
+        if (thisRowEnd < this->numOfRows && matrix2ColEnd < matrix2.getNumOfColumns())
+        {
+            if (this->numOfColumns == matrix2.getNumOfRows())
+            {
+                for (unsigned outRow = thisRowStart; outRow <= thisRowEnd; outRow++)
+                {
+                    for (unsigned outCol = matrix2ColStart; outCol <= matrix2ColEnd; outCol++)
+                    {
+                        for (unsigned productCtr = 0; productCtr < this->numOfColumns; productCtr++)
+                        {
+                            if (productCtr == 0)
+                            {
+                                out[outRow][outCol] = (*this)[outRow][productCtr] * matrix2[productCtr][outCol];
+                            }
+                            else
+                            {
+                                out[outRow][outCol] += (*this)[outRow][productCtr] * matrix2[productCtr][outCol];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 template <typename ElemType>
-void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2)
+std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::multiply(const Matrix<ElemType>& matrix2)
 {
-    this->subtractRange(matrix2, 0, this->numOfRows - 1);
-}
+    std::shared_ptr< Matrix<ElemType> > retval = std::make_shared< Matrix<ElemType> >(this->numOfRows, matrix2.getNumOfColumns());
+    this->multiplyRange(0, this->numOfRows - 1U, matrix2, 0, matrix2.getNumOfColumns() - 1U, *retval);
 
-template <typename ElemType>
-Matrix<ElemType>& multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd)
-{
-
-}
-
-template <typename ElemType>
-Matrix<ElemType>& multiply(const Matrix<ElemType>& matrix2)
-{
-
+    return retval;
 }
 
 // Adds the specified rows of the matrices referred to by "this" and "matrix2" and stores the result in the "this" matrix.

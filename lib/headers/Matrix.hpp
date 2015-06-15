@@ -33,13 +33,14 @@ class Matrix : public MatrixBase<ElemType>
 
         void power(double exponent);
 
-        Matrix<ElemType>& multiply(const Matrix<ElemType>& matrix2);
+        std::shared_ptr< Matrix<ElemType> > multiply(const Matrix<ElemType>& matrix2);
 
         void add(const Matrix<ElemType>& matrix2);
 
         void subtract(const Matrix<ElemType>& matrix2);
 
-        Matrix<ElemType>& multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, unsigned matrix2ColStart, unsigned matrix2ColEnd);
+        void multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, 
+                           unsigned matrix2ColStart, unsigned matrix2ColEnd, Matrix<ElemType>& out);
 
         void addRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
 
@@ -47,11 +48,11 @@ class Matrix : public MatrixBase<ElemType>
         
         void scale(ElemType scaleFactor);
 
-        Matrix<ElemType>& operator+(const Matrix<ElemType>& matrix2);
+        std::shared_ptr< Matrix<ElemType> > operator+(const Matrix<ElemType>& matrix2);
 
-        Matrix<ElemType>& operator-(const Matrix<ElemType>& matrix2);
+        std::shared_ptr< Matrix<ElemType> > operator-(const Matrix<ElemType>& matrix2);
 
-        Matrix<ElemType>& operator*(const Matrix<ElemType>& matrix2);
+        std::shared_ptr< Matrix<ElemType> > operator*(const Matrix<ElemType>& matrix2);
 
         Matrix<ElemType>& operator=(Matrix<ElemType>& matrix2);
 
