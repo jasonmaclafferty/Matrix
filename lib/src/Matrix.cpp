@@ -54,13 +54,9 @@ void Matrix<ElemType>::multiplyRange(unsigned thisRowStart, unsigned thisRowEnd,
                         for (unsigned productCtr = 0; productCtr < this->numOfColumns; productCtr++)
                         {
                             if (productCtr == 0)
-                            {
                                 out[outRow][outCol] = (*this)[outRow][productCtr] * matrix2[productCtr][outCol];
-                            }
                             else
-                            {
                                 out[outRow][outCol] += (*this)[outRow][productCtr] * matrix2[productCtr][outCol];
-                            }
                         }
                     }
                 }

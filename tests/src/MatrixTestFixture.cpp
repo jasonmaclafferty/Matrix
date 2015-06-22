@@ -284,10 +284,13 @@ void MatrixTestFixture::testMultiplyRange()
                 {
                     case 4:
                         CPPUNIT_ASSERT(isCloseEnough(0.00067953, testOutput3[row][col], 0.0000000001));
+                        break;
                     case 5:
-                        CPPUNIT_ASSERT(isCloseEnough(0.000815436, testOutput3[row][col], 0.000000001));
+                        CPPUNIT_ASSERT(isCloseEnough(0.000815436, testOutput3[row][col], 0.0000000001));
+                        break;
                     case 6:
                         CPPUNIT_ASSERT(isCloseEnough(0.000951342, testOutput3[row][col], 0.0000000001));
+                        break;
                 }
             }
             else
