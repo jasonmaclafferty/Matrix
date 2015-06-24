@@ -247,6 +247,13 @@ void MatrixTestFixture::testMultiplyRange()
         for (unsigned col = 0; col < 10U; col++)
             CPPUNIT_ASSERT(testOutput1[row][col] == temp[col]);
 
+    Matrix<int> testOutput11(3, 3);
+    Matrix<int> testInput11(3, 3, 2);
+    Matrix<int> testInput11b(3, 3, 3);                                      /*                 "  another test             */
+    testInput11.multiplyRange(0, 2, testInput11b, 0, 2, testOutput11);
+    CPPUNIT_ASSERT(testOutput11.allElementsAre(18));
+
+
     Matrix<int> testOutput2(5, 7);
     this->testMatrix1->multiplyRange(1, 3, *(this->testMatrix3), 1, 3, testOutput2); // Multiply a part of two matrices.
     for (unsigned row = 0; row < 5U; row++)
@@ -255,6 +262,14 @@ void MatrixTestFixture::testMultiplyRange()
                 CPPUNIT_ASSERT(testOutput2[row][col] == 10);
             else
                 CPPUNIT_ASSERT(testOutput2[row][col] == 0);
+
+    Matrix<int> testOutput12(3, 3);                                         // " another test
+    testInput11.multiplyRange(2, 2, testInput11b, 0, 0, testOutput12);
+    CPPUNIT_ASSERT(testOutput12[2][0] == 18);
+    for (unsigned row = 0U; row <= 2; row++)
+        for (unsigned col = 0U; col <= 2; col++)
+            if (row != 2 && col != 0)
+                CPPUNIT_ASSERT(testOutput12[row][col] == 0);
 
     testOutput2.multiplyRange(9, 3, testOutput2, 9, 3, testOutput2); // Try an invalid start index. Nothing should happen.
     for (unsigned row = 0; row < 5U; row++)
