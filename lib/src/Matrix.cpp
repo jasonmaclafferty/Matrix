@@ -29,10 +29,10 @@ void Matrix<ElemType>::power(double exponent)
 }
 
 template <typename ElemType>
-void Matrix<ElemType>::add(const Matrix<ElemType>& matrix2){ this->addRange(matrix2, 0, this->numOfRows - 1); }
+void Matrix<ElemType>::add(const Matrix<ElemType>& matrix2){ this->addRange(matrix2, 0, this->numOfRows - 1U); }
 
 template <typename ElemType>
-void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2){ this->subtractRange(matrix2, 0, this->numOfRows - 1); }
+void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2){ this->subtractRange(matrix2, 0, this->numOfRows - 1U); }
 
 // Multiplies the specified row/column ranges of two matrices, "this" and "matrix2", and stores the result in the matrix refered to by "out".
 // The member function will do nothing if given row/column indices which are out of range or the matrix "out" has the incorrect dimensions.
@@ -116,6 +116,51 @@ Matrix<ElemType>& Matrix<ElemType>::operator=(Matrix<ElemType>& matrix2)
     thisTemp                             =   matrix2Temp;
 
     return dynamic_cast< Matrix<ElemType>& >(thisTemp);
+}
+
+// Overload operator+ to add to matrices ("this" and "matrix2"), store the result in a heap allocated matrix, and return the result.
+// A matrix of all zero's with the dimensions the same as "matrix2" will be returned if the dimensions of "this" and "matrix2" do not match.
+template <typename ElemType>
+std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator+(const Matrix<ElemType>& matrix2)
+{
+    unsigned matrix2NumOfRows = matrix2.getNumOfRows(), matrix2NumOfColumns = matrix2.getNumOfColumns();
+    std::shared_ptr< Matrix<ElemType> > retval = std::make_shared< Matrix<ElemType> >(matrix2NumOfRows, matrix2NumOfColumns);
+
+    if (this->numOfRows == matrix2NumOfRows && this->numOfColumns == matrix2NumOfColumns)
+        for (unsigned row = 0U; row < this->numOfRows; row++)
+            for (unsigned col = 0U; col < this->numOfColumns; col++)
+                (*retval)[row][col] = (*this)[row][col] + matrix2[row][col];
+
+    return retval;
+}
+
+// Overload operator- to subtract to matrices ("this" and "matrix2"), store the result in a heap allocated matrix, and return the result.
+// A matrix of all zero's with the dimensions the same as "matrix2" will be returned if the dimensions of "this" and "matrix2" do not match.
+template <typename ElemType>
+std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator-(const Matrix<ElemType>& matrix2)
+{
+    unsigned matrix2NumOfRows = matrix2.getNumOfRows(), matrix2NumOfColumns = matrix2.getNumOfColumns();
+    std::shared_ptr< Matrix<ElemType> > retval = std::make_shared< Matrix<ElemType> >(matrix2NumOfRows, matrix2NumOfColumns);
+
+    if (this->numOfRows == matrix2NumOfRows && this->numOfColumns == matrix2NumOfColumns)
+        for (unsigned row = 0U; row < this->numOfRows; row++)
+            for (unsigned col = 0U; col < this->numOfColumns; col++)
+                (*retval)[row][col] = (*this)[row][col] - matrix2[row][col];
+
+    return retval;
+
+}
+
+// Overload operator* to multiply two matricies ("this" and "matrix2") and return the result.
+// A zero matrix of dimensions thisNumOfRows x matrix2NumOfColumns will be returned if the inner dimensions of "this" and "matrix2" do not match.
+template <typename ElemType>
+std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator*(const Matrix<ElemType>& matrix2)
+{
+    unsigned matrix2NumOfColumns = matrix2.getNumOfColumns();
+    auto retval = std::make_shared< Matrix<ElemType> >(this->numOfRows, matrix2.getNumOfColumns());
+    this->multiplyRange(0, this->numOfRows - 1U, matrix2, 0, matrix2NumOfColumns - 1U, *retval);
+
+    return retval;
 }
 
 template class Matrix<int>;

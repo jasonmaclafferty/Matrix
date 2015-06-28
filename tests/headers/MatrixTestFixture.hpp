@@ -68,4 +68,8 @@ class MatrixTestFixture : public CppUnit::TestFixture
         void testAssignmentOverload();
 
         static CppUnit::TestSuite* suite();
+
+        void testAdditionOperatorOverload();
+
+        void testSubtractionOperatorOverload();
 };

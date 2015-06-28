@@ -28,6 +28,8 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAddRange", &MatrixTestFixture::testAddRange));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testSubtractRange", &MatrixTestFixture::testSubtractRange));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testMultiplyRange", &MatrixTestFixture::testMultiplyRange));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAdditionOperatorOverload", &MatrixTestFixture::testAdditionOperatorOverload));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testSubtractionOperatorOverload", &MatrixTestFixture::testSubtractionOperatorOverload));
 
     return suite;
 }
@@ -314,4 +316,43 @@ void MatrixTestFixture::testMultiplyRange()
             }
         }
     }
+}
+
+void MatrixTestFixture::testAdditionOperatorOverload()
+{
+   auto test1Output = *(this->testMatrix4) + *(this->testMatrix9);
+   CPPUNIT_ASSERT(test1Output->allElementsAre(6.283185306));
+
+   auto test2Output = *(this->testMatrix4) + *(this->testMatrix5);
+   CPPUNIT_ASSERT(test2Output->allElementsAre(0.00)); // the output should be a zero matrix because we  tried to add matrices of different dimensions.
+
+   auto test3Output = *(this->testMatrix1) + *(this->testMatrix11);
+   CPPUNIT_ASSERT(test3Output->allElementsAre(4));
+
+   auto test4Output = *(this->testMatrix6) + *(this->testMatrix10);
+   CPPUNIT_ASSERT(test4Output->allElementsAre(0.0));
+
+   auto test5Output = *(this->testMatrix2) + *(this->testMatrix8);
+   CPPUNIT_ASSERT(test5Output->allElementsAre(10));
+}
+
+void MatrixTestFixture::testSubtractionOperatorOverload()
+{
+    auto test1Output = *(this->testMatrix4) - *(this->testMatrix9);
+    CPPUNIT_ASSERT(test1Output->allElementsAre(0.0));
+
+    auto test2Output = *(this->testMatrix1) - *(this->testMatrix11);
+    CPPUNIT_ASSERT(test2Output->allElementsAre(-2));
+
+    auto test3Output = *(this->testMatrix5) - *(this->testMatrix6);
+    CPPUNIT_ASSERT(test3Output->allElementsAre(0.0)); // We should receive a zero matrix as output because we tried to subtract two matrices with different dimensions.
+
+    std::vector<double> temp { 2e-5, 4e-5, 6e-5, 8e-5, 1e-4, 1.2e-4, 1.4e-4 };
+    auto test4Output = *(this->testMatrix6) - *(this->testMatrix10);
+    for (unsigned row = 0U; row < 7U; row++)
+        for (unsigned col = 0U; col < 5U; col++)
+            CPPUNIT_ASSERT((*test4Output)[row][col] == temp[row]);
+
+    auto test5Output = *(this->testMatrix11) - *(this->testMatrix1);
+    CPPUNIT_ASSERT(test5Output->allElementsAre(2));
 }
