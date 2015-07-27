@@ -20,12 +20,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef _MATRIX_HPP_
 #define _MATRIX_HPP_
 
-#include <cmath>
+#include <memory>
 #include <MatrixBase.hpp>
 
 template <typename ElemType>
 class Matrix : public MatrixBase<ElemType>
 {
+    protected:
+        void parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const Matrix<ElemType>&, unsigned, unsigned), 
+                                      const Matrix<ElemType>& matrix2, unsigned numOfThreads);
+
     public:
         Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal) : MatrixBase<ElemType>(numberOfRows, numberOfColumns, elemInitVal) {}
         
@@ -46,6 +50,10 @@ class Matrix : public MatrixBase<ElemType>
 
         void subtractRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
         
+        void parallelAdd(const Matrix<ElemType>& matrix2, unsigned numOfThreads);
+
+        void parallelSubtract(const Matrix<ElemType>& matrix2, unsigned numOfThreads);
+
         void scale(ElemType scaleFactor);
 
         std::shared_ptr< Matrix<ElemType> > operator+(const Matrix<ElemType>& matrix2);

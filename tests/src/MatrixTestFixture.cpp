@@ -18,6 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <MatrixTestFixture.hpp>
+#include <iostream>
 
 CppUnit::TestSuite* MatrixTestFixture::suite()
 {
@@ -30,6 +31,7 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testMultiplyRange", &MatrixTestFixture::testMultiplyRange));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAdditionOperatorOverload", &MatrixTestFixture::testAdditionOperatorOverload));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testSubtractionOperatorOverload", &MatrixTestFixture::testSubtractionOperatorOverload));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelAdd", &MatrixTestFixture::testParallelAdd));
 
     return suite;
 }
@@ -87,6 +89,9 @@ void MatrixTestFixture::setUp()
     for (unsigned row = 0U; row < 7U; row++)
         for (unsigned col = 0U; col < 5U; col++)
         (*(this->testMatrix10))[row][col] = temp4[row];
+
+    this->testMatrix12  =   std::make_shared< Matrix<int> >(1000, 1000, 1);
+    this->testMatrix13  =   std::make_shared< Matrix<int> >(1000, 1000, 1);
 }
 
 void MatrixTestFixture::testScale()
@@ -355,4 +360,16 @@ void MatrixTestFixture::testSubtractionOperatorOverload()
 
     auto test5Output = *(this->testMatrix11) - *(this->testMatrix1);
     CPPUNIT_ASSERT(test5Output->allElementsAre(2));
+}
+
+void MatrixTestFixture::testParallelAdd()
+{
+    this->testMatrix12->parallelAdd(*(this->testMatrix13), 2);
+    CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(2));
+
+    this->testMatrix12->parallelAdd(*(this->testMatrix13), 3);
+    CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(3));
+
+    this->testMatrix12->parallelAdd(*(this->testMatrix13), 4);
+    CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(4));
 }

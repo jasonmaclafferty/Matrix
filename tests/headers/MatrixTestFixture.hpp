@@ -52,6 +52,10 @@ class MatrixTestFixture : public CppUnit::TestFixture
 
         std::shared_ptr< Matrix<int> > testMatrix11;
 
+        std::shared_ptr< Matrix<int> > testMatrix12;
+
+        std::shared_ptr< Matrix<int> > testMatrix13;
+
     public:
         void testPower();
 
@@ -72,4 +76,6 @@ class MatrixTestFixture : public CppUnit::TestFixture
         void testAdditionOperatorOverload();
 
         void testSubtractionOperatorOverload();
+
+        void testParallelAdd();
 };

@@ -17,6 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <thread>
+#include <cmath>
 #include <Matrix.hpp>
 
 // Raises each element of the matrix pointed to by "this" to the power given.
@@ -100,6 +102,7 @@ void Matrix<ElemType>::subtractRange(const Matrix<ElemType>& matrix2, unsigned r
                     (*this)[row][col] -= matrix2[row][col];   
 }
 
+// scales all the elements in the matrix "this" by a constant factor
 template <typename ElemType>
 void Matrix<ElemType>::scale(ElemType scaleFactor)
 {
@@ -108,6 +111,7 @@ void Matrix<ElemType>::scale(ElemType scaleFactor)
             (*this)[row][col] *= scaleFactor;
 }
 
+// overload the assignment operator
 template <typename ElemType>
 Matrix<ElemType>& Matrix<ElemType>::operator=(Matrix<ElemType>& matrix2)
 {
@@ -151,7 +155,7 @@ std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator-(const Matrix<Ele
 
 }
 
-// Overload operator* to multiply two matricies ("this" and "matrix2") and return the result.
+// Overload operator* to multiply two matricies ("this" and "matrix2") and return a smart pointer to the result.
 // A zero matrix of dimensions thisNumOfRows x matrix2NumOfColumns will be returned if the inner dimensions of "this" and "matrix2" do not match.
 template <typename ElemType>
 std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator*(const Matrix<ElemType>& matrix2)
@@ -161,6 +165,68 @@ std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator*(const Matrix<Ele
     this->multiplyRange(0, this->numOfRows - 1U, matrix2, 0, matrix2NumOfColumns - 1U, *retval);
 
     return retval;
+}
+
+// Parallel add matrix "this" and "matrix2" and store back in matrix "this" on the specified number of threads
+template <typename ElemType>
+void Matrix<ElemType>::parallelAdd(const Matrix<ElemType>& matrix2, unsigned numOfThreads)
+{
+    this->parallelAddSubtractHelper(&Matrix<ElemType>::addRange, matrix2, numOfThreads);
+}
+
+// Parallel subtract matrix "this" and "matrix2" and store the result back in matrix "this" on the specified number of threads
+template <typename ElemType>
+void Matrix<ElemType>::parallelSubtract(const Matrix<ElemType>& matrix2, unsigned numOfThreads)
+{
+    this->parallelAddSubtractHelper(&Matrix<ElemType>::subtractRange, matrix2, numOfThreads);
+}
+
+template <typename ElemType>
+void Matrix<ElemType>::parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const Matrix<ElemType>&, unsigned, unsigned), 
+                                                 const Matrix<ElemType>& matrix2, unsigned numOfThreads)
+{
+    unsigned matrix2NumOfRows       =   matrix2.getNumOfRows();
+    unsigned matrix2NumOfColumns    =   matrix2.getNumOfColumns();
+    
+    if (this->numOfRows == matrix2NumOfRows && this->numOfColumns == matrix2NumOfColumns)
+    {
+        std::vector<unsigned> rowsPerThread;
+        for (unsigned i = 0; i < numOfThreads; i++)
+            rowsPerThread.push_back(0);
+        for (unsigned& rowsPerThreadElem : rowsPerThread)
+            rowsPerThreadElem = this->numOfRows / numOfThreads; // divide the number of rows to do the arithmetic on by the number of threads doing work
+
+        unsigned numOfLeftOverRows  =   this->numOfRows % numOfThreads; // the number of rows from the matrices that do not evenly divide by the number of threads
+        bool done                   =   (numOfLeftOverRows != 0) ? false : true;
+        while (!done)
+        {
+            for (unsigned& elem : rowsPerThread)
+            {
+                if (numOfLeftOverRows > 0)
+                {
+                    elem++;
+                    numOfLeftOverRows--;
+                }
+                else
+                {
+                    done = true;
+                    break;
+                }
+            }
+        }
+
+        // spawn threads to do the arithmetic
+        unsigned rowStart = 0;
+        for (unsigned threadPos = 0; threadPos < numOfThreads - 1U; threadPos++)
+        {
+            std::thread currThread{func, this, matrix2, rowStart, rowStart + (rowsPerThread[threadPos] - 1U)};
+            rowStart += rowsPerThread[threadPos];
+            currThread.join();
+        }
+
+        // do part of the arithmetic on the main thread
+        (this->*func)(matrix2, rowStart, rowStart + (rowsPerThread[numOfThreads - 1U] - 1U));
+    }
 }
 
 template class Matrix<int>;
