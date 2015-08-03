@@ -190,42 +190,125 @@ void Matrix<ElemType>::parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(
     
     if (this->numOfRows == matrix2NumOfRows && this->numOfColumns == matrix2NumOfColumns)
     {
-        std::vector<unsigned> rowsPerThread;
-        for (unsigned i = 0; i < numOfThreads; i++)
-            rowsPerThread.push_back(0);
-        for (unsigned& rowsPerThreadElem : rowsPerThread)
-            rowsPerThreadElem = this->numOfRows / numOfThreads; // divide the number of rows to do the arithmetic on by the number of threads doing work
-
-        unsigned numOfLeftOverRows  =   this->numOfRows % numOfThreads; // the number of rows from the matrices that do not evenly divide by the number of threads
-        bool done                   =   (numOfLeftOverRows != 0) ? false : true;
-        while (!done)
+        if (numOfThreads > 1U)
         {
-            for (unsigned& elem : rowsPerThread)
+            std::vector<unsigned> rowsPerThread;
+            for (unsigned i = 0; i < numOfThreads; i++)
+                rowsPerThread.push_back(0);
+            for (unsigned& rowsPerThreadElem : rowsPerThread)
+                rowsPerThreadElem = this->numOfRows / numOfThreads; // divide the number of rows to do the arithmetic on by the number of threads doing work
+
+            unsigned numOfLeftOverRows  =   this->numOfRows % numOfThreads; // the number of rows from the matrices that do not evenly divide by the number of threads
+            bool done                   =   (numOfLeftOverRows != 0) ? false : true;
+            while (!done)
             {
-                if (numOfLeftOverRows > 0)
+                for (unsigned& elem : rowsPerThread)
                 {
-                    elem++;
-                    numOfLeftOverRows--;
-                }
-                else
-                {
-                    done = true;
-                    break;
+                    if (numOfLeftOverRows > 0)
+                    {
+                        elem++;
+                        numOfLeftOverRows--;
+                    }
+                    else
+                    {
+                        done = true;
+                        break;
+                    }
                 }
             }
-        }
 
-        // spawn threads to do the arithmetic
-        unsigned rowStart = 0;
-        for (unsigned threadPos = 0; threadPos < numOfThreads - 1U; threadPos++)
+            // spawn threads to do the arithmetic
+            unsigned rowStart = 0;
+            for (unsigned threadPos = 0; threadPos < numOfThreads - 1U; threadPos++)
+            {
+                std::thread currThread{func, this, matrix2, rowStart, rowStart + (rowsPerThread[threadPos] - 1U)};
+                rowStart += rowsPerThread[threadPos];
+                currThread.join();
+            }
+
+            // do part of the arithmetic on the main thread
+            (this->*func)(matrix2, rowStart, rowStart + (rowsPerThread[numOfThreads - 1U] - 1U));
+        }
+        else if (numOfThreads == 1U)
         {
-            std::thread currThread{func, this, matrix2, rowStart, rowStart + (rowsPerThread[threadPos] - 1U)};
-            rowStart += rowsPerThread[threadPos];
-            currThread.join();
+            // If the user specified only one thread for some odd reason, then we will gracefully just do the arithmetic on the main application thread.
+            (this->*func)(matrix2, 0, this->numOfRows - 1U); 
         }
+    }
+}
 
-        // do part of the arithmetic on the main thread
-        (this->*func)(matrix2, rowStart, rowStart + (rowsPerThread[numOfThreads - 1U] - 1U));
+// Parallel multiply the matricies "this" and "matrix2" on the specified number of threads and store the output in matrix "out."
+template <typename ElemType>
+void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<ElemType>& out, unsigned numberOfThreads)
+{
+    unsigned matrix2NumOfColumns = matrix2.getNumOfColumns(), matrix2NumOfRows = matrix2.getNumOfRows();
+    if (this->numOfColumns == matrix2NumOfRows) // check to make sure the inner dimensions of the two matrices match before we try to do any multiplication.
+    {
+        if (numberOfThreads > 1U) // do bother with all of the following work if the user only wants to multiply on one thread.
+        {
+            // initialize vectors to hold the number of rows/columns to be processed by each thread.
+            // each element in each vector correspond to threads 0, 1, 2, and 3 etc.
+            std::vector<unsigned> numOfRowsPerThread, numOfColumnsPerThread;
+            for (unsigned i = 0; i < numberOfThreads; i++)
+            {
+                numOfRowsPerThread.push_back(0);
+                numOfColumnsPerThread.push_back(0);
+            }
+
+            // calculate the exact number of matrix rows and columns to be processed by each thread.
+            for (unsigned threadPos = 0; threadPos < numberOfThreads; threadPos++)
+            {
+                numOfRowsPerThread[threadPos]       =   this->numOfRows / numberOfThreads;
+                numOfColumnsPerThread[threadPos]    =   matrix2NumOfColumns / numberOfThreads;
+            }
+            unsigned numOfRowsLeft  =   this->numOfRows % numberOfThreads, numOfColumnsLeft = matrix2NumOfColumns % numberOfThreads;
+            bool rowsDone           =   false, columnsDone = false;
+            while (!rowsDone && !columnsDone)
+            {
+                for (unsigned threadPos = 0; threadPos < numberOfThreads; threadPos++)
+                {
+                    if (numOfRowsLeft > 0U)
+                    {
+                        numOfRowsPerThread[threadPos]++;
+                        numOfRowsLeft--;
+                    }
+                    else
+                    {
+                        rowsDone = true;
+                        break;
+                    }
+                    if (numOfColumnsLeft > 0U)
+                    {
+                        numOfColumnsPerThread[threadPos]++;
+                        numOfColumnsLeft--;
+                    }
+                    else
+                    {
+                        columnsDone = true;
+                        break;
+                    }
+                }
+            }
+
+            // spawn threads to do the actual arithmetic
+            unsigned rowStart = 0, colStart = 0;
+            for (unsigned threadPos = 0; threadPos < numberOfThreads - 1U; threadPos++)
+            {
+                std::thread currThread{&Matrix<ElemType>::multiplyRange, this, rowStart, rowStart + numOfRowsPerThread[threadPos] - 1U, matrix2, 
+                                       colStart, colStart + numOfColumnsPerThread[threadPos] - 1U, out};
+                rowStart += numOfRowsPerThread[threadPos];
+                colStart += numOfColumnsPerThread[threadPos];
+                currThread.join();
+            }
+
+            // do part of the work on the main application thread.
+            this->multiplyRange(rowStart, rowStart + numOfRowsPerThread[numberOfThreads - 1U] - 1U, matrix2,
+                                colStart, colStart + numOfColumnsPerThread[numberOfThreads - 1U] - 1U, out);
+        }
+        else // just gracefully do the multiply operation on the application thread if the user provides 1 for the "numberOfThreads" parameter.
+        {
+            this->multiplyRange(0, this->numOfRows - 1U, matrix2, 0, matrix2NumOfColumns - 1U, out);
+        }
     }
 }
 

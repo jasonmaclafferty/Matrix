@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 template <typename ElemType>
 class Matrix : public MatrixBase<ElemType>
 {
+    // declare member functions for Matrix<ElemType>
     protected:
         void parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const Matrix<ElemType>&, unsigned, unsigned), 
                                       const Matrix<ElemType>& matrix2, unsigned numOfThreads);
@@ -56,6 +57,9 @@ class Matrix : public MatrixBase<ElemType>
 
         void scale(ElemType scaleFactor);
 
+        void parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<ElemType>& out, unsigned numberOfThreads);
+
+        // arithmetic operator overloads for Matrix<ElemType>
         std::shared_ptr< Matrix<ElemType> > operator+(const Matrix<ElemType>& matrix2);
 
         std::shared_ptr< Matrix<ElemType> > operator-(const Matrix<ElemType>& matrix2);
@@ -64,6 +68,8 @@ class Matrix : public MatrixBase<ElemType>
 
         Matrix<ElemType>& operator=(Matrix<ElemType>& matrix2);
 
+        // overload stream insertion operator for std::ostream
+        // I tried a bunch of things that did not work. declaring the std::ostream& operator<< as a friend of Matrix<ElemType> seems to be the way to go.
         friend std::ostream& operator<<(std::ostream& out, Matrix<ElemType>& matrix) 
         { 
             return out << dynamic_cast< MatrixBase<ElemType>& >(matrix); 

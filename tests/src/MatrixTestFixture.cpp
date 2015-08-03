@@ -32,6 +32,7 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAdditionOperatorOverload", &MatrixTestFixture::testAdditionOperatorOverload));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testSubtractionOperatorOverload", &MatrixTestFixture::testSubtractionOperatorOverload));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelAdd", &MatrixTestFixture::testParallelAdd));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelSubtract", &MatrixTestFixture::testParallelSubtract));
 
     return suite;
 }
@@ -92,6 +93,8 @@ void MatrixTestFixture::setUp()
 
     this->testMatrix12  =   std::make_shared< Matrix<int> >(1000, 1000, 1);
     this->testMatrix13  =   std::make_shared< Matrix<int> >(1000, 1000, 1);
+    this->testMatrix14  =   std::make_shared< Matrix<double> >(1327, 1327, 1.0);
+    this->testMatrix15  =   std::make_shared< Matrix<double> >(1327, 1327, 2.0);
 }
 
 void MatrixTestFixture::testScale()
@@ -372,4 +375,36 @@ void MatrixTestFixture::testParallelAdd()
 
     this->testMatrix12->parallelAdd(*(this->testMatrix13), 4);
     CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(4));
+
+    this->testMatrix13->parallelAdd(*(this->testMatrix12), 1); // make sure that parallelAdd does not crash when invoked with a thread count of only one.
+    CPPUNIT_ASSERT(this->testMatrix13->allElementsAre(5));
+
+    // make sure that parallelAdd does not crash when called with a higher thread count than my MacBook Pro can support concurrently.
+    this->testMatrix12->parallelAdd(*(this->testMatrix13), 10);
+    CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(9));
+
+    this->testMatrix14->parallelAdd(*(this->testMatrix15), 4); // Try adding matrices with an odd number of rows on an even number of threads.
+    CPPUNIT_ASSERT(this->testMatrix14->allElementsAre(3.0));
+
+    this->testMatrix15->parallelAdd(*(this->testMatrix14), 3); // odd number of rows and odd number of threads.
+    CPPUNIT_ASSERT(this->testMatrix15->allElementsAre(5.0));
+}
+
+// minimal tests for Matrix<ElemType>::parallelSubtract because the logic is very similar to Matrix<ElemType>::parallelAdd
+void MatrixTestFixture::testParallelSubtract()
+{
+    this->testMatrix12->parallelSubtract(*(this->testMatrix13), 2);
+    CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(0));
+
+    this->testMatrix12->parallelSubtract(*(this->testMatrix13), 3);
+    CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(-1));
+
+    this->testMatrix12->parallelSubtract(*(this->testMatrix13), 4);
+    CPPUNIT_ASSERT(this->testMatrix12->allElementsAre(-2));
+
+    this->testMatrix14->parallelSubtract(*(this->testMatrix15), 3); // Try parallel subtracting on odd number of rows on an odd number of threads.
+    CPPUNIT_ASSERT(this->testMatrix14->allElementsAre(-1.00));
+
+    this->testMatrix14->parallelSubtract(*(this->testMatrix15), 4); // odd number of rows--even number of threads.
+    CPPUNIT_ASSERT(this->testMatrix14->allElementsAre(-3.00));
 }
