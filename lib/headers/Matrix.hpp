@@ -36,6 +36,8 @@ class Matrix : public MatrixBase<ElemType>
         
         Matrix(unsigned numberOfRows, unsigned numberOfColumns) : MatrixBase<ElemType>(numberOfRows, numberOfColumns) {}
 
+        Matrix(const Matrix<ElemType>& matrixToCopyFrom) : MatrixBase<ElemType>(matrixToCopyFrom) {} 
+
         void power(double exponent);
 
         std::shared_ptr< Matrix<ElemType> > multiply(const Matrix<ElemType>& matrix2);

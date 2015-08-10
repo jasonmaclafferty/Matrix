@@ -20,7 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <MatrixBaseTestFixture.hpp>
 #include <MatrixTestFixture.hpp>
 
-
 int main()
 {
     CppUnit::TextUi::TestRunner runner;

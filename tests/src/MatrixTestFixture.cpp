@@ -33,6 +33,7 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testSubtractionOperatorOverload", &MatrixTestFixture::testSubtractionOperatorOverload));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelAdd", &MatrixTestFixture::testParallelAdd));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelSubtract", &MatrixTestFixture::testParallelSubtract));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testCopyConstructor", &MatrixTestFixture::testCopyConstructor));
 
     return suite;
 }
@@ -407,4 +408,19 @@ void MatrixTestFixture::testParallelSubtract()
 
     this->testMatrix14->parallelSubtract(*(this->testMatrix15), 4); // odd number of rows--even number of threads.
     CPPUNIT_ASSERT(this->testMatrix14->allElementsAre(-3.00));
+}
+
+void MatrixTestFixture::testCopyConstructor()
+{
+    Matrix<int> matrix(5, 5, 1);
+    Matrix<int> matrix2(matrix);
+    CPPUNIT_ASSERT(matrix2.allElementsAre(1));
+
+    Matrix<double> matrix3(50, 30, 3.1415);
+    Matrix<double> matrix4(matrix3);
+    CPPUNIT_ASSERT(matrix4.allElementsAre(3.1415));
+
+    Matrix<unsigned> matrix5(100, 100, 27);
+    Matrix<unsigned> matrix6(matrix5);
+    CPPUNIT_ASSERT(matrix6.allElementsAre(27));
 }

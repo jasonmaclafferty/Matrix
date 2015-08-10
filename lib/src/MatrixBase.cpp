@@ -20,6 +20,22 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <MatrixBase.hpp>
 #include <Utility.hpp>
 
+// Copy Constructor
+template <typename ElemType>
+MatrixBase<ElemType>::MatrixBase(const MatrixBase<ElemType>& matrixToCopyFrom)
+{
+    this->numOfRows     =   matrixToCopyFrom.getNumOfRows();
+    this->numOfColumns  =   matrixToCopyFrom.getNumOfColumns();
+    std::vector<ElemType> temp;
+    for (unsigned i = 0; i < numOfColumns; i++)
+        temp.push_back(0);
+    for (unsigned row = 0; row < this->numOfRows; row++)
+        this->data.push_back(temp);
+    for (unsigned row = 0; row < this->numOfRows; row++)
+        for (unsigned col = 0; col < this->numOfColumns; col++)
+            (*this)[row][col] = matrixToCopyFrom[row][col];
+}
+
 // Assigns the value "newElemVal" to the matrix element at position "row", "col" if a valid row and column are given--otherwise nothing is done.
 template <typename ElemType>
 void MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newElemVal)

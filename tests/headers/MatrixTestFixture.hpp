@@ -84,4 +84,6 @@ class MatrixTestFixture : public CppUnit::TestFixture
         void testParallelAdd();
 
         void testParallelSubtract();
+
+        void testCopyConstructor();
 };

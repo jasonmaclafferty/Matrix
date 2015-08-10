@@ -39,6 +39,8 @@ class MatrixBase
 
         MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
 
+        MatrixBase(const MatrixBase<ElemType>& matrixToCopyFrom);
+
         bool isIdentity();
 
         bool isZero();
