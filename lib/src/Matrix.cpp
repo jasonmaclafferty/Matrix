@@ -239,7 +239,6 @@ void Matrix<ElemType>::parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(
 }
 
 // Parallel multiply the matricies "this" and "matrix2" on the specified number of threads and store the output in matrix "out."
-/*
 template <typename ElemType>
 void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<ElemType>& out, unsigned numberOfThreads)
 {
@@ -302,8 +301,12 @@ void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<
             unsigned rowStart = 0, colStart = 0;
             for (unsigned threadPos = 0; threadPos < numberOfThreads - 1U; threadPos++)
             {
-                std::thread currThread{&Matrix<ElemType>::multiplyRange, this, rowStart, rowStart + (numOfRowsPerThread[threadPos] - 1U), matrix2, 
-                                       colStart, colStart + (numOfColumnsPerThread[threadPos] - 1U), out};
+                std::thread currThread{ [this, threadPos, rowStart, colStart, &out, &matrix2, &numOfRowsPerThread, &numOfColumnsPerThread]()
+                                        { 
+                                            this->multiplyRange(rowStart, rowStart + (numOfRowsPerThread[threadPos] - 1U), matrix2, 
+                                                                colStart, colStart + (numOfColumnsPerThread[threadPos] - 1U), out); 
+                                        } 
+                                      };
                 rowStart += numOfRowsPerThread[threadPos];
                 colStart += numOfColumnsPerThread[threadPos];
                 currThread.join();
@@ -320,7 +323,6 @@ void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<
         }
     }
 }
-*/
 
 template class Matrix<int>;
 template class Matrix<float>;

@@ -34,6 +34,7 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelAdd", &MatrixTestFixture::testParallelAdd));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelSubtract", &MatrixTestFixture::testParallelSubtract));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testCopyConstructor", &MatrixTestFixture::testCopyConstructor));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testparallelMultiply", &MatrixTestFixture::testParallelMultiply));
 
     return suite;
 }
@@ -423,4 +424,13 @@ void MatrixTestFixture::testCopyConstructor()
     Matrix<unsigned> matrix5(100, 100, 27);
     Matrix<unsigned> matrix6(matrix5);
     CPPUNIT_ASSERT(matrix6.allElementsAre(27));
+}
+
+void MatrixTestFixture::testParallelMultiply()
+{
+    Matrix<int> testMatrix1(10, 10, 1);
+    Matrix<int> testMatrix2(10, 10, 1);
+    Matrix<int> test1Output(10, 10);
+    testMatrix1.parallelMultiply(testMatrix2, test1Output, 2);
+    CPPUNIT_ASSERT(test1Output.allElementsAre(10));
 }
