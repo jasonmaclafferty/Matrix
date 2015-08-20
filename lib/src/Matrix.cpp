@@ -259,10 +259,10 @@ void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<
             // calculate the exact number of matrix rows and columns to be processed by each thread.
             for (unsigned threadPos = 0; threadPos < numberOfThreads; threadPos++)
             {
-                numOfRowsPerThread[threadPos]       =   this->numOfRows / numberOfThreads;
-                numOfColumnsPerThread[threadPos]    =   matrix2NumOfColumns / numberOfThreads;
+                numOfRowsPerThread[threadPos]       =   matrix2NumOfRows / numberOfThreads;
+                numOfColumnsPerThread[threadPos]    =   this->numOfColumns / numberOfThreads;
             }
-            unsigned numOfRowsLeft  =   this->numOfRows % numberOfThreads, numOfColumnsLeft = matrix2NumOfColumns % numberOfThreads;
+            unsigned numOfRowsLeft  =   matrix2NumOfRows % numberOfThreads, numOfColumnsLeft = this->numOfColumns % numberOfThreads;
             bool rowsDone           =   false, columnsDone = false;
             while (!rowsDone)
             {
@@ -275,8 +275,8 @@ void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<
                     }
                     else
                     {
-                        break;
                         rowsDone = true;
+                        break;
                     }
                 }
             }
