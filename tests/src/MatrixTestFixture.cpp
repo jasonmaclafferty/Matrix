@@ -18,7 +18,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <MatrixTestFixture.hpp>
-#include <iostream>
 
 CppUnit::TestSuite* MatrixTestFixture::suite()
 {
@@ -34,7 +33,7 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelAdd", &MatrixTestFixture::testParallelAdd));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelSubtract", &MatrixTestFixture::testParallelSubtract));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testCopyConstructor", &MatrixTestFixture::testCopyConstructor));
-    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testparallelMultiply", &MatrixTestFixture::testParallelMultiply));
+    suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelMultiply", &MatrixTestFixture::testParallelMultiply));
 
     return suite;
 }
