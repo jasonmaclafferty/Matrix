@@ -287,7 +287,7 @@ void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<
                                         } 
                                       };
                 rowStart += numOfRowsPerThread[threadPos];
-                currThread.join();
+                currThread.join(); // Be certain that currThread is not killed by the application thread if the app thread finishes before this thread.
             }
 
             // do part of the work on the main application thread.

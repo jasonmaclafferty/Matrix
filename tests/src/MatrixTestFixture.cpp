@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 CppUnit::TestSuite* MatrixTestFixture::suite()
 {
     CppUnit::TestSuite* suite = new CppUnit::TestSuite("MatrixTestFixture");
+    /*
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAssignmentOverload", &MatrixTestFixture::testAssignmentOverload));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testScale", &MatrixTestFixture::testScale));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testPower", &MatrixTestFixture::testPower));
@@ -33,6 +34,7 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelAdd", &MatrixTestFixture::testParallelAdd));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelSubtract", &MatrixTestFixture::testParallelSubtract));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testCopyConstructor", &MatrixTestFixture::testCopyConstructor));
+    */
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelMultiply", &MatrixTestFixture::testParallelMultiply));
 
     return suite;
@@ -427,9 +429,48 @@ void MatrixTestFixture::testCopyConstructor()
 
 void MatrixTestFixture::testParallelMultiply()
 {
+    /*
     Matrix<int> testMatrix1(10, 10, 1);
     Matrix<int> testMatrix2(10, 10, 1);
     Matrix<int> test1Output(10, 10);
-    testMatrix1.parallelMultiply(testMatrix2, test1Output, 2);
+    testMatrix1.parallelMultiply(testMatrix2, test1Output, 2); // try computing a simple product on only two threads
     CPPUNIT_ASSERT(test1Output.allElementsAre(10));
+
+    Matrix<int> testMatrix3(113, 113, 1);
+    Matrix<int> testMatrix4(113, 113, 1);
+    Matrix<int> test2Output(113, 113);
+    // odd number of rows and columns on an even number of threads
+    testMatrix3.parallelMultiply(testMatrix4, test2Output, 4);
+    CPPUNIT_ASSERT(test2Output.allElementsAre(113));
+
+    Matrix<int> test3Output(113, 113);
+    // odd number of rows and columns on an odd number of threads (where threadCount > 1)
+    testMatrix3.parallelMultiply(testMatrix4, test3Output, 3);
+    CPPUNIT_ASSERT(test3Output.allElementsAre(113));
+
+    Matrix<double> testMatrix5(5, 7, 3.14);
+    Matrix<double> testMatrix6(7, 3, 1.2);
+    Matrix<double> test4Output(5, 3);
+    // try multiplying matrices with unmatched outer dimensions and an odd number of rows and columns on an even number of threads
+    testMatrix5.parallelMultiply(testMatrix6, test4Output, 4);
+    CPPUNIT_ASSERT(test4Output.allElementsAre(26.376));
+
+    Matrix<double> test5Output(5, 3);
+    // make certain that Matrix<ElemType>::parallelMultiply does not crash when told to the compute the matrix product on a single thread.
+    testMatrix5.parallelMultiply(testMatrix6, test5Output, 1);
+    CPPUNIT_ASSERT(test5Output.allElementsAre(26.376));
+
+    Matrix<int> testMatrix7(1000, 1000, 1);
+    Matrix<int> testMatrix8(1000, 1000, 1);
+    Matrix<int> test6Output(1000, 1000);
+    // make sure that we can multiple matrices with an even number of rows and columns on an odd number of threads
+    testMatrix7.parallelMultiply(testMatrix8, test6Output, 3);
+    CPPUNIT_ASSERT(test6Output.allElementsAre(1000));
+*/
+    Matrix<int> testMatrix9(10000, 10000, 1);
+    Matrix<int> testMatrix10(10000, 10000, 1);
+    Matrix<int> test7Output(10000, 10000);
+    // Make certain that crunching matrices with 10's of millions of elements produces correct output.
+    testMatrix9.parallelMultiply(testMatrix9, test7Output, 4);
+    //CPPUNIT_ASSERT(test7Output.allElementsAre(10000));
 }
