@@ -22,7 +22,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 CppUnit::TestSuite* MatrixTestFixture::suite()
 {
     CppUnit::TestSuite* suite = new CppUnit::TestSuite("MatrixTestFixture");
-    /*
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testAssignmentOverload", &MatrixTestFixture::testAssignmentOverload));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testScale", &MatrixTestFixture::testScale));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testPower", &MatrixTestFixture::testPower));
@@ -34,7 +33,6 @@ CppUnit::TestSuite* MatrixTestFixture::suite()
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelAdd", &MatrixTestFixture::testParallelAdd));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelSubtract", &MatrixTestFixture::testParallelSubtract));
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testCopyConstructor", &MatrixTestFixture::testCopyConstructor));
-    */
     suite->addTest(new CppUnit::TestCaller<MatrixTestFixture>("testParallelMultiply", &MatrixTestFixture::testParallelMultiply));
 
     return suite;
@@ -429,7 +427,6 @@ void MatrixTestFixture::testCopyConstructor()
 
 void MatrixTestFixture::testParallelMultiply()
 {
-    /*
     Matrix<int> testMatrix1(10, 10, 1);
     Matrix<int> testMatrix2(10, 10, 1);
     Matrix<int> test1Output(10, 10);
@@ -466,11 +463,10 @@ void MatrixTestFixture::testParallelMultiply()
     // make sure that we can multiple matrices with an even number of rows and columns on an odd number of threads
     testMatrix7.parallelMultiply(testMatrix8, test6Output, 3);
     CPPUNIT_ASSERT(test6Output.allElementsAre(1000));
-*/
-    Matrix<int> testMatrix9(10000, 10000, 1);
-    Matrix<int> testMatrix10(10000, 10000, 1);
-    Matrix<int> test7Output(10000, 10000);
-    // Make certain that crunching matrices with 10's of millions of elements produces correct output.
+    Matrix<int> testMatrix9(1000, 1000, 1);
+    Matrix<int> testMatrix10(1000, 1000, 1);
+    Matrix<int> test7Output(1000, 1000);
+    // Make certain that crunching matrices with 100's of thousands of elements produces correct output.
     testMatrix9.parallelMultiply(testMatrix9, test7Output, 4);
-    //CPPUNIT_ASSERT(test7Output.allElementsAre(10000));
+    CPPUNIT_ASSERT(test7Output.allElementsAre(1000));
 }
