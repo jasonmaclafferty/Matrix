@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 // Raises each element of the matrix pointed to by "this" to the power given.
 template <typename ElemType>
-void Matrix<ElemType>::power(double exponent)
+void MatrixAlgebra::Matrix<ElemType>::power(double exponent)
 {
     for (unsigned row = 0U; row < this->numOfRows; row++)
         for (unsigned col = 0U; col < this->numOfColumns; col++)
@@ -32,17 +32,17 @@ void Matrix<ElemType>::power(double exponent)
 }
 
 template <typename ElemType>
-void Matrix<ElemType>::add(const Matrix<ElemType>& matrix2){ this->addRange(matrix2, 0, this->numOfRows - 1U); }
+void MatrixAlgebra::Matrix<ElemType>::add(const MatrixAlgebra::Matrix<ElemType>& matrix2){ this->addRange(matrix2, 0, this->numOfRows - 1U); }
 
 template <typename ElemType>
-void Matrix<ElemType>::subtract(const Matrix<ElemType>& matrix2){ this->subtractRange(matrix2, 0, this->numOfRows - 1U); }
+void MatrixAlgebra::Matrix<ElemType>::subtract(const MatrixAlgebra::Matrix<ElemType>& matrix2){ this->subtractRange(matrix2, 0, this->numOfRows - 1U); }
 
 // Multiplies the specified row/column ranges of two matrices, "this" and "matrix2", and stores the result in the matrix refered to by "out".
 // The member function will do nothing if given row/column indices which are out of range or the matrix "out" has the incorrect dimensions.
 // indices specified by "thisRowStart", "thisRowEnd", "matrix2ColStart", and "matrix2ColEnd" are zero-based.
 template <typename ElemType>
-void Matrix<ElemType>::multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, 
-                                     unsigned matrix2ColStart, unsigned matrix2ColEnd, Matrix<ElemType>& out)
+void MatrixAlgebra::Matrix<ElemType>::multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const MatrixAlgebra::Matrix<ElemType>& matrix2, 
+                                     unsigned matrix2ColStart, unsigned matrix2ColEnd, MatrixAlgebra::Matrix<ElemType>& out)
 {
     if (out.getNumOfRows() == this->numOfRows && out.getNumOfColumns() == matrix2.getNumOfColumns())
     {
@@ -69,9 +69,9 @@ void Matrix<ElemType>::multiplyRange(unsigned thisRowStart, unsigned thisRowEnd,
 }
 
 template <typename ElemType>
-std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::multiply(const Matrix<ElemType>& matrix2)
+std::shared_ptr< MatrixAlgebra::Matrix<ElemType> > MatrixAlgebra::Matrix<ElemType>::multiply(const MatrixAlgebra::Matrix<ElemType>& matrix2)
 {
-    std::shared_ptr< Matrix<ElemType> > retval = std::make_shared< Matrix<ElemType> >(this->numOfRows, matrix2.getNumOfColumns());
+    std::shared_ptr< MatrixAlgebra::Matrix<ElemType> > retval = std::make_shared< MatrixAlgebra::Matrix<ElemType> >(this->numOfRows, matrix2.getNumOfColumns());
     this->multiplyRange(0, this->numOfRows - 1U, matrix2, 0, matrix2.getNumOfColumns() - 1U, *retval);
 
     return retval;
@@ -81,7 +81,7 @@ std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::multiply(const Matrix<Elem
 // "rowStart" and "rowEnd" are zero-based indices for the desired rows of both matrices to be added.
 // The matrices referred to by "this" and "matrix2" must have the same dimensions or the member function will do nothing.
 template <typename ElemType>
-void Matrix<ElemType>::addRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd)
+void MatrixAlgebra::Matrix<ElemType>::addRange(const MatrixAlgebra::Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd)
 {
     if (this->numOfColumns == matrix2.getNumOfColumns() && this->numOfRows == matrix2.getNumOfRows())
         if (rowEnd < this->numOfRows)
@@ -94,7 +94,7 @@ void Matrix<ElemType>::addRange(const Matrix<ElemType>& matrix2, unsigned rowSta
 // "rowStart" and "rowEnd" are zero-based indices for the desired rows of both matrices to be added.
 // The matrices referred to by "this" and "matrix2" must have the same dimensions or the member function will do nothing.
 template <typename ElemType>
-void Matrix<ElemType>::subtractRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd)
+void MatrixAlgebra::Matrix<ElemType>::subtractRange(const MatrixAlgebra::Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd)
 {
     if (this->numOfColumns == matrix2.getNumOfColumns() && this->numOfRows == matrix2.getNumOfRows())
         if (rowEnd < this->numOfRows)
@@ -105,7 +105,7 @@ void Matrix<ElemType>::subtractRange(const Matrix<ElemType>& matrix2, unsigned r
 
 // scales all the elements in the matrix "this" by a constant factor
 template <typename ElemType>
-void Matrix<ElemType>::scale(ElemType scaleFactor)
+void MatrixAlgebra::Matrix<ElemType>::scale(ElemType scaleFactor)
 {
     for (unsigned row = 0U; row < this->numOfRows; row++)
         for (unsigned col = 0U; col < this->numOfColumns; col++)
@@ -114,22 +114,22 @@ void Matrix<ElemType>::scale(ElemType scaleFactor)
 
 // overload the assignment operator
 template <typename ElemType>
-Matrix<ElemType>& Matrix<ElemType>::operator=(Matrix<ElemType>& matrix2)
+MatrixAlgebra::Matrix<ElemType>& MatrixAlgebra::Matrix<ElemType>::operator=(Matrix<ElemType>& matrix2)
 {
-    MatrixBase<ElemType>& matrix2Temp    =  matrix2; 
-    MatrixBase<ElemType>& thisTemp       =  *this; 
+    MatrixAlgebra::MatrixBase<ElemType>& matrix2Temp    =  matrix2; 
+    MatrixAlgebra::MatrixBase<ElemType>& thisTemp       =  *this; 
     thisTemp                             =   matrix2Temp;
 
-    return dynamic_cast< Matrix<ElemType>& >(thisTemp);
+    return dynamic_cast< MatrixAlgebra::Matrix<ElemType>& >(thisTemp);
 }
 
 // Overload operator+ to add to matrices ("this" and "matrix2"), store the result in a heap allocated matrix, and return the result.
 // A matrix of all zero's with the dimensions the same as "matrix2" will be returned if the dimensions of "this" and "matrix2" do not match.
 template <typename ElemType>
-std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator+(const Matrix<ElemType>& matrix2)
+std::shared_ptr< MatrixAlgebra::Matrix<ElemType> > MatrixAlgebra::Matrix<ElemType>::operator+(const MatrixAlgebra::Matrix<ElemType>& matrix2)
 {
     unsigned matrix2NumOfRows = matrix2.getNumOfRows(), matrix2NumOfColumns = matrix2.getNumOfColumns();
-    std::shared_ptr< Matrix<ElemType> > retval = std::make_shared< Matrix<ElemType> >(matrix2NumOfRows, matrix2NumOfColumns);
+    std::shared_ptr< MatrixAlgebra::Matrix<ElemType> > retval = std::make_shared< MatrixAlgebra::Matrix<ElemType> >(matrix2NumOfRows, matrix2NumOfColumns);
 
     if (this->numOfRows == matrix2NumOfRows && this->numOfColumns == matrix2NumOfColumns)
         for (unsigned row = 0U; row < this->numOfRows; row++)
@@ -142,10 +142,10 @@ std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator+(const Matrix<Ele
 // Overload operator- to subtract to matrices ("this" and "matrix2"), store the result in a heap allocated matrix, and return the result.
 // A matrix of all zero's with the dimensions the same as "matrix2" will be returned if the dimensions of "this" and "matrix2" do not match.
 template <typename ElemType>
-std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator-(const Matrix<ElemType>& matrix2)
+std::shared_ptr< MatrixAlgebra::Matrix<ElemType> > MatrixAlgebra::Matrix<ElemType>::operator-(const MatrixAlgebra::Matrix<ElemType>& matrix2)
 {
     unsigned matrix2NumOfRows = matrix2.getNumOfRows(), matrix2NumOfColumns = matrix2.getNumOfColumns();
-    std::shared_ptr< Matrix<ElemType> > retval = std::make_shared< Matrix<ElemType> >(matrix2NumOfRows, matrix2NumOfColumns);
+    std::shared_ptr< MatrixAlgebra::Matrix<ElemType> > retval = std::make_shared< MatrixAlgebra::Matrix<ElemType> >(matrix2NumOfRows, matrix2NumOfColumns);
 
     if (this->numOfRows == matrix2NumOfRows && this->numOfColumns == matrix2NumOfColumns)
         for (unsigned row = 0U; row < this->numOfRows; row++)
@@ -159,10 +159,10 @@ std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator-(const Matrix<Ele
 // Overload operator* to multiply two matricies ("this" and "matrix2") and return a smart pointer to the result.
 // A zero matrix of dimensions thisNumOfRows x matrix2NumOfColumns will be returned if the inner dimensions of "this" and "matrix2" do not match.
 template <typename ElemType>
-std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator*(const Matrix<ElemType>& matrix2)
+std::shared_ptr< MatrixAlgebra::Matrix<ElemType> > MatrixAlgebra::Matrix<ElemType>::operator*(const MatrixAlgebra::Matrix<ElemType>& matrix2)
 {
     unsigned matrix2NumOfColumns = matrix2.getNumOfColumns();
-    auto retval = std::make_shared< Matrix<ElemType> >(this->numOfRows, matrix2.getNumOfColumns());
+    auto retval = std::make_shared< MatrixAlgebra::Matrix<ElemType> >(this->numOfRows, matrix2.getNumOfColumns());
     this->multiplyRange(0, this->numOfRows - 1U, matrix2, 0, matrix2NumOfColumns - 1U, *retval);
 
     return retval;
@@ -170,21 +170,21 @@ std::shared_ptr< Matrix<ElemType> > Matrix<ElemType>::operator*(const Matrix<Ele
 
 // Parallel add matrix "this" and "matrix2" and store back in matrix "this" on the specified number of threads
 template <typename ElemType>
-void Matrix<ElemType>::parallelAdd(const Matrix<ElemType>& matrix2, unsigned numOfThreads)
+void MatrixAlgebra::Matrix<ElemType>::parallelAdd(const MatrixAlgebra::Matrix<ElemType>& matrix2, unsigned numOfThreads)
 {
-    this->parallelAddSubtractHelper(&Matrix<ElemType>::addRange, matrix2, numOfThreads);
+    this->parallelAddSubtractHelper(&MatrixAlgebra::Matrix<ElemType>::addRange, matrix2, numOfThreads);
 }
 
 // Parallel subtract matrix "this" and "matrix2" and store the result back in matrix "this" on the specified number of threads
 template <typename ElemType>
-void Matrix<ElemType>::parallelSubtract(const Matrix<ElemType>& matrix2, unsigned numOfThreads)
+void MatrixAlgebra::Matrix<ElemType>::parallelSubtract(const MatrixAlgebra::Matrix<ElemType>& matrix2, unsigned numOfThreads)
 {
-    this->parallelAddSubtractHelper(&Matrix<ElemType>::subtractRange, matrix2, numOfThreads);
+    this->parallelAddSubtractHelper(&MatrixAlgebra::Matrix<ElemType>::subtractRange, matrix2, numOfThreads);
 }
 
 template <typename ElemType>
-void Matrix<ElemType>::parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const Matrix<ElemType>&, unsigned, unsigned), 
-                                                 const Matrix<ElemType>& matrix2, unsigned numOfThreads)
+void MatrixAlgebra::Matrix<ElemType>::parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const MatrixAlgebra::Matrix<ElemType>&, unsigned, unsigned), 
+                                                 const MatrixAlgebra::Matrix<ElemType>& matrix2, unsigned numOfThreads)
 {
     unsigned matrix2NumOfRows       =   matrix2.getNumOfRows();
     unsigned matrix2NumOfColumns    =   matrix2.getNumOfColumns();
@@ -240,7 +240,7 @@ void Matrix<ElemType>::parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(
 
 // Parallel multiply the matricies "this" and "matrix2" on the specified number of threads and store the output in matrix "out."
 template <typename ElemType>
-void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<ElemType>& out, unsigned numberOfThreads)
+void MatrixAlgebra::Matrix<ElemType>::parallelMultiply(const MatrixAlgebra::Matrix<ElemType>& matrix2, MatrixAlgebra::Matrix<ElemType>& out, unsigned numberOfThreads)
 {
     unsigned matrix2NumOfColumns = matrix2.getNumOfColumns(), matrix2NumOfRows = matrix2.getNumOfRows();
     if (this->numOfColumns == matrix2NumOfRows) // check to make sure the inner dimensions of the two matrices match before we try to do any multiplication.
@@ -302,7 +302,7 @@ void Matrix<ElemType>::parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<
     }
 }
 
-template class Matrix<int>;
-template class Matrix<float>;
-template class Matrix<double>;
-template class Matrix<unsigned>;
+template class MatrixAlgebra::Matrix<int>;
+template class MatrixAlgebra::Matrix<float>;
+template class MatrixAlgebra::Matrix<double>;
+template class MatrixAlgebra::Matrix<unsigned>;

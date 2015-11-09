@@ -24,65 +24,68 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 #include <iomanip>
 
-template <typename ElemType>
-class MatrixBase
+namespace MatrixAlgebra
 {
-    protected:
-        std::vector< std::vector<ElemType> > data;
+    template <typename ElemType>
+    class MatrixBase
+    {
+        protected:
+            std::vector< std::vector<ElemType> > data;
 
-        unsigned numOfRows, numOfColumns;
+            unsigned numOfRows, numOfColumns;
 
-        void init(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
+            void init(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
 
-    public:
-        MatrixBase(unsigned numberOfRows, unsigned numberOfColumns);
+        public:
+            MatrixBase(unsigned numberOfRows, unsigned numberOfColumns);
 
-        MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
+            MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
 
-        MatrixBase(const MatrixBase<ElemType>& matrixToCopyFrom);
+            MatrixBase(const MatrixBase<ElemType>& matrixToCopyFrom);
 
-        bool isIdentity();
+            bool isIdentity();
 
-        bool isZero();
+            bool isZero();
 
-        bool isSquare();
+            bool isSquare();
 
-        virtual ElemType getElement(unsigned row, unsigned col) const; 
+            virtual ElemType getElement(unsigned row, unsigned col) const; 
 
-        virtual void setElement(unsigned row, unsigned col, ElemType newElemVal);
+            virtual void setElement(unsigned row, unsigned col, ElemType newElemVal);
 
-        virtual bool equal(const MatrixBase<ElemType>& matrix) const;
+            virtual bool equal(const MatrixBase<ElemType>& matrix) const;
 
-        virtual MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix);
+            virtual MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix);
 
-        unsigned getNumOfRows() const;
+            unsigned getNumOfRows() const;
 
-        unsigned getNumOfColumns() const;
-        
-        virtual bool operator==(const MatrixBase<ElemType>& matrix);
+            unsigned getNumOfColumns() const;
+            
+            virtual bool operator==(const MatrixBase<ElemType>& matrix);
 
-        virtual bool operator!=(const MatrixBase<ElemType>& matrix);
+            virtual bool operator!=(const MatrixBase<ElemType>& matrix);
 
-        virtual std::vector<ElemType>& operator[](std::size_t row);
+            virtual std::vector<ElemType>& operator[](std::size_t row);
 
-        virtual const std::vector<ElemType>& operator[](std::size_t row) const;
+            virtual const std::vector<ElemType>& operator[](std::size_t row) const;
 
-        virtual void output(std::ostream& out, int fieldWidth);
+            virtual void output(std::ostream& out, int fieldWidth);
 
-        virtual bool allElementsAre(ElemType val);
+            virtual bool allElementsAre(ElemType val);
 
-        // Overload for operator<< to allow writing a matrix to an output stream such as a file or the console.
-        friend std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
-        {
-            for (unsigned row = 0U; row < matrix.numOfRows; row++)
+            // Overload for operator<< to allow writing a matrix to an output stream such as a file or the console.
+            friend std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
             {
-                for (unsigned col = 0U; col < matrix.numOfColumns; col++)
-                    out << std::setw(15) << matrix[row][col] << ' ';
-                out << std::endl;
-            }
+                for (unsigned row = 0U; row < matrix.numOfRows; row++)
+                {
+                    for (unsigned col = 0U; col < matrix.numOfColumns; col++)
+                        out << std::setw(15) << matrix[row][col] << ' ';
+                    out << std::endl;
+                }
 
-            return out; 
-        }
-};
+                return out; 
+            }
+    };
+}
 
 #endif

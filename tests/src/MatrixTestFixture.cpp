@@ -48,7 +48,7 @@ void MatrixTestFixture::testAssignmentOverload()
     *(this->testMatrix1) = *(this->testMatrix2); // testMatrix2 has more rows and columns than testMatrix1.
     CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix2));
 
-    Matrix<int> matrix1(5, 5, 1);
+    MatrixAlgebra::Matrix<int> matrix1(5, 5, 1);
     matrix1 = *(this->testMatrix3); // testMatrix3 has more columns and the same number of rows as testMatrix1.
     CPPUNIT_ASSERT(matrix1 == *(this->testMatrix3));
 
@@ -58,44 +58,44 @@ void MatrixTestFixture::testAssignmentOverload()
 
 void MatrixTestFixture::setUp()
 {
-    this->testMatrix1   =   std::make_shared< Matrix<int> >(5, 5, 1);
+    this->testMatrix1   =   std::make_shared< MatrixAlgebra::Matrix<int> >(5, 5, 1);
     
-    this->testMatrix2   =   std::make_shared< Matrix<int> >(10, 10);
+    this->testMatrix2   =   std::make_shared< MatrixAlgebra::Matrix<int> >(10, 10);
     std::vector<int> temp {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     for (unsigned row = 0U; row < 10U; row++)
         for (unsigned col = 0U; col < 10U; col++)
             (*(this->testMatrix2))[row][col] = temp[col];
 
-    this->testMatrix4   =   std::make_shared< Matrix<double> >(4, 4, 3.141592653);
-    this->testMatrix3   =   std::make_shared< Matrix<int> >(5, 7, 2);
-    this->testMatrix7   =   std::make_shared< Matrix<int> >(11, 10, 3);
-    this->testMatrix5   =   std::make_shared< Matrix<double> >(5, 4, 2.71812);
-    this->testMatrix6   =   std::make_shared< Matrix<double> >(7, 5);
+    this->testMatrix4   =   std::make_shared< MatrixAlgebra::Matrix<double> >(4, 4, 3.141592653);
+    this->testMatrix3   =   std::make_shared< MatrixAlgebra::Matrix<int> >(5, 7, 2);
+    this->testMatrix7   =   std::make_shared< MatrixAlgebra::Matrix<int> >(11, 10, 3);
+    this->testMatrix5   =   std::make_shared< MatrixAlgebra::Matrix<double> >(5, 4, 2.71812);
+    this->testMatrix6   =   std::make_shared< MatrixAlgebra::Matrix<double> >(7, 5);
     std::vector<double> temp2 {0.00001, 0.00002, 0.00003, 0.00004, 0.00005, 0.00006, 0.00007};
     for (unsigned row = 0U; row < 7U; row++)
         for (unsigned col = 0U; col < 5U; col++)
             (*(this->testMatrix6))[row][col] = temp2[row];
 
-    this->testMatrix11 = std::make_shared< Matrix<int> >(5, 5, 3);
+    this->testMatrix11 = std::make_shared< MatrixAlgebra::Matrix<int> >(5, 5, 3);
 
     std::vector<int> temp3 {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-    this->testMatrix8 = std::make_shared< Matrix<int> >(10, 10);
+    this->testMatrix8 = std::make_shared< MatrixAlgebra::Matrix<int> >(10, 10);
     for (unsigned row = 0U; row < 10U; row++)
         for (unsigned col = 0U; col < 10U; col++)
             (*(this->testMatrix8))[row][col] = temp3[col];
 
-    this->testMatrix9 = std::make_shared< Matrix<double> >(4, 4, 3.141592653);
+    this->testMatrix9 = std::make_shared< MatrixAlgebra::Matrix<double> >(4, 4, 3.141592653);
 
-    this->testMatrix10 = std::make_shared< Matrix<double> >(7, 5);
+    this->testMatrix10 = std::make_shared< MatrixAlgebra::Matrix<double> >(7, 5);
     std::vector<double> temp4 {-1e-5, -2e-5, -3e-5, -4e-5, -5e-5, -6e-5, -7e-5};
     for (unsigned row = 0U; row < 7U; row++)
         for (unsigned col = 0U; col < 5U; col++)
         (*(this->testMatrix10))[row][col] = temp4[row];
 
-    this->testMatrix12  =   std::make_shared< Matrix<int> >(1000, 1000, 1);
-    this->testMatrix13  =   std::make_shared< Matrix<int> >(1000, 1000, 1);
-    this->testMatrix14  =   std::make_shared< Matrix<double> >(1327, 1327, 1.0);
-    this->testMatrix15  =   std::make_shared< Matrix<double> >(1327, 1327, 2.0);
+    this->testMatrix12  =   std::make_shared< MatrixAlgebra::Matrix<int> >(1000, 1000, 1);
+    this->testMatrix13  =   std::make_shared< MatrixAlgebra::Matrix<int> >(1000, 1000, 1);
+    this->testMatrix14  =   std::make_shared< MatrixAlgebra::Matrix<double> >(1327, 1327, 1.0);
+    this->testMatrix15  =   std::make_shared< MatrixAlgebra::Matrix<double> >(1327, 1327, 2.0);
 }
 
 void MatrixTestFixture::testScale()
@@ -251,21 +251,21 @@ void MatrixTestFixture::testSubtractRange()
 
 void MatrixTestFixture::testMultiplyRange()
 {
-    Matrix<int> testOutput1(10, 10);
+    MatrixAlgebra::Matrix<int> testOutput1(10, 10);
     std::vector<int> temp {45, 90, 135, 180, 225, 270, 315, 360, 405, 450};
     this->testMatrix8->multiplyRange(0, 9, *(this->testMatrix2), 0, 9, testOutput1); // Multiply two entire matrices.
     for (unsigned row = 0; row < 10U; row++)
         for (unsigned col = 0; col < 10U; col++)
             CPPUNIT_ASSERT(testOutput1[row][col] == temp[col]);
 
-    Matrix<int> testOutput11(3, 3);
-    Matrix<int> testInput11(3, 3, 2);
-    Matrix<int> testInput11b(3, 3, 3);                                      /*                 "  another test             */
+    MatrixAlgebra::Matrix<int> testOutput11(3, 3);
+    MatrixAlgebra::Matrix<int> testInput11(3, 3, 2);
+    MatrixAlgebra::Matrix<int> testInput11b(3, 3, 3);                                      /*                 "  another test             */
     testInput11.multiplyRange(0, 2, testInput11b, 0, 2, testOutput11);
     CPPUNIT_ASSERT(testOutput11.allElementsAre(18));
 
 
-    Matrix<int> testOutput2(5, 7);
+    MatrixAlgebra::Matrix<int> testOutput2(5, 7);
     this->testMatrix1->multiplyRange(1, 3, *(this->testMatrix3), 1, 3, testOutput2); // Multiply a part of two matrices.
     for (unsigned row = 0; row < 5U; row++)
         for (unsigned col = 0; col < 7U; col++)
@@ -274,7 +274,7 @@ void MatrixTestFixture::testMultiplyRange()
             else
                 CPPUNIT_ASSERT(testOutput2[row][col] == 0);
 
-    Matrix<int> testOutput12(3, 3);                                         // " another test
+    MatrixAlgebra::Matrix<int> testOutput12(3, 3);                                         // " another test
     testInput11.multiplyRange(2, 2, testInput11b, 0, 0, testOutput12);
     CPPUNIT_ASSERT(testOutput12[2][0] == 18);
     for (unsigned row = 0U; row <= 2; row++)
@@ -298,7 +298,7 @@ void MatrixTestFixture::testMultiplyRange()
             else
                 CPPUNIT_ASSERT(testOutput2[row][col] == 0);
 
-    Matrix<double> testOutput3(7, 4);
+    MatrixAlgebra::Matrix<double> testOutput3(7, 4);
     this->testMatrix6->multiplyRange(4, 6, *(this->testMatrix5), 0, 2, testOutput3); // Multiply two different ranges of two different matrices.
     for (unsigned row = 0; row < 7U; row++)
     {
@@ -391,7 +391,7 @@ void MatrixTestFixture::testParallelAdd()
     CPPUNIT_ASSERT(this->testMatrix15->allElementsAre(5.0));
 }
 
-// minimal tests for Matrix<ElemType>::parallelSubtract because the logic is very similar to Matrix<ElemType>::parallelAdd
+// minimal tests for MatrixAlgebra::Matrix<ElemType>::parallelSubtract because the logic is very similar to MatrixAlgebra::Matrix<ElemType>::parallelAdd
 void MatrixTestFixture::testParallelSubtract()
 {
     this->testMatrix12->parallelSubtract(*(this->testMatrix13), 2);
@@ -412,60 +412,60 @@ void MatrixTestFixture::testParallelSubtract()
 
 void MatrixTestFixture::testCopyConstructor()
 {
-    Matrix<int> matrix(5, 5, 1);
-    Matrix<int> matrix2(matrix);
+    MatrixAlgebra::Matrix<int> matrix(5, 5, 1);
+    MatrixAlgebra::Matrix<int> matrix2(matrix);
     CPPUNIT_ASSERT(matrix2.allElementsAre(1));
 
-    Matrix<double> matrix3(50, 30, 3.1415);
-    Matrix<double> matrix4(matrix3);
+    MatrixAlgebra::Matrix<double> matrix3(50, 30, 3.1415);
+    MatrixAlgebra::Matrix<double> matrix4(matrix3);
     CPPUNIT_ASSERT(matrix4.allElementsAre(3.1415));
 
-    Matrix<unsigned> matrix5(100, 100, 27);
-    Matrix<unsigned> matrix6(matrix5);
+    MatrixAlgebra::Matrix<unsigned> matrix5(100, 100, 27);
+    MatrixAlgebra::Matrix<unsigned> matrix6(matrix5);
     CPPUNIT_ASSERT(matrix6.allElementsAre(27));
 }
 
 void MatrixTestFixture::testParallelMultiply()
 {
-    Matrix<int> testMatrix1(10, 10, 1);
-    Matrix<int> testMatrix2(10, 10, 1);
-    Matrix<int> test1Output(10, 10);
+    MatrixAlgebra::Matrix<int> testMatrix1(10, 10, 1);
+    MatrixAlgebra::Matrix<int> testMatrix2(10, 10, 1);
+    MatrixAlgebra::Matrix<int> test1Output(10, 10);
     testMatrix1.parallelMultiply(testMatrix2, test1Output, 2); // try computing a simple product on only two threads
     CPPUNIT_ASSERT(test1Output.allElementsAre(10));
 
-    Matrix<int> testMatrix3(113, 113, 1);
-    Matrix<int> testMatrix4(113, 113, 1);
-    Matrix<int> test2Output(113, 113);
+    MatrixAlgebra::Matrix<int> testMatrix3(113, 113, 1);
+    MatrixAlgebra::Matrix<int> testMatrix4(113, 113, 1);
+    MatrixAlgebra::Matrix<int> test2Output(113, 113);
     // odd number of rows and columns on an even number of threads
     testMatrix3.parallelMultiply(testMatrix4, test2Output, 4);
     CPPUNIT_ASSERT(test2Output.allElementsAre(113));
 
-    Matrix<int> test3Output(113, 113);
+    MatrixAlgebra::Matrix<int> test3Output(113, 113);
     // odd number of rows and columns on an odd number of threads (where threadCount > 1)
     testMatrix3.parallelMultiply(testMatrix4, test3Output, 3);
     CPPUNIT_ASSERT(test3Output.allElementsAre(113));
 
-    Matrix<double> testMatrix5(5, 7, 3.14);
-    Matrix<double> testMatrix6(7, 3, 1.2);
-    Matrix<double> test4Output(5, 3);
+    MatrixAlgebra::Matrix<double> testMatrix5(5, 7, 3.14);
+    MatrixAlgebra::Matrix<double> testMatrix6(7, 3, 1.2);
+    MatrixAlgebra::Matrix<double> test4Output(5, 3);
     // try multiplying matrices with unmatched outer dimensions and an odd number of rows and columns on an even number of threads
     testMatrix5.parallelMultiply(testMatrix6, test4Output, 4);
     CPPUNIT_ASSERT(test4Output.allElementsAre(26.376));
 
-    Matrix<double> test5Output(5, 3);
-    // make certain that Matrix<ElemType>::parallelMultiply does not crash when told to the compute the matrix product on a single thread.
+    MatrixAlgebra::Matrix<double> test5Output(5, 3);
+    // make certain that MatrixAlgebra::Matrix<ElemType>::parallelMultiply does not crash when told to the compute the matrix product on a single thread.
     testMatrix5.parallelMultiply(testMatrix6, test5Output, 1);
     CPPUNIT_ASSERT(test5Output.allElementsAre(26.376));
 
-    Matrix<int> testMatrix7(1000, 1000, 1);
-    Matrix<int> testMatrix8(1000, 1000, 1);
-    Matrix<int> test6Output(1000, 1000);
+    MatrixAlgebra::Matrix<int> testMatrix7(1000, 1000, 1);
+    MatrixAlgebra::Matrix<int> testMatrix8(1000, 1000, 1);
+    MatrixAlgebra::Matrix<int> test6Output(1000, 1000);
     // make sure that we can multiple matrices with an even number of rows and columns on an odd number of threads
     testMatrix7.parallelMultiply(testMatrix8, test6Output, 3);
     CPPUNIT_ASSERT(test6Output.allElementsAre(1000));
-    Matrix<int> testMatrix9(1000, 1000, 1);
-    Matrix<int> testMatrix10(1000, 1000, 1);
-    Matrix<int> test7Output(1000, 1000);
+    MatrixAlgebra::Matrix<int> testMatrix9(1000, 1000, 1);
+    MatrixAlgebra::Matrix<int> testMatrix10(1000, 1000, 1);
+    MatrixAlgebra::Matrix<int> test7Output(1000, 1000);
     // Make certain that crunching matrices with 100's of thousands of elements produces correct output.
     testMatrix9.parallelMultiply(testMatrix9, test7Output, 4);
     CPPUNIT_ASSERT(test7Output.allElementsAre(1000));

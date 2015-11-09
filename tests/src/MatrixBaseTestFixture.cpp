@@ -21,16 +21,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 void MatrixBaseTestFixture::setUp()
 {
-    this->matrix1   =   std::make_shared< MatrixBase<int> >(3, 3);
-    this->matrix2   =   std::make_shared< MatrixBase<double> >(2, 5, 3.141592653);
-    this->matrix3   =   std::make_shared< MatrixBase<unsigned> >(5, 7);
-    this->matrix4   =   std::make_shared< MatrixBase<float> >(10, 10);
-    this->matrix5   =   std::make_shared< MatrixBase<double> >(2, 5, 3.141592653);
-    this->matrix6   =   std::make_shared< MatrixBase<int> >(3, 3, 1);
-    this->matrix7   =   std::make_shared< MatrixBase<unsigned> >(5, 7);
-    this->matrix8   =   std::make_shared< MatrixBase<float> >(10, 10, 1.07);
-    this->matrix9   =   std::make_shared< MatrixBase<int> >(4, 9, 2);
-    this->matrix10  =   std::make_shared< MatrixBase<double> >(5, 5, 2.718237);
+    this->matrix1   =   std::make_shared< MatrixAlgebra::MatrixBase<int> >(3, 3);
+    this->matrix2   =   std::make_shared< MatrixAlgebra::MatrixBase<double> >(2, 5, 3.141592653);
+    this->matrix3   =   std::make_shared< MatrixAlgebra::MatrixBase<unsigned> >(5, 7);
+    this->matrix4   =   std::make_shared< MatrixAlgebra::MatrixBase<float> >(10, 10);
+    this->matrix5   =   std::make_shared< MatrixAlgebra::MatrixBase<double> >(2, 5, 3.141592653);
+    this->matrix6   =   std::make_shared< MatrixAlgebra::MatrixBase<int> >(3, 3, 1);
+    this->matrix7   =   std::make_shared< MatrixAlgebra::MatrixBase<unsigned> >(5, 7);
+    this->matrix8   =   std::make_shared< MatrixAlgebra::MatrixBase<float> >(10, 10, 1.07);
+    this->matrix9   =   std::make_shared< MatrixAlgebra::MatrixBase<int> >(4, 9, 2);
+    this->matrix10  =   std::make_shared< MatrixAlgebra::MatrixBase<double> >(5, 5, 2.718237);
 
     this->matrix1->setElement(0, 0, 1);
     this->matrix1->setElement(1, 1, 1);
@@ -72,8 +72,8 @@ void MatrixBaseTestFixture::testIsZero()
 
 void MatrixBaseTestFixture::testIsIdentity()
 {
-    this->matrix1   =   std::make_shared< MatrixBase<int> >(3, 3);
-    this->matrix6   =   std::make_shared< MatrixBase<int> >(5, 5);
+    this->matrix1   =   std::make_shared< MatrixAlgebra::MatrixBase<int> >(3, 3);
+    this->matrix6   =   std::make_shared< MatrixAlgebra::MatrixBase<int> >(5, 5);
 
     CPPUNIT_ASSERT(!this->matrix1->isIdentity()); // The Zero Matrix is not the Identity Matrix.
 
@@ -128,32 +128,32 @@ void MatrixBaseTestFixture::testAssignmentOverload()
     for (int row = 0; row < 3; row++)
         for (int col = 0; col < 3; col++)
             CPPUNIT_ASSERT((*(this->matrix1))[row][col] == 2);
-    MatrixBase<unsigned> matrix4d(3, 3, 25);
-    MatrixBase<unsigned> matrix5e(5, 5, 1);
+    MatrixAlgebra::MatrixBase<unsigned> matrix4d(3, 3, 25);
+    MatrixAlgebra::MatrixBase<unsigned> matrix5e(5, 5, 1);
     matrix4d = matrix5e;
     CPPUNIT_ASSERT(matrix4d == matrix5e);
 
     *(this->matrix5) = *(this->matrix10);
     CPPUNIT_ASSERT(*(this->matrix5) == *(this->matrix10)); // matrix10 has more rows than matrix5 and an equal number of columns.
-    MatrixBase<double> matrix6f(10, 5, 6.719001);
+    MatrixAlgebra::MatrixBase<double> matrix6f(10, 5, 6.719001);
     *(this->matrix5) = matrix6f;
     CPPUNIT_ASSERT(*(this->matrix5) == matrix6f);
 
-    MatrixBase<int> matrix2b(4, 7, 7);
-    MatrixBase<double> matrix3c(5, 3, 1.00001);
+    MatrixAlgebra::MatrixBase<int> matrix2b(4, 7, 7);
+    MatrixAlgebra::MatrixBase<double> matrix3c(5, 3, 1.00001);
     matrix3c = *(this->matrix5); // matrix5 has more columns and the same number of rows as matrix3c.
     CPPUNIT_ASSERT(matrix3c == *(this->matrix5));
     matrix2b = *(this->matrix9);
     CPPUNIT_ASSERT(matrix2b == *(this->matrix9));
 
-    MatrixBase<double> matrix7g(7, 2, 3.14);
+    MatrixAlgebra::MatrixBase<double> matrix7g(7, 2, 3.14);
     matrix3c = matrix7g; // matrix7g has more rows and less columns than matrix3c
     CPPUNIT_ASSERT(matrix3c != matrix7g);
     for (unsigned row = 0; row < 7U; row++)
         for (unsigned col = 0; col < 2U; col++)
             CPPUNIT_ASSERT(isCloseEnough(matrix3c[row][col], 3.14, 0.0001));
 
-    MatrixBase<int> matrix1a(2, 2, 2);
+    MatrixAlgebra::MatrixBase<int> matrix1a(2, 2, 2);
     matrix2b = matrix1a;                  // matrix1a has less rows and columns than matrix2b.
     for (unsigned row = 0; row < 4U; row++)
         for (unsigned col = 0; col < 7U; col++)
@@ -161,8 +161,8 @@ void MatrixBaseTestFixture::testAssignmentOverload()
     matrix1a = *(this->matrix9);
     CPPUNIT_ASSERT(matrix1a == *(this->matrix9));
 
-    MatrixBase<float> matrix9j(12, 15, 0.0001);
-    MatrixBase<float> matrix10k(9, 20, 0.12);
+    MatrixAlgebra::MatrixBase<float> matrix9j(12, 15, 0.0001);
+    MatrixAlgebra::MatrixBase<float> matrix10k(9, 20, 0.12);
     matrix9j = matrix10k; // matrix10k has less rows and more columns than matrix9j
     for (unsigned row = 0; row < 12U; row++)
         for (unsigned col = 0; col < 20U; col++)

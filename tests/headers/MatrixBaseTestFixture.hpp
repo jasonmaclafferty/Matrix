@@ -33,25 +33,25 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 class MatrixBaseTestFixture : public CppUnit::TestFixture
 {
     protected:
-        std::shared_ptr< MatrixBase<int> > matrix1;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<int> > matrix1;
 
-        std::shared_ptr< MatrixBase<double> > matrix2;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<double> > matrix2;
 
-        std::shared_ptr< MatrixBase<unsigned> > matrix3;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<unsigned> > matrix3;
 
-        std::shared_ptr< MatrixBase<float> > matrix4;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<float> > matrix4;
 
-        std::shared_ptr< MatrixBase<double> > matrix5;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<double> > matrix5;
 
-        std::shared_ptr< MatrixBase<int> > matrix6;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<int> > matrix6;
 
-        std::shared_ptr< MatrixBase<unsigned> > matrix7;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<unsigned> > matrix7;
 
-        std::shared_ptr< MatrixBase<float> > matrix8;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<float> > matrix8;
 
-        std::shared_ptr< MatrixBase<int> > matrix9;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<int> > matrix9;
 
-        std::shared_ptr< MatrixBase<double> > matrix10;
+        std::shared_ptr< MatrixAlgebra::MatrixBase<double> > matrix10;
 
     public:
         void setUp();

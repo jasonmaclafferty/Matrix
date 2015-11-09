@@ -35,7 +35,7 @@ bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy
 }
 
 // fills a supplied matrix with pseudo random integers
-void createRandomIntMatrix(MatrixBase<int>& matrix, int lowerBound, int upperBound)
+void createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound)
 {
     std::linear_congruential_engine<std::uint_fast32_t, 48271, 0, 2147483647> generator;
     std::uniform_int_distribution<int> distribution(lowerBound, upperBound);

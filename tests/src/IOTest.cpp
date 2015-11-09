@@ -27,15 +27,15 @@ int main()
 {
     std::cout << "Begin testing IO capabilities of the MatrixBase class." << std::endl;
 
-    MatrixBase<int> matrix1(9, 9, -2000000000);
-    MatrixBase<int> matrix2(10, 10);
-    MatrixBase<int> matrix3(5, 7);
-    MatrixBase<double> matrix4(10, 10);
-    MatrixBase<int> matrix5(3, 3);
-    Matrix<int> matrix1a(9, 9, 5);
-    Matrix<double> matrix4d(10, 10);
-    Matrix<int> matrix2b(10, 10);
-    Matrix<int> matrix3c(7, 6);
+    MatrixAlgebra::MatrixBase<int> matrix1(9, 9, -2000000000);
+    MatrixAlgebra::MatrixBase<int> matrix2(10, 10);
+    MatrixAlgebra::MatrixBase<int> matrix3(5, 7);
+    MatrixAlgebra::MatrixBase<double> matrix4(10, 10);
+    MatrixAlgebra::MatrixBase<int> matrix5(3, 3);
+    MatrixAlgebra::Matrix<int> matrix1a(9, 9, 5);
+    MatrixAlgebra::Matrix<double> matrix4d(10, 10);
+    MatrixAlgebra::Matrix<int> matrix2b(10, 10);
+    MatrixAlgebra::Matrix<int> matrix3c(7, 6);
 
     createRandomIntMatrix(matrix2, -2000000000, 2000000000);
     createRandomIntMatrix(matrix2b,-2000000000, 2000000000);
@@ -52,13 +52,13 @@ int main()
     createRandomIntMatrix(matrix5, -2000000000, 2000000000);
 
     std::cout << "Test operator<< overload with std::cout" << std::endl;
-    std::cout << "For MatrixBase<ElemType>" << std::endl;
+    std::cout << "For MatrixAlgebra::MatrixBase<ElemType>" << std::endl;
     std::cout << matrix1 << std::endl;
     std::cout << matrix2 << std::endl;
     std::cout << matrix3 << std::endl;
     std::cout << matrix4 << std::endl;
     std::cout << matrix5 << std::endl;
-    std::cout << "For Matrix<ElemType>" << std::endl;
+    std::cout << "For MatrixAlgebra::Matrix<ElemType>" << std::endl;
     std::cout << matrix1a << std::endl;
     std::cout << matrix2b << std::endl;
     std::cout << matrix3c << std::endl;
@@ -73,13 +73,13 @@ int main()
 
     std::ofstream ioTestFile("IOTestFile");
     ioTestFile << "Test operator<< overload for file streams." << std::endl;
-    ioTestFile << "For MatrixBase<ElemType>" << std::endl;
+    ioTestFile << "For MatrixAlgebra::MatrixBase<ElemType>" << std::endl;
     ioTestFile << matrix1 << std::endl;
     ioTestFile << matrix2 << std::endl;
     ioTestFile << matrix3 << std::endl;
     ioTestFile << matrix4 << std::endl;
     ioTestFile << matrix5 << std::endl;
-    ioTestFile << "For Matrix<ElemType>" << std::endl;
+    ioTestFile << "For MatrixAlgebra::Matrix<ElemType>" << std::endl;
     ioTestFile << matrix1a << std::endl;
     ioTestFile << matrix2b << std::endl;
     ioTestFile << matrix3c << std::endl;

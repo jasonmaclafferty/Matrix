@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 // Copy Constructor
 template <typename ElemType>
-MatrixBase<ElemType>::MatrixBase(const MatrixBase<ElemType>& matrixToCopyFrom)
+MatrixAlgebra::MatrixBase<ElemType>::MatrixBase(const MatrixAlgebra::MatrixBase<ElemType>& matrixToCopyFrom)
 {
     this->numOfRows     =   matrixToCopyFrom.getNumOfRows();
     this->numOfColumns  =   matrixToCopyFrom.getNumOfColumns();
@@ -38,7 +38,7 @@ MatrixBase<ElemType>::MatrixBase(const MatrixBase<ElemType>& matrixToCopyFrom)
 
 // Assigns the value "newElemVal" to the matrix element at position "row", "col" if a valid row and column are given--otherwise nothing is done.
 template <typename ElemType>
-void MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newElemVal)
+void MatrixAlgebra::MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newElemVal)
 {
     if (row < this->numOfRows && col < this->numOfColumns)
         this->data[row][col] = newElemVal;
@@ -46,7 +46,7 @@ void MatrixBase<ElemType>::setElement(unsigned row, unsigned col, ElemType newEl
 
 // Returns the matrix element at position "row", "col" if  given a valid row, col position--otherwise the return value is unspecified.
 template <typename ElemType>
-ElemType MatrixBase<ElemType>::getElement(unsigned row, unsigned col) const
+ElemType MatrixAlgebra::MatrixBase<ElemType>::getElement(unsigned row, unsigned col) const
 {
     ElemType retval;
     if (row < this->numOfRows && col < this->numOfColumns)
@@ -57,7 +57,7 @@ ElemType MatrixBase<ElemType>::getElement(unsigned row, unsigned col) const
 
 // MatrixBase class constructor accepting parameters specified the desired number of rows and columns for the matrix.
 template <typename ElemType>
-MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns)
+MatrixAlgebra::MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns)
 {
     this->init(numberOfRows, numberOfColumns, 0);
 }
@@ -65,14 +65,14 @@ MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns
 // MatrixBase class constructor accepting as arguments the desired number of rows and columns .
 // for the matrix to be created along with what value each matrix element should have.
 template <typename ElemType>
-MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal) 
+MatrixAlgebra::MatrixBase<ElemType>::MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal) 
 { 
     this->init(numberOfRows, numberOfColumns, elemInitVal); 
 }
 
 // Initialization function which does all of the heavy lifting for the MatrixBase class constructors.
 template <typename ElemType>
-void MatrixBase<ElemType>::init(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal)
+void MatrixAlgebra::MatrixBase<ElemType>::init(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal)
 {
     this->numOfRows     =   numberOfRows;
     this->numOfColumns  =   numberOfColumns;
@@ -91,7 +91,7 @@ void MatrixBase<ElemType>::init(unsigned numberOfRows, unsigned numberOfColumns,
 // For matricies containing float or double values, an identity matrix is guaranteed to have values along the diagonal equal to 1 +/- 0.000001.
 // Matricies of int or unsigned values are guaranteed to have values of exactly 1 along the diagonal if they are identity matricies.
 template <typename ElemType>
-bool MatrixBase<ElemType>::isIdentity()
+bool MatrixAlgebra::MatrixBase<ElemType>::isIdentity()
 {
     if (this->numOfRows == this->numOfColumns)
     {
@@ -112,7 +112,7 @@ bool MatrixBase<ElemType>::isIdentity()
 // For matricies of int or unsigned values, zero matricies are guaranteed to have all elements with a value of exactly 0.
 // For matricies of double or float values, all elements are guaranteed to have values of 0 +/- 0.000001
 template <typename ElemType>
-bool MatrixBase<ElemType>::isZero()
+bool MatrixAlgebra::MatrixBase<ElemType>::isZero()
 {
     for (unsigned row = 0U; row < this->numOfRows; row++)
         for (unsigned col = 0U; col < this->numOfColumns; col++)
@@ -127,7 +127,7 @@ bool MatrixBase<ElemType>::isZero()
 // If matricies of int or unsigned values are equal, then their corresponding values are guaranteed to be exactly equal.
 // Otherwise, if the matricies contain values of type double or float, then corresponding values will be within +/- 0.000001 of each other for equal matricies.
 template <typename ElemType>
-bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix) const
+bool MatrixAlgebra::MatrixBase<ElemType>::equal(const MatrixAlgebra::MatrixBase<ElemType>& matrix) const
 {
     if (this->numOfRows == matrix.getNumOfRows() && this->numOfColumns == matrix.getNumOfColumns())
     {
@@ -146,7 +146,7 @@ bool MatrixBase<ElemType>::equal(const MatrixBase<ElemType>& matrix) const
 
 // write matrix to an output stream with the specified field width
 template <typename ElemType>
-void MatrixBase<ElemType>::output(std::ostream& out, int fieldWidth)
+void MatrixAlgebra::MatrixBase<ElemType>::output(std::ostream& out, int fieldWidth)
 {
     for (unsigned row = 0U; row < this->numOfRows; row++)
     {
@@ -158,21 +158,21 @@ void MatrixBase<ElemType>::output(std::ostream& out, int fieldWidth)
 
 // A convenient operator overload to compare two matrix objects for equality.
 template <typename ElemType>
-bool MatrixBase<ElemType>::operator==(const MatrixBase<ElemType>& matrix)
+bool MatrixAlgebra::MatrixBase<ElemType>::operator==(const MatrixAlgebra::MatrixBase<ElemType>& matrix)
 {
     return this->equal(matrix);
 }
 
 // Overload operator!= to compare two matricies for negated equality
 template <typename ElemType>
-bool MatrixBase<ElemType>::operator!=(const MatrixBase<ElemType>& matrix)
+bool MatrixAlgebra::MatrixBase<ElemType>::operator!=(const MatrixAlgebra::MatrixBase<ElemType>& matrix)
 {
     return !(*this == matrix);
 }
 
 // Overload operator= to allow copying the contents of one matrix to another.
 template <typename ElemType>
-MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>& matrix2)
+MatrixAlgebra::MatrixBase<ElemType>& MatrixAlgebra::MatrixBase<ElemType>::operator=(const MatrixAlgebra::MatrixBase<ElemType>& matrix2)
 {
     unsigned matrix2NumOfRows       =   matrix2.getNumOfRows();
     unsigned matrix2NumOfColumns    =   matrix2.getNumOfColumns();
@@ -240,27 +240,27 @@ MatrixBase<ElemType>& MatrixBase<ElemType>::operator=(const MatrixBase<ElemType>
 
 // Overload operator[] to allow indexing of a matrix like this MatrixBaseInstance[row][col]
 template <typename ElemType>
-std::vector<ElemType>& MatrixBase<ElemType>::operator[](std::size_t row) { return this->data[row]; }
+std::vector<ElemType>& MatrixAlgebra::MatrixBase<ElemType>::operator[](std::size_t row) { return this->data[row]; }
 
 // Overload operator[] to allow read-only indexing of a matrix
 template <typename ElemType>
-const std::vector<ElemType>& MatrixBase<ElemType>::operator[](std::size_t row) const { return this->data[row]; }
+const std::vector<ElemType>& MatrixAlgebra::MatrixBase<ElemType>::operator[](std::size_t row) const { return this->data[row]; }
 
 // Return the number of rows in the matrix.
 template <typename ElemType>
-unsigned MatrixBase<ElemType>::getNumOfRows() const { return this->numOfRows; }
+unsigned MatrixAlgebra::MatrixBase<ElemType>::getNumOfRows() const { return this->numOfRows; }
 
 // Return the number of columns in the matrix.
 template <typename ElemType>
-unsigned MatrixBase<ElemType>::getNumOfColumns() const { return this->numOfColumns; }
+unsigned MatrixAlgebra::MatrixBase<ElemType>::getNumOfColumns() const { return this->numOfColumns; }
 
 // Returns a Boolean value indicating whether or not a matrix is square. A matrix is considered square if the number of rows equals the number of columns.
 template <typename ElemType>
-bool MatrixBase<ElemType>::isSquare() { return this->numOfColumns == this->numOfRows; }
+bool MatrixAlgebra::MatrixBase<ElemType>::isSquare() { return this->numOfColumns == this->numOfRows; }
 
 // checks if all of the elements of the matrix have the specified value
 template <typename ElemType>
-bool MatrixBase<ElemType>::allElementsAre(ElemType val)
+bool MatrixAlgebra::MatrixBase<ElemType>::allElementsAre(ElemType val)
 {
     double doubleVal = static_cast<double>(val);
 
@@ -272,7 +272,7 @@ bool MatrixBase<ElemType>::allElementsAre(ElemType val)
     return true;
 }
 
-template class MatrixBase<int>;
-template class MatrixBase<double>;
-template class MatrixBase<unsigned>;
-template class MatrixBase<float>;
+template class MatrixAlgebra::MatrixBase<int>;
+template class MatrixAlgebra::MatrixBase<double>;
+template class MatrixAlgebra::MatrixBase<unsigned>;
+template class MatrixAlgebra::MatrixBase<float>;

@@ -30,35 +30,35 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 class MatrixTestFixture : public CppUnit::TestFixture
 {
     protected:
-        std::shared_ptr< Matrix<int> > testMatrix1;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix1;
 
-        std::shared_ptr< Matrix<int> > testMatrix2;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix2;
         
-        std::shared_ptr< Matrix<int> > testMatrix3;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix3;
 
-        std::shared_ptr< Matrix<double> > testMatrix4;
+        std::shared_ptr< MatrixAlgebra::Matrix<double> > testMatrix4;
 
-        std::shared_ptr< Matrix<double> > testMatrix5;
+        std::shared_ptr< MatrixAlgebra::Matrix<double> > testMatrix5;
 
-        std::shared_ptr< Matrix<double> > testMatrix6;
+        std::shared_ptr< MatrixAlgebra::Matrix<double> > testMatrix6;
 
-        std::shared_ptr< Matrix<int> > testMatrix7;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix7;
 
-        std::shared_ptr< Matrix<int> > testMatrix8;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix8;
 
-        std::shared_ptr< Matrix<double> > testMatrix9;
+        std::shared_ptr< MatrixAlgebra::Matrix<double> > testMatrix9;
 
-        std::shared_ptr< Matrix<double> > testMatrix10;
+        std::shared_ptr< MatrixAlgebra::Matrix<double> > testMatrix10;
 
-        std::shared_ptr< Matrix<int> > testMatrix11;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix11;
 
-        std::shared_ptr< Matrix<int> > testMatrix12;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix12;
 
-        std::shared_ptr< Matrix<int> > testMatrix13;
+        std::shared_ptr< MatrixAlgebra::Matrix<int> > testMatrix13;
 
-        std::shared_ptr< Matrix<double> > testMatrix14;
+        std::shared_ptr< MatrixAlgebra::Matrix<double> > testMatrix14;
 
-        std::shared_ptr< Matrix<double> > testMatrix15;
+        std::shared_ptr< MatrixAlgebra::Matrix<double> > testMatrix15;
 
     public:
         void testPower();

@@ -23,59 +23,62 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <memory>
 #include <MatrixBase.hpp>
 
-template <typename ElemType>
-class Matrix : public MatrixBase<ElemType>
+namespace MatrixAlgebra
 {
-    // declare member functions for Matrix<ElemType>
-    protected:
-        void parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const Matrix<ElemType>&, unsigned, unsigned), 
-                                      const Matrix<ElemType>& matrix2, unsigned numOfThreads);
+    template <typename ElemType>
+    class Matrix : public MatrixBase<ElemType>
+    {
+        // declare member functions for Matrix<ElemType>
+        protected:
+            void parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const Matrix<ElemType>&, unsigned, unsigned), 
+                                          const Matrix<ElemType>& matrix2, unsigned numOfThreads);
 
-    public:
-        Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal) : MatrixBase<ElemType>(numberOfRows, numberOfColumns, elemInitVal) {}
-        
-        Matrix(unsigned numberOfRows, unsigned numberOfColumns) : MatrixBase<ElemType>(numberOfRows, numberOfColumns) {}
+        public:
+            Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal) : MatrixBase<ElemType>(numberOfRows, numberOfColumns, elemInitVal) {}
+            
+            Matrix(unsigned numberOfRows, unsigned numberOfColumns) : MatrixBase<ElemType>(numberOfRows, numberOfColumns) {}
 
-        Matrix(const Matrix<ElemType>& matrixToCopyFrom) : MatrixBase<ElemType>(matrixToCopyFrom) {} 
+            Matrix(const Matrix<ElemType>& matrixToCopyFrom) : MatrixBase<ElemType>(matrixToCopyFrom) {} 
 
-        void power(double exponent);
+            void power(double exponent);
 
-        std::shared_ptr< Matrix<ElemType> > multiply(const Matrix<ElemType>& matrix2);
+            std::shared_ptr< Matrix<ElemType> > multiply(const Matrix<ElemType>& matrix2);
 
-        void add(const Matrix<ElemType>& matrix2);
+            void add(const Matrix<ElemType>& matrix2);
 
-        void subtract(const Matrix<ElemType>& matrix2);
+            void subtract(const Matrix<ElemType>& matrix2);
 
-        void multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, 
-                           unsigned matrix2ColStart, unsigned matrix2ColEnd, Matrix<ElemType>& out);
+            void multiplyRange(unsigned thisRowStart, unsigned thisRowEnd, const Matrix<ElemType>& matrix2, 
+                               unsigned matrix2ColStart, unsigned matrix2ColEnd, Matrix<ElemType>& out);
 
-        void addRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
+            void addRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
 
-        void subtractRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
-        
-        void parallelAdd(const Matrix<ElemType>& matrix2, unsigned numOfThreads);
+            void subtractRange(const Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd);
+            
+            void parallelAdd(const Matrix<ElemType>& matrix2, unsigned numOfThreads);
 
-        void parallelSubtract(const Matrix<ElemType>& matrix2, unsigned numOfThreads);
+            void parallelSubtract(const Matrix<ElemType>& matrix2, unsigned numOfThreads);
 
-        void scale(ElemType scaleFactor);
+            void scale(ElemType scaleFactor);
 
-        void parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<ElemType>& out, unsigned numberOfThreads);
+            void parallelMultiply(const Matrix<ElemType>& matrix2, Matrix<ElemType>& out, unsigned numberOfThreads);
 
-        // arithmetic operator overloads for Matrix<ElemType>
-        std::shared_ptr< Matrix<ElemType> > operator+(const Matrix<ElemType>& matrix2);
+            // arithmetic operator overloads for Matrix<ElemType>
+            std::shared_ptr< Matrix<ElemType> > operator+(const Matrix<ElemType>& matrix2);
 
-        std::shared_ptr< Matrix<ElemType> > operator-(const Matrix<ElemType>& matrix2);
+            std::shared_ptr< Matrix<ElemType> > operator-(const Matrix<ElemType>& matrix2);
 
-        std::shared_ptr< Matrix<ElemType> > operator*(const Matrix<ElemType>& matrix2);
+            std::shared_ptr< Matrix<ElemType> > operator*(const Matrix<ElemType>& matrix2);
 
-        Matrix<ElemType>& operator=(Matrix<ElemType>& matrix2);
+            Matrix<ElemType>& operator=(Matrix<ElemType>& matrix2);
 
-        // overload stream insertion operator for std::ostream
-        // I tried a bunch of things that did not work. declaring the std::ostream& operator<< as a friend of Matrix<ElemType> seems to be the way to go.
-        friend std::ostream& operator<<(std::ostream& out, Matrix<ElemType>& matrix) 
-        { 
-            return out << dynamic_cast< MatrixBase<ElemType>& >(matrix); 
-        }
-};
+            // overload stream insertion operator for std::ostream
+            // I tried a bunch of things that did not work. declaring the std::ostream& operator<< as a friend of Matrix<ElemType> seems to be the way to go.
+            friend std::ostream& operator<<(std::ostream& out, Matrix<ElemType>& matrix) 
+            { 
+                return out << dynamic_cast< MatrixBase<ElemType>& >(matrix); 
+            }
+    };
+}
 
 #endif
