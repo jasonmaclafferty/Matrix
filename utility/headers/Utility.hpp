@@ -25,8 +25,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <functional>
 #include <MatrixBase.hpp>
 
-bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy);
+namespace MatrixAlgebra
+{
+    bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy);
 
-void createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound);
+    void createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound);
+}
 
 #endif

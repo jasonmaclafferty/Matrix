@@ -96,7 +96,7 @@ bool MatrixAlgebra::MatrixBase<ElemType>::isIdentity()
     if (this->numOfRows == this->numOfColumns)
     {
         for (unsigned row = 0U; row < this->numOfRows; row++)
-            if (!isCloseEnough(static_cast<double>(this->getElement(row, row)), 1, 0.000001))
+            if (!MatrixAlgebra::isCloseEnough(static_cast<double>(this->getElement(row, row)), 1, 0.000001))
                 return false;
     }
     else
@@ -116,7 +116,7 @@ bool MatrixAlgebra::MatrixBase<ElemType>::isZero()
 {
     for (unsigned row = 0U; row < this->numOfRows; row++)
         for (unsigned col = 0U; col < this->numOfColumns; col++)
-            if (!isCloseEnough(this->getElement(row, col), 0, 0.000001))
+            if (!MatrixAlgebra::isCloseEnough(this->getElement(row, col), 0, 0.000001))
                 return false; // A non-zero value was found. So, the matrix does not constitute the zero matrix.
 
     return true; // All of the matrix elements are 0.
@@ -133,7 +133,7 @@ bool MatrixAlgebra::MatrixBase<ElemType>::equal(const MatrixAlgebra::MatrixBase<
     {
         for (unsigned row = 0U; row < this->numOfRows; row++)
             for (unsigned col = 0U; col < this->numOfColumns; col++)
-                if (!isCloseEnough(static_cast<double>(this->getElement(row, col)), static_cast<double>(matrix[row][col]), 0.000000000001))
+                if (!MatrixAlgebra::isCloseEnough(static_cast<double>(this->getElement(row, col)), static_cast<double>(matrix[row][col]), 0.000000000001))
                     return false; // Matrices are not equal because one of the pairs of matrix elements are not equal.
     }
     else
@@ -266,7 +266,7 @@ bool MatrixAlgebra::MatrixBase<ElemType>::allElementsAre(ElemType val)
 
     for (unsigned row = 0U; row < this->numOfRows; row++)
         for (unsigned col = 0U; col < this->numOfColumns; col++)
-            if (!isCloseEnough(doubleVal, static_cast<double>((*this)[row][col]), 0.0000001))
+            if (!MatrixAlgebra::isCloseEnough(doubleVal, static_cast<double>((*this)[row][col]), 0.0000001))
                 return false;
     
     return true;

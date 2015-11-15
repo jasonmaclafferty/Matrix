@@ -128,7 +128,7 @@ void MatrixTestFixture::testScale()
     std::vector<double> temp2 {1e-10, 4e-10, 9e-10, 1.6e-9, 2.5e-9, 3.6e-9, 4.9e-9};
     for (unsigned row = 0U; row < 7U; row++)
         for (unsigned col = 0U; col < 5U; col++)
-            CPPUNIT_ASSERT(isCloseEnough(temp2[row], (*(this->testMatrix6))[row][col], 0.0000001));
+            CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(temp2[row], (*(this->testMatrix6))[row][col], 0.0000001));
 }
 
 void MatrixTestFixture::testPower()
@@ -159,7 +159,7 @@ void MatrixTestFixture::testAddRange()
 {
     this->testMatrix4->addRange(*(this->testMatrix9), 0, 0); // Try adding only a single row of each matrix together.
     for (unsigned col = 0U; col < 4U; col++)
-        CPPUNIT_ASSERT(isCloseEnough(6.283185306, (*(this->testMatrix4))[0][col], 0.000000001)); 
+        CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(6.283185306, (*(this->testMatrix4))[0][col], 0.000000001)); 
 
     this->testMatrix2->addRange(*(this->testMatrix8), 0, 9); // Add two entire matrices.
     CPPUNIT_ASSERT(this->testMatrix2->allElementsAre(10));
@@ -202,9 +202,9 @@ void MatrixTestFixture::testSubtractRange()
     for (unsigned row = 0U; row < 4U; row++)
         for (unsigned col = 0U; col < 4U; col++)
             if (row == 0)
-                CPPUNIT_ASSERT(isCloseEnough(0.00, (*(this->testMatrix4))[row][col], 0.000000001));
+                CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(0.00, (*(this->testMatrix4))[row][col], 0.000000001));
             else
-                CPPUNIT_ASSERT(isCloseEnough(3.141592653, (*this->testMatrix4)[row][col], 0.000000001));
+                CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(3.141592653, (*this->testMatrix4)[row][col], 0.000000001));
 
     this->testMatrix8->subtractRange(*(this->testMatrix2), 0, 9); // Subtract two entire matrices.
     std::vector<int> temp {8, 6, 4, 2, 0, -2, -4, -6, -8, -10};
@@ -216,7 +216,7 @@ void MatrixTestFixture::testSubtractRange()
     std::vector<double> temp2 {1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5};
     for (unsigned row = 0U; row <= 6; row++)
         for (unsigned col = 0U; col <= 4; col++)
-            CPPUNIT_ASSERT(isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8));
+            CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8));
 
     this->testMatrix11->subtractRange(*(this->testMatrix1), 4, 5); // Try an out of range row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
@@ -224,7 +224,7 @@ void MatrixTestFixture::testSubtractRange()
     this->testMatrix6->subtractRange(*(this->testMatrix9), 0, 2); // Try subtracting two matrices with unequal dimensions. Expect nothing to happen.
     for (unsigned row = 0U; row <= 6; row++)
         for (unsigned col = 0U; col <= 4; col++)
-            CPPUNIT_ASSERT(isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8)); 
+            CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8)); 
 
     this->testMatrix11->subtractRange(*(this->testMatrix1), 3, 2); // Try specifying a row start index greater than the row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
@@ -309,19 +309,19 @@ void MatrixTestFixture::testMultiplyRange()
                 switch (row)
                 {
                     case 4:
-                        CPPUNIT_ASSERT(isCloseEnough(0.00067953, testOutput3[row][col], 0.0000000001));
+                        CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(0.00067953, testOutput3[row][col], 0.0000000001));
                         break;
                     case 5:
-                        CPPUNIT_ASSERT(isCloseEnough(0.000815436, testOutput3[row][col], 0.0000000001));
+                        CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(0.000815436, testOutput3[row][col], 0.0000000001));
                         break;
                     case 6:
-                        CPPUNIT_ASSERT(isCloseEnough(0.000951342, testOutput3[row][col], 0.0000000001));
+                        CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(0.000951342, testOutput3[row][col], 0.0000000001));
                         break;
                 }
             }
             else
             {
-                CPPUNIT_ASSERT(isCloseEnough(0.00, testOutput3[row][col], 0.000000001));
+                CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(0.00, testOutput3[row][col], 0.000000001));
             }
         }
     }

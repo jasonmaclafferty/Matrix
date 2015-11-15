@@ -151,7 +151,7 @@ void MatrixBaseTestFixture::testAssignmentOverload()
     CPPUNIT_ASSERT(matrix3c != matrix7g);
     for (unsigned row = 0; row < 7U; row++)
         for (unsigned col = 0; col < 2U; col++)
-            CPPUNIT_ASSERT(isCloseEnough(matrix3c[row][col], 3.14, 0.0001));
+            CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(matrix3c[row][col], 3.14, 0.0001));
 
     MatrixAlgebra::MatrixBase<int> matrix1a(2, 2, 2);
     matrix2b = matrix1a;                  // matrix1a has less rows and columns than matrix2b.
@@ -167,9 +167,9 @@ void MatrixBaseTestFixture::testAssignmentOverload()
     for (unsigned row = 0; row < 12U; row++)
         for (unsigned col = 0; col < 20U; col++)
             if (row < 9U)
-                CPPUNIT_ASSERT(isCloseEnough(matrix9j[row][col], 0.12, 0.0001));
+                CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(matrix9j[row][col], 0.12, 0.0001));
             else
-                CPPUNIT_ASSERT(isCloseEnough(matrix9j[row][col], 0.0001, 0.0001));
+                CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(matrix9j[row][col], 0.0001, 0.0001));
 }
 
 void MatrixBaseTestFixture::testConstructor()
@@ -181,7 +181,7 @@ void MatrixBaseTestFixture::testConstructor()
     CPPUNIT_ASSERT(matrix2NumOfRows == 2U && matrix2NumOfCols == 5U);
     for (unsigned row = 0U; row < matrix2NumOfRows; row++)
         for (unsigned col = 0U; col < matrix2NumOfCols; col++)
-            CPPUNIT_ASSERT(isCloseEnough(3.141592653, this->matrix2->getElement(row, col), 0.000000001));
+            CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(3.141592653, this->matrix2->getElement(row, col), 0.000000001));
 
     unsigned matrix3NumOfColumns    =   this->matrix3->getNumOfColumns();
     unsigned matrix3NumOfRows       =   this->matrix3->getNumOfRows();
@@ -194,7 +194,7 @@ void MatrixBaseTestFixture::testConstructor()
     std::vector<float> temp = { 3.14, 5.17, 1.007, 2.30, 10.1, 1.25, 3.37, 2.718, 5.23, 7.09 };
     for (unsigned row = 0U; row < matrix4NumOfRows; row++)
         for (unsigned col = 0U; col < matrix4NumOfColumns; col++)
-            CPPUNIT_ASSERT(isCloseEnough(temp[col], this->matrix4->getElement(row, col), 0.000001));
+            CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(temp[col], this->matrix4->getElement(row, col), 0.000001));
 }
 
 CppUnit::TestSuite* MatrixBaseTestFixture::suite()
@@ -214,19 +214,19 @@ CppUnit::TestSuite* MatrixBaseTestFixture::suite()
 
 void MatrixBaseTestFixture::testGetElement()
 {
-    CPPUNIT_ASSERT(isCloseEnough(this->matrix4->getElement(0, 0), 3.14, 0.000001));
-    CPPUNIT_ASSERT(isCloseEnough(this->matrix4->getElement(1, 1), 5.17, 0.000001));
+    CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(this->matrix4->getElement(0, 0), 3.14, 0.000001));
+    CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(this->matrix4->getElement(1, 1), 5.17, 0.000001));
     CPPUNIT_ASSERT(this->matrix1->getElement(1, 1) == 1);
-    CPPUNIT_ASSERT(isCloseEnough(this->matrix2->getElement(1, 1), 3.141592653, 0.0000000000001));
-    CPPUNIT_ASSERT(isCloseEnough(this->matrix10->getElement(2, 2), 2.718237, 0.00000000000001));
-    CPPUNIT_ASSERT(isCloseEnough(this->matrix8->getElement(1, 1), 1.07, 0.000001));
+    CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(this->matrix2->getElement(1, 1), 3.141592653, 0.0000000000001));
+    CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(this->matrix10->getElement(2, 2), 2.718237, 0.00000000000001));
+    CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(this->matrix8->getElement(1, 1), 1.07, 0.000001));
     CPPUNIT_ASSERT(this->matrix7->getElement(0, 0) == 0);
 }
 
 void MatrixBaseTestFixture::testSetElement()
 {
     this->matrix4->setElement(0, 0, 6.937);
-    CPPUNIT_ASSERT(isCloseEnough(this->matrix4->getElement(0, 0), 6.937, 0.000001));
+    CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(this->matrix4->getElement(0, 0), 6.937, 0.000001));
 
     this->matrix1->setElement(0, 0, 29);
     CPPUNIT_ASSERT(this->matrix1->getElement(0, 0) == 29);

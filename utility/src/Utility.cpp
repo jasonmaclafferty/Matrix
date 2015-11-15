@@ -26,7 +26,7 @@ Arg2: T actualVal--actual float or double value
 Arg3: T degreeOfAccuracy--float or double value indicating degree of accuracy for comparison of floating point values
 Description: Returns a Boolean value indicating whether the input values of type float or double are close enough to the accepted degree of accuracy.
 */
-bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy)
+bool MatrixAlgebra::isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy)
 {
     if (fabs(expectedVal - actualVal) <= degreeOfAccuracy)
         return true;
@@ -35,7 +35,7 @@ bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy
 }
 
 // fills a supplied matrix with pseudo random integers
-void createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound)
+void MatrixAlgebra::createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound)
 {
     std::linear_congruential_engine<std::uint_fast32_t, 48271, 0, 2147483647> generator;
     std::uniform_int_distribution<int> distribution(lowerBound, upperBound);

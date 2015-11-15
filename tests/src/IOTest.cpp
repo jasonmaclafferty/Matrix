@@ -37,10 +37,10 @@ int main()
     MatrixAlgebra::Matrix<int> matrix2b(10, 10);
     MatrixAlgebra::Matrix<int> matrix3c(7, 6);
 
-    createRandomIntMatrix(matrix2, -2000000000, 2000000000);
-    createRandomIntMatrix(matrix2b,-2000000000, 2000000000);
-    createRandomIntMatrix(matrix3, -2000000000, 2000000000);
-    createRandomIntMatrix(matrix3c, -2000, 10000);
+    MatrixAlgebra::createRandomIntMatrix(matrix2, -2000000000, 2000000000);
+    MatrixAlgebra::createRandomIntMatrix(matrix2b,-2000000000, 2000000000);
+    MatrixAlgebra::createRandomIntMatrix(matrix3, -2000000000, 2000000000);
+    MatrixAlgebra::createRandomIntMatrix(matrix3c, -2000, 10000);
     for (unsigned row = 0U; row < 10; row++)
     {
         for (unsigned col = 0U; col < 10; col++)
@@ -49,7 +49,7 @@ int main()
             matrix4d[row][col]  =   static_cast<double>(matrix2b[row][col]) / 3.1588;
         }
     }
-    createRandomIntMatrix(matrix5, -2000000000, 2000000000);
+    MatrixAlgebra::createRandomIntMatrix(matrix5, -2000000000, 2000000000);
 
     std::cout << "Test operator<< overload with std::cout" << std::endl;
     std::cout << "For MatrixAlgebra::MatrixBase<ElemType>" << std::endl;
@@ -64,9 +64,9 @@ int main()
     std::cout << matrix3c << std::endl;
     std::cout << matrix4d << std::endl;
 
-    createRandomIntMatrix(matrix2, 5, 20);
-    createRandomIntMatrix(matrix3, -5, 100);
-    createRandomIntMatrix(matrix5, -10000, 12000);
+    MatrixAlgebra::createRandomIntMatrix(matrix2, 5, 20);
+    MatrixAlgebra::createRandomIntMatrix(matrix3, -5, 100);
+    MatrixAlgebra::createRandomIntMatrix(matrix5, -10000, 12000);
     for (unsigned row = 0U; row < 10; row++)
         for (unsigned col = 0U; col < 10; col++)
             matrix4[row][col] = static_cast<double>(matrix2[row][col]) / 1.719;
