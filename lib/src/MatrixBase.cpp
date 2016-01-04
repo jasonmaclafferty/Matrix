@@ -276,3 +276,7 @@ template class MatrixAlgebra::MatrixBase<int>;
 template class MatrixAlgebra::MatrixBase<double>;
 template class MatrixAlgebra::MatrixBase<unsigned>;
 template class MatrixAlgebra::MatrixBase<float>;
+template class MatrixAlgebra::MatrixBase<long>;
+template class MatrixAlgebra::MatrixBase<long long>;
+template class MatrixAlgebra::MatrixBase<long double>;
+template class MatrixAlgebra::MatrixBase<unsigned long>;

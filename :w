@@ -21,6 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <cmath>
 #include <Matrix.hpp>
 
+
 // Raises each element of the matrix pointed to by "this" to the power given.
 template <typename ElemType>
 void MatrixAlgebra::Matrix<ElemType>::power(double exponent)
@@ -194,7 +195,29 @@ void MatrixAlgebra::Matrix<ElemType>::parallelAddSubtractHelper(void (MatrixAlge
         if (numOfThreads > 1U)
         {
             std::vector<unsigned> rowsPerThread;
-            this->calculateNumberOfRowsPerThread(rowsPerThread, numOfThreads);
+            for (unsigned i = 0; i < numOfThreads; i++)
+                rowsPerThread.push_back(0);
+            for (unsigned& rowsPerThreadElem : rowsPerThread)
+                rowsPerThreadElem = this->numOfRows / numOfThreads; // divide the number of rows to do the arithmetic on by the number of threads doing work
+
+            unsigned numOfLeftOverRows  =   this->numOfRows % numOfThreads; // the number of rows from the matrices that do not evenly divide by the number of threads
+            bool done                   =   (numOfLeftOverRows != 0) ? false : true;
+            while (!done)
+            {
+                for (unsigned& elem : rowsPerThread)
+                {
+                    if (numOfLeftOverRows > 0)
+                    {
+                        elem++;
+                        numOfLeftOverRows--;
+                    }
+                    else
+                    {
+                        done = true;
+                        break;
+                    }
+                }
+            }
 
             // spawn threads to do the arithmetic
             unsigned rowStart = 0;
@@ -217,24 +240,6 @@ void MatrixAlgebra::Matrix<ElemType>::parallelAddSubtractHelper(void (MatrixAlge
     }
 }
 
-template <typename ElemType>
-void MatrixAlgebra::Matrix<ElemType>::calculateNumberOfRowsPerThread(std::vector<unsigned>& numOfRowsPerThread, unsigned numberOfThreads)
-{
-    for (unsigned i = 0; i < numberOfThreads; i++)
-        numOfRowsPerThread.push_back(0);
-
-    // calculate the exact number of matrix rows to be processed by each thread.
-    for (unsigned threadPos = 0; threadPos < numberOfThreads; threadPos++)
-        numOfRowsPerThread[threadPos] = this->numOfRows / numberOfThreads;
-
-    unsigned numOfRowsLeft  =   this->numOfRows % numberOfThreads;
-    for (unsigned threadPos = 0; numOfRowsLeft > 0; threadPos++)
-    {
-        numOfRowsPerThread[threadPos]++;
-        numOfRowsLeft--;
-    }
-}
-
 // Parallel multiply the matricies "this" and "matrix2" on the specified number of threads and store the output in matrix "out."
 template <typename ElemType>
 void MatrixAlgebra::Matrix<ElemType>::parallelMultiply(const MatrixAlgebra::Matrix<ElemType>& matrix2, MatrixAlgebra::Matrix<ElemType>& out, unsigned numberOfThreads)
@@ -247,7 +252,31 @@ void MatrixAlgebra::Matrix<ElemType>::parallelMultiply(const MatrixAlgebra::Matr
             // initialize vectors to hold the number of rows to be processed by each thread.
             // each element in each vector correspond to threads 0, 1, 2, and 3 etc.
             std::vector<unsigned> numOfRowsPerThread;
-            this->calculateNumberOfRowsPerThread(numOfRowsPerThread, numberOfThreads);
+            for (unsigned i = 0; i < numberOfThreads; i++)
+                numOfRowsPerThread.push_back(0);
+
+            // calculate the exact number of matrix rows to be processed by each thread.
+            for (unsigned threadPos = 0; threadPos < numberOfThreads; threadPos++)
+                numOfRowsPerThread[threadPos] = this->numOfRows / numberOfThreads;
+
+            unsigned numOfRowsLeft  =   this->numOfRows % numberOfThreads;
+ //           bool rowsDone           =   false;
+  //          while (!rowsDone)
+   //         {
+                for (unsigned threadPos = 0; threadPos < numberOfThreads; threadPos++)
+                {
+                    //if (numOfRowsLeft > 0U)
+                    //{
+                        numOfRowsPerThread[threadPos]++;
+                        numOfRowsLeft--;
+                    //}
+                 /*   else
+                    {
+                        rowsDone = true;
+                        break;
+                    }*/
+                }
+    //        }
 
             // spawn threads to do the actual arithmetic
             unsigned rowStart = 0;

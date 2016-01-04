@@ -20,6 +20,7 @@
 set unitTestsBuildCmd   =   "clang++ -W -std=c++11 -o tests/bin/UnitTests -Ilib/headers -Iutility/headers -Itests/headers tests/src/TestRunner.cpp tests/src/*TestFixture.cpp utility/src/Utility.cpp -L/usr/local/lib -lcppunit -Llib/bin -lMatrix"
 set ioTestsBuildCmd     =   "clang++ -W -std=c++11 -o tests/bin/IOTests -Iutility/headers -Ilib/headers utility/src/Utility.cpp tests/src/IOTest.cpp -Llib/bin -lMatrix"
 set libraryBuildCmd     =   "clang++ -W -std=c++11 -shared -o lib/bin/libMatrix.dylib -Iutility/headers -Ilib/headers utility/src/Utility.cpp lib/src/*.cpp"
+set speedTestsBuildCmd  =   "clang++ -Wall -Wextra -std=c++11 -o tests/bin/SpeedTests -Ilib/headers tests/src/SpeedTest.cpp -Llib/bin -lMatrix"
 
 # check if the user specified a debug build or a build clean
 if ($#argv > 0) then
@@ -42,6 +43,11 @@ if (!(-e ./tests/bin)) then
     mkdir ./tests/bin
 endif
 
-eval $libraryBuildCmd # build the library
-eval $unitTestsBuildCmd # build the unit tests
-eval $ioTestsBuildCmd   # build the IO tests
+eval $libraryBuildCmd       # build the library
+eval $unitTestsBuildCmd     # build the unit tests
+eval $ioTestsBuildCmd       # build the IO tests
+eval $speedTestsBuildCmd    # build the speed tests
+
+if ($? == 0) then
+    echo "Build finished successfully."
+endif

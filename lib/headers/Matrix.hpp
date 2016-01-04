@@ -33,6 +33,7 @@ namespace MatrixAlgebra
             void parallelAddSubtractHelper(void (Matrix<ElemType>::*func)(const Matrix<ElemType>&, unsigned, unsigned), 
                                           const Matrix<ElemType>& matrix2, unsigned numOfThreads);
 
+            void calculateNumberOfRowsPerThread(std::vector<unsigned>& numberOfRowsPerThread, unsigned numberOfThreads);
         public:
             Matrix(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal) : MatrixBase<ElemType>(numberOfRows, numberOfColumns, elemInitVal) {}
             
