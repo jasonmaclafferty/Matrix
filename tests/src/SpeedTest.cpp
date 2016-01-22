@@ -43,17 +43,17 @@ int main()
                       (computationStartTime.tv_sec + (((double) computationStartTime.tv_usec) / ((double) 10e6)));
     std::cout << "Time taken to add two 10,000 x 10,000 matrices of ints on a single thread: " << computationTime << "s" << std::endl;
 
-    // Benchmark parallel multiplication of matrices on 4 threads
+    // Benchmark parallel multiplication of matrices on 8 threads
     MatrixAlgebra::Matrix<int> matrix3(1000, 1000, 1);
     MatrixAlgebra::Matrix<int> matrix4(1000, 1000, 2);
     MatrixAlgebra::Matrix<int> multOutput1(1000, 1000);
 
     gettimeofday(&computationStartTime, nullptr);
-    matrix3.parallelMultiply(matrix4, multOutput1, 4);
+    matrix3.parallelMultiply(matrix4, multOutput1, 8);
     gettimeofday(&computationEndTime, nullptr);
     computationTime = ((((double) computationEndTime.tv_usec) / ((double) 10e6)) + computationEndTime.tv_sec) -
                       (computationStartTime.tv_sec + (((double) computationStartTime.tv_usec) / ((double) 10e6)));
-    std::cout << "Time taken to multiply two 1000 x 1000 matrices on 4 threads: " << computationTime << "s" << std::endl;
+    std::cout << "Time taken to multiply two 1000 x 1000 matrices on 8 threads: " << computationTime << "s" << std::endl;
 
     // Do matrix multiplication on a single thread to compare with the multi-threaded performance
     gettimeofday(&computationStartTime, nullptr);

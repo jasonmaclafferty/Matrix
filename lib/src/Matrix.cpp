@@ -90,7 +90,7 @@ void MatrixAlgebra::Matrix<ElemType>::addRange(const MatrixAlgebra::Matrix<ElemT
 }
 
 // Subtracts the specified rows of the matrices referred to by "this" and "matrix2" and stores the result in the "this" matrix.
-// "rowStart" and "rowEnd" are zero-based indices for the desired rows of both matrices to be added.
+// "rowStart" and "rowEnd" are zero-based indices for the desired rows of both matrices to be subtracted.
 // The matrices referred to by "this" and "matrix2" must have the same dimensions or the member function will do nothing.
 template <typename ElemType>
 void MatrixAlgebra::Matrix<ElemType>::subtractRange(const MatrixAlgebra::Matrix<ElemType>& matrix2, unsigned rowStart, unsigned rowEnd)
@@ -201,7 +201,10 @@ void MatrixAlgebra::Matrix<ElemType>::parallelAddSubtractHelper(void (MatrixAlge
             std::vector< std::shared_ptr<std::thread> > threads;
             for (unsigned threadPos = 0; threadPos < numOfThreads; threadPos++)
             {
-                threads.push_back(std::make_shared<std::thread>(func, this, matrix2, rowStart, rowStart + (rowsPerThread[threadPos] - 1U)));
+                threads.push_back(std::make_shared<std::thread>([this, func, threadPos, &matrix2, rowStart, &rowsPerThread]()
+                {
+                    (this->*func)(matrix2, rowStart, rowStart + (rowsPerThread[threadPos] - 1U));
+                }));
                 rowStart += rowsPerThread[threadPos];
             }
             
