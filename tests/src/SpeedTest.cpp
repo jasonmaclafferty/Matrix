@@ -21,45 +21,57 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <Matrix.hpp>
 #include <sys/time.h>
 
-int main()
+void benchmarkAddition(int numberOfThreads, int numOfRowsAndColumns)
 {
-    MatrixAlgebra::Matrix<int> matrix1(10000, 10000, 1);
-    MatrixAlgebra::Matrix<int> matrix2(10000, 10000, 2);
-
-    // Benchmark parallel addition on 4 threads
+    MatrixAlgebra::Matrix<int> matrix1(numOfRowsAndColumns, numOfRowsAndColumns, 3);
+    MatrixAlgebra::Matrix<int> matrix2(numOfRowsAndColumns, numOfRowsAndColumns, 6);
     struct timeval computationStartTime, computationEndTime;
     gettimeofday(&computationStartTime, nullptr);
-    matrix1.parallelAdd(matrix2, 4);
+    matrix1.parallelAdd(matrix2, numberOfThreads);
     gettimeofday(&computationEndTime, nullptr);
     double computationTime = ((((double) computationEndTime.tv_usec) / ((double) 10e6)) + computationEndTime.tv_sec) -
                              (computationStartTime.tv_sec + (((double) computationStartTime.tv_usec) / ((double) 10e6)));
-    std::cout << "Time taken to add two 10,000 x 10,000 matrices of ints on 4 threads: " << computationTime << "s" << std::endl;
+    std::cout << "Time taken to add two " << numOfRowsAndColumns << " x " << numOfRowsAndColumns << " matrices of ints on " << numberOfThreads << " threads: " 
+        << computationTime << "s" << std::endl;
+}
 
-    // Do addition on 1 thread for sake of comparison against multi-threaded version.
+void benchmarkMultiplication(int numberOfThreads, int numOfRowsAndColumns)
+{
+    MatrixAlgebra::Matrix<int> matrix1(numOfRowsAndColumns, numOfRowsAndColumns, 3);
+    MatrixAlgebra::Matrix<int> matrix2(numOfRowsAndColumns, numOfRowsAndColumns, 6);
+    MatrixAlgebra::Matrix<int> matrixOutput(numOfRowsAndColumns, numOfRowsAndColumns);
+    struct timeval computationStartTime, computationEndTime;
     gettimeofday(&computationStartTime, nullptr);
-    matrix1.parallelAdd(matrix2, 1);
+    matrix1.parallelMultiply(matrix2, matrixOutput, numberOfThreads);
     gettimeofday(&computationEndTime, nullptr);
-    computationTime = ((((double) computationEndTime.tv_usec) / ((double) 10e6)) + computationEndTime.tv_sec) -
-                      (computationStartTime.tv_sec + (((double) computationStartTime.tv_usec) / ((double) 10e6)));
-    std::cout << "Time taken to add two 10,000 x 10,000 matrices of ints on a single thread: " << computationTime << "s" << std::endl;
+    double computationTime = ((((double) computationEndTime.tv_usec) / ((double) 10e6)) + computationEndTime.tv_sec) -
+                             (computationStartTime.tv_sec + (((double) computationStartTime.tv_usec) / ((double) 10e6)));
+    std::cout << "Time taken to multiply two " << numOfRowsAndColumns << " x " << numOfRowsAndColumns << " matrices of ints on " << numberOfThreads << " threads: " 
+        << computationTime << "s" << std::endl;
+}
 
-    // Benchmark parallel multiplication of matrices on 8 threads
-    MatrixAlgebra::Matrix<int> matrix3(1000, 1000, 1);
-    MatrixAlgebra::Matrix<int> matrix4(1000, 1000, 2);
-    MatrixAlgebra::Matrix<int> multOutput1(1000, 1000);
+int main()
+{
+    // benchmark matrix addition on up to 4 threads
+    benchmarkAddition(1, 1000);
+    benchmarkAddition(2, 1000);
+    benchmarkAddition(4, 1000);
+    benchmarkAddition(1, 10000);
+    benchmarkAddition(2, 10000);
+    benchmarkAddition(4, 10000);
+    benchmarkAddition(1, 20000);
+    benchmarkAddition(2, 20000);
+    benchmarkAddition(4, 20000);
+    // benchmark matrix addition on up to 8 threads
+    benchmarkAddition(1, 10000);
+    benchmarkAddition(8, 10000);
+    benchmarkAddition(1, 20000);
+    benchmarkAddition(8, 20000);
 
-    gettimeofday(&computationStartTime, nullptr);
-    matrix3.parallelMultiply(matrix4, multOutput1, 8);
-    gettimeofday(&computationEndTime, nullptr);
-    computationTime = ((((double) computationEndTime.tv_usec) / ((double) 10e6)) + computationEndTime.tv_sec) -
-                      (computationStartTime.tv_sec + (((double) computationStartTime.tv_usec) / ((double) 10e6)));
-    std::cout << "Time taken to multiply two 1000 x 1000 matrices on 8 threads: " << computationTime << "s" << std::endl;
-
-    // Do matrix multiplication on a single thread to compare with the multi-threaded performance
-    gettimeofday(&computationStartTime, nullptr);
-    matrix3.parallelMultiply(matrix4, multOutput1, 1);
-    gettimeofday(&computationEndTime, nullptr);
-    computationTime = ((((double) computationEndTime.tv_usec) / ((double) 10e6)) + computationEndTime.tv_sec) -
-                      (computationStartTime.tv_sec + (((double) computationStartTime.tv_usec) / ((double) 10e6)));
-    std::cout << "Time taken to multiply two 1000 x 1000 matrices of ints on a single thread: " << computationTime << "s" << std::endl;
+    // benchmark matrix multiplication  on up to 4 threads
+    benchmarkMultiplication(1, 1000);
+    benchmarkMultiplication(2, 1000);
+    benchmarkMultiplication(4, 1000);
+    benchmarkMultiplication(8, 1000);
+    benchmarkMultiplication(16, 1000);
 }
