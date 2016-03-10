@@ -27,8 +27,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace MatrixAlgebra
 {
+
+    /*
+    Function Name: isCloseEnough
+    Arg1: T expectedVal--float or double value expected
+    Arg2: T actualVal--actual float or double value
+    Arg3: T degreeOfAccuracy--float or double value indicating degree of accuracy for comparison of floating point values
+    Description: Returns a Boolean value indicating whether the input values of type float or double are close enough to the accepted degree of accuracy.
+    */
     bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy);
 
+    // fills a supplied matrix with pseudo random integers
     void createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound);
 }
 

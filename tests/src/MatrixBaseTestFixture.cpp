@@ -40,8 +40,12 @@ void MatrixBaseTestFixture::setUp()
     unsigned numOfRows          =   this->matrix4->getNumOfRows();
     unsigned numOfColumns       =   this->matrix4->getNumOfColumns();
     for (unsigned row = 0U; row < numOfRows; row++)
+    {
         for (unsigned col = 0U; col < numOfColumns; col++)
+        {
             this->matrix4->setElement(row, col, temp[col]);
+        }
+    }
 }
 
 void MatrixBaseTestFixture::testIsSquare()
@@ -57,8 +61,12 @@ void MatrixBaseTestFixture::testIsZero()
     int matrix1NumOfRows    =   this->matrix1->getNumOfRows();
     int matrix1NumOfCols    =   this->matrix1->getNumOfColumns();
     for (int matrix1Row = 0; matrix1Row < matrix1NumOfRows; matrix1Row++)
+    {
         for (int matrix1Col = 0; matrix1Col < matrix1NumOfCols; matrix1Col++)
+        {
             this->matrix1->setElement(matrix1Row, matrix1Col, 0);
+        }
+    }
 
     CPPUNIT_ASSERT(this->matrix1->isZero()); // Should be the Zero Matrix.
     CPPUNIT_ASSERT(this->matrix3->isZero()); // "
@@ -82,7 +90,9 @@ void MatrixBaseTestFixture::testIsIdentity()
 
     int matrix6NumOfRows = this->matrix6->getNumOfRows();
     for (int row = 0; row < matrix6NumOfRows; row++)
+    {
         (*(this->matrix6))[row][row] = 1;
+    }
     CPPUNIT_ASSERT(this->matrix6->isIdentity()); // Should also be the Identity Matrix.
 
     CPPUNIT_ASSERT(!this->matrix2->isIdentity()); // A non-square matrix cannot be the Identity Matrix.
@@ -90,7 +100,9 @@ void MatrixBaseTestFixture::testIsIdentity()
     CPPUNIT_ASSERT(!this->matrix10->isIdentity()); // A square matrix with all then entries equal to 2.718237 should not be the Identity Matrix.
 
     for (int row = 0; row < matrix6NumOfRows; row++)
+    {
         (*(this->matrix6))[row][row] = 6;
+    }
     CPPUNIT_ASSERT(!this->matrix6->isIdentity()); // A matrix with a value of 6 across the diagonal and 0 every where else should not be the Identity Matrix.
 }
 
@@ -126,8 +138,12 @@ void MatrixBaseTestFixture::testAssignmentOverload()
 
     *(this->matrix1) = *(this->matrix9); // matrix9 has more rows and columns than matrix1.
     for (int row = 0; row < 3; row++)
+    {
         for (int col = 0; col < 3; col++)
+        {
             CPPUNIT_ASSERT((*(this->matrix1))[row][col] == 2);
+        }
+    }
     MatrixAlgebra::MatrixBase<unsigned> matrix4d(3, 3, 25);
     MatrixAlgebra::MatrixBase<unsigned> matrix5e(5, 5, 1);
     matrix4d = matrix5e;
@@ -150,14 +166,22 @@ void MatrixBaseTestFixture::testAssignmentOverload()
     matrix3c = matrix7g; // matrix7g has more rows and less columns than matrix3c
     CPPUNIT_ASSERT(matrix3c != matrix7g);
     for (unsigned row = 0; row < 7U; row++)
+    {
         for (unsigned col = 0; col < 2U; col++)
+        {
             CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(matrix3c[row][col], 3.14, 0.0001));
+        }
+    }
 
     MatrixAlgebra::MatrixBase<int> matrix1a(2, 2, 2);
     matrix2b = matrix1a;                  // matrix1a has less rows and columns than matrix2b.
     for (unsigned row = 0; row < 4U; row++)
+    {
         for (unsigned col = 0; col < 7U; col++)
-                CPPUNIT_ASSERT(matrix2b[row][col] == 2);
+        {
+            CPPUNIT_ASSERT(matrix2b[row][col] == 2);
+        }
+    }
     matrix1a = *(this->matrix9);
     CPPUNIT_ASSERT(matrix1a == *(this->matrix9));
 
@@ -165,11 +189,19 @@ void MatrixBaseTestFixture::testAssignmentOverload()
     MatrixAlgebra::MatrixBase<float> matrix10k(9, 20, 0.12);
     matrix9j = matrix10k; // matrix10k has less rows and more columns than matrix9j
     for (unsigned row = 0; row < 12U; row++)
+    {
         for (unsigned col = 0; col < 20U; col++)
+        {
             if (row < 9U)
+            {
                 CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(matrix9j[row][col], 0.12, 0.0001));
+            }
             else
+            {
                 CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(matrix9j[row][col], 0.0001, 0.0001));
+            }
+        }
+    }
 }
 
 void MatrixBaseTestFixture::testConstructor()
@@ -180,21 +212,33 @@ void MatrixBaseTestFixture::testConstructor()
     unsigned matrix2NumOfRows   =   this->matrix2->getNumOfRows();
     CPPUNIT_ASSERT(matrix2NumOfRows == 2U && matrix2NumOfCols == 5U);
     for (unsigned row = 0U; row < matrix2NumOfRows; row++)
+    {
         for (unsigned col = 0U; col < matrix2NumOfCols; col++)
+        {
             CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(3.141592653, this->matrix2->getElement(row, col), 0.000000001));
+        }
+    }
 
     unsigned matrix3NumOfColumns    =   this->matrix3->getNumOfColumns();
     unsigned matrix3NumOfRows       =   this->matrix3->getNumOfRows();
     for (unsigned row = 0U; row < matrix3NumOfRows; row++)
+    {
         for (unsigned col = 0U; col < matrix3NumOfColumns; col++)
+        {
             CPPUNIT_ASSERT(this->matrix3->getElement(row, col) == 0U);
+        }
+    }
 
     unsigned matrix4NumOfColumns   =   this->matrix4->getNumOfColumns();
     unsigned matrix4NumOfRows   =   this->matrix2->getNumOfRows();
     std::vector<float> temp = { 3.14, 5.17, 1.007, 2.30, 10.1, 1.25, 3.37, 2.718, 5.23, 7.09 };
     for (unsigned row = 0U; row < matrix4NumOfRows; row++)
+    {
         for (unsigned col = 0U; col < matrix4NumOfColumns; col++)
+        {
             CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(temp[col], this->matrix4->getElement(row, col), 0.000001));
+        }
+    }
 }
 
 CppUnit::TestSuite* MatrixBaseTestFixture::suite()

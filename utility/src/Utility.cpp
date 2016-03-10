@@ -19,31 +19,33 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <Utility.hpp>
 
-/*
-Function Name: isCloseEnough
-Arg1: T expectedVal--float or double value expected
-Arg2: T actualVal--actual float or double value
-Arg3: T degreeOfAccuracy--float or double value indicating degree of accuracy for comparison of floating point values
-Description: Returns a Boolean value indicating whether the input values of type float or double are close enough to the accepted degree of accuracy.
-*/
-bool MatrixAlgebra::isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy)
+namespace MatrixAlgebra
 {
-    if (fabs(expectedVal - actualVal) <= degreeOfAccuracy)
-        return true;
-    else
-        return false;
-}
+    bool isCloseEnough(double expectedVal, double actualVal, double degreeOfAccuracy)
+    {
+        bool isCloseEnough = false;
+        if (fabs(expectedVal - actualVal) <= degreeOfAccuracy)
+        {
+            isCloseEnough = true;
+        }
 
-// fills a supplied matrix with pseudo random integers
-void MatrixAlgebra::createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound)
-{
-    std::linear_congruential_engine<std::uint_fast32_t, 48271, 0, 2147483647> generator;
-    std::uniform_int_distribution<int> distribution(lowerBound, upperBound);
-    auto dice                       =   std::bind(distribution, generator);
-    unsigned matrixNumOfRows        =   matrix.getNumOfRows();
-    unsigned matrixNumOfColumns     =   matrix.getNumOfColumns();
+        return isCloseEnough;
+    }
 
-    for (unsigned row = 0U; row < matrixNumOfRows; row++)
-        for (unsigned col = 0U; col < matrixNumOfColumns; col++)
-            matrix[row][col] = dice();
+    void createRandomIntMatrix(MatrixAlgebra::MatrixBase<int>& matrix, int lowerBound, int upperBound)
+    {
+        std::linear_congruential_engine<std::uint_fast32_t, 48271, 0, 2147483647> generator;
+        std::uniform_int_distribution<int> distribution(lowerBound, upperBound);
+        auto dice                       =   std::bind(distribution, generator);
+        unsigned matrixNumOfRows        =   matrix.getNumOfRows();
+        unsigned matrixNumOfColumns     =   matrix.getNumOfColumns();
+
+        for (unsigned row = 0U; row < matrixNumOfRows; row++)
+        {
+            for (unsigned col = 0U; col < matrixNumOfColumns; col++)
+            {
+                matrix[row][col] = dice();
+            }
+        }
+    }
 }

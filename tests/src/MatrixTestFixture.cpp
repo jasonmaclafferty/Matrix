@@ -42,8 +42,12 @@ void MatrixTestFixture::testAssignmentOverload()
 {
     *(this->testMatrix2) = *(this->testMatrix1); // testMatrix1 has less columns and rows than testMatrix2.
     for (unsigned row = 0U; row < 5U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
+        {
             CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == 1);
+        }
+    }
 
     *(this->testMatrix1) = *(this->testMatrix2); // testMatrix2 has more rows and columns than testMatrix1.
     CPPUNIT_ASSERT(*(this->testMatrix1) == *(this->testMatrix2));
@@ -63,8 +67,12 @@ void MatrixTestFixture::setUp()
     this->testMatrix2   =   std::make_shared< MatrixAlgebra::Matrix<int> >(10, 10);
     std::vector<int> temp {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     for (unsigned row = 0U; row < 10U; row++)
+    {
         for (unsigned col = 0U; col < 10U; col++)
+        {
             (*(this->testMatrix2))[row][col] = temp[col];
+        }
+    }
 
     this->testMatrix4   =   std::make_shared< MatrixAlgebra::Matrix<double> >(4, 4, 3.141592653);
     this->testMatrix3   =   std::make_shared< MatrixAlgebra::Matrix<int> >(5, 7, 2);
@@ -73,24 +81,36 @@ void MatrixTestFixture::setUp()
     this->testMatrix6   =   std::make_shared< MatrixAlgebra::Matrix<double> >(7, 5);
     std::vector<double> temp2 {0.00001, 0.00002, 0.00003, 0.00004, 0.00005, 0.00006, 0.00007};
     for (unsigned row = 0U; row < 7U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
+        {
             (*(this->testMatrix6))[row][col] = temp2[row];
+        }
+    }
 
     this->testMatrix11 = std::make_shared< MatrixAlgebra::Matrix<int> >(5, 5, 3);
 
     std::vector<int> temp3 {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
     this->testMatrix8 = std::make_shared< MatrixAlgebra::Matrix<int> >(10, 10);
     for (unsigned row = 0U; row < 10U; row++)
+    {
         for (unsigned col = 0U; col < 10U; col++)
+        {
             (*(this->testMatrix8))[row][col] = temp3[col];
+        }
+    }
 
     this->testMatrix9 = std::make_shared< MatrixAlgebra::Matrix<double> >(4, 4, 3.141592653);
 
     this->testMatrix10 = std::make_shared< MatrixAlgebra::Matrix<double> >(7, 5);
     std::vector<double> temp4 {-1e-5, -2e-5, -3e-5, -4e-5, -5e-5, -6e-5, -7e-5};
     for (unsigned row = 0U; row < 7U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
-        (*(this->testMatrix10))[row][col] = temp4[row];
+        {
+            (*(this->testMatrix10))[row][col] = temp4[row];
+        }
+    }
 
     this->testMatrix12  =   std::make_shared< MatrixAlgebra::Matrix<int> >(1000, 1000, 1);
     this->testMatrix13  =   std::make_shared< MatrixAlgebra::Matrix<int> >(1000, 1000, 1);
@@ -102,19 +122,31 @@ void MatrixTestFixture::testScale()
 {
     this->testMatrix1->scale(2);
     for (unsigned row = 0U; row < 5U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
+        {
             CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 2);
+        }
+    }
 
     std::vector<int> temp {3, 6, 9, 12, 15, 18, 21, 24, 27, 30};
     this->testMatrix2->scale(3);
     for (unsigned row = 0U; row < 10U; row++)
+    {
         for (unsigned col = 0U; col < 10U; col++)
+        {
             CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == temp[col]);
+        }
+    }
 
     this->testMatrix3->scale(1);
     for (unsigned row = 0U; row < 5U; row++)
+    {
         for (unsigned col = 0U; col < 7U; col++)
+        {
             CPPUNIT_ASSERT((*(this->testMatrix3))[row][col] == 2);
+        }
+    }
 
     this->testMatrix4->scale(2.00);
     CPPUNIT_ASSERT(this->testMatrix4->allElementsAre(6.283185306));
@@ -123,12 +155,20 @@ void MatrixTestFixture::testScale()
     CPPUNIT_ASSERT(this->testMatrix5->allElementsAre(7.3881763344));
 
     for (unsigned row = 0U; row < 7U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
+        {
             this->testMatrix6->scale((*(this->testMatrix6))[row][col]);
+        }
+    }
     std::vector<double> temp2 {1e-10, 4e-10, 9e-10, 1.6e-9, 2.5e-9, 3.6e-9, 4.9e-9};
     for (unsigned row = 0U; row < 7U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
+        {
             CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(temp2[row], (*(this->testMatrix6))[row][col], 0.0000001));
+        }
+    }
 }
 
 void MatrixTestFixture::testPower()
@@ -139,8 +179,12 @@ void MatrixTestFixture::testPower()
     this->testMatrix2->power(0.5); // you can even do square roots!
     std::vector<int> temp {1, 1, 1, 2, 2, 2, 2, 2, 3, 3};
     for (unsigned row = 0U; row < 10U; row++)
+    {
         for (unsigned col = 0U; col < 10U; col++)
+        {
             CPPUNIT_ASSERT((*(this->testMatrix2))[row][col] == temp[col]);
+        }
+    }
 
     this->testMatrix3->power(3.00); // matrix^3
     CPPUNIT_ASSERT(this->testMatrix3->allElementsAre(8));
@@ -159,7 +203,9 @@ void MatrixTestFixture::testAddRange()
 {
     this->testMatrix4->addRange(*(this->testMatrix9), 0, 0); // Try adding only a single row of each matrix together.
     for (unsigned col = 0U; col < 4U; col++)
+    {
         CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(6.283185306, (*(this->testMatrix4))[0][col], 0.000000001)); 
+    }
 
     this->testMatrix2->addRange(*(this->testMatrix8), 0, 9); // Add two entire matrices.
     CPPUNIT_ASSERT(this->testMatrix2->allElementsAre(10));
@@ -189,42 +235,70 @@ void MatrixTestFixture::testAddRange()
 
     this->testMatrix1->addRange(*(this->testMatrix11), 0, 2); // Add a valid row range of two matrices.
     for (unsigned row = 0U; row < 5U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
+        {
             if (row <= 2U)
+            {
                 CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 4);
+            }
             else
+            {
                 CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 1);
+            }
+        }
+    }
 }
 
 void MatrixTestFixture::testSubtractRange()
 {
     this->testMatrix4->subtractRange(*(this->testMatrix9), 0, 0); // Try subtracting only a single row of each matrix together.
     for (unsigned row = 0U; row < 4U; row++)
+    {
         for (unsigned col = 0U; col < 4U; col++)
+        {
             if (row == 0)
+            {
                 CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(0.00, (*(this->testMatrix4))[row][col], 0.000000001));
+            }
             else
+            {
                 CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(3.141592653, (*this->testMatrix4)[row][col], 0.000000001));
+            }
+        }
+    }
 
     this->testMatrix8->subtractRange(*(this->testMatrix2), 0, 9); // Subtract two entire matrices.
     std::vector<int> temp {8, 6, 4, 2, 0, -2, -4, -6, -8, -10};
     for (unsigned row = 0U; row <= 9; row++)
+    {
         for (unsigned col = 0U; col <= 9; col++)
+        {
             CPPUNIT_ASSERT((*(this->testMatrix8))[row][col] == temp[col]);
+        }
+    }
 
     this->testMatrix6->subtractRange(*(this->testMatrix10), 0, 6); // "
     std::vector<double> temp2 {1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5};
     for (unsigned row = 0U; row <= 6; row++)
+    {
         for (unsigned col = 0U; col <= 4; col++)
+        {
             CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8));
+        }
+    }
 
     this->testMatrix11->subtractRange(*(this->testMatrix1), 4, 5); // Try an out of range row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
 
     this->testMatrix6->subtractRange(*(this->testMatrix9), 0, 2); // Try subtracting two matrices with unequal dimensions. Expect nothing to happen.
     for (unsigned row = 0U; row <= 6; row++)
+    {
         for (unsigned col = 0U; col <= 4; col++)
+        {
             CPPUNIT_ASSERT(MatrixAlgebra::isCloseEnough(2.00 * temp2[row], (*(this->testMatrix6))[row][col], 1e-8)); 
+        }
+    }
 
     this->testMatrix11->subtractRange(*(this->testMatrix1), 3, 2); // Try specifying a row start index greater than the row end index. Nothing should happen.
     CPPUNIT_ASSERT(this->testMatrix11->allElementsAre(3));
@@ -242,11 +316,20 @@ void MatrixTestFixture::testSubtractRange()
 
     this->testMatrix1->subtractRange(*(this->testMatrix11), 0, 2); // Subtract a valid row range of two matrices.
     for (unsigned row = 0U; row < 5U; row++)
+    {        
         for (unsigned col = 0U; col < 5U; col++)
+        {
             if (row <= 2U)
+            {
                 CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == -2);
+            }
             else
+            {
                 CPPUNIT_ASSERT((*(this->testMatrix1))[row][col] == 1);
+            }
+        }
+    }
+
 }
 
 void MatrixTestFixture::testMultiplyRange()
@@ -255,8 +338,12 @@ void MatrixTestFixture::testMultiplyRange()
     std::vector<int> temp {45, 90, 135, 180, 225, 270, 315, 360, 405, 450};
     this->testMatrix8->multiplyRange(0, 9, *(this->testMatrix2), 0, 9, testOutput1); // Multiply two entire matrices.
     for (unsigned row = 0; row < 10U; row++)
+    {
         for (unsigned col = 0; col < 10U; col++)
+        {
             CPPUNIT_ASSERT(testOutput1[row][col] == temp[col]);
+        }
+    }
 
     MatrixAlgebra::Matrix<int> testOutput11(3, 3);
     MatrixAlgebra::Matrix<int> testInput11(3, 3, 2);
@@ -268,35 +355,65 @@ void MatrixTestFixture::testMultiplyRange()
     MatrixAlgebra::Matrix<int> testOutput2(5, 7);
     this->testMatrix1->multiplyRange(1, 3, *(this->testMatrix3), 1, 3, testOutput2); // Multiply a part of two matrices.
     for (unsigned row = 0; row < 5U; row++)
+    {
         for (unsigned col = 0; col < 7U; col++)
+        {
             if (row >= 1 && row <= 3 && col >= 1 && col <= 3)
+            {
                 CPPUNIT_ASSERT(testOutput2[row][col] == 10);
+            }
             else
+            {
                 CPPUNIT_ASSERT(testOutput2[row][col] == 0);
+            }
+        }
+    }
 
     MatrixAlgebra::Matrix<int> testOutput12(3, 3);                                         // " another test
     testInput11.multiplyRange(2, 2, testInput11b, 0, 0, testOutput12);
     CPPUNIT_ASSERT(testOutput12[2][0] == 18);
     for (unsigned row = 0U; row <= 2; row++)
+    {
         for (unsigned col = 0U; col <= 2; col++)
+        {
             if (row != 2 && col != 0)
+            {
                 CPPUNIT_ASSERT(testOutput12[row][col] == 0);
+            }
+        }
+    }
 
     testOutput2.multiplyRange(9, 3, testOutput2, 9, 3, testOutput2); // Try an invalid start index. Nothing should happen.
     for (unsigned row = 0; row < 5U; row++)
+    {
         for (unsigned col = 0; col < 7U; col++)
+        {
             if (row >= 1 && row <= 3 && col >= 1 && col <= 3)
+            {
                 CPPUNIT_ASSERT(testOutput2[row][col] == 10);
+            }
             else
+            {
                 CPPUNIT_ASSERT(testOutput2[row][col] == 0);
+            }
+        }
+    }
 
     testOutput2.multiplyRange(0, 8, testOutput2, 0, 8, testOutput2); // Try an invalid end index. Nothing should happen.
     for (unsigned row = 0; row < 5U; row++)
+    {
         for (unsigned col = 0; col < 7U; col++)
+        {
             if (row >= 1 && row <= 3 && col >= 1 && col <= 3)
+            {
                 CPPUNIT_ASSERT(testOutput2[row][col] == 10);
+            }
             else
+            {
                 CPPUNIT_ASSERT(testOutput2[row][col] == 0);
+            }
+        }
+    }
 
     MatrixAlgebra::Matrix<double> testOutput3(7, 4);
     this->testMatrix6->multiplyRange(4, 6, *(this->testMatrix5), 0, 2, testOutput3); // Multiply two different ranges of two different matrices.
@@ -359,8 +476,12 @@ void MatrixTestFixture::testSubtractionOperatorOverload()
     std::vector<double> temp { 2e-5, 4e-5, 6e-5, 8e-5, 1e-4, 1.2e-4, 1.4e-4 };
     auto test4Output = *(this->testMatrix6) - *(this->testMatrix10);
     for (unsigned row = 0U; row < 7U; row++)
+    {
         for (unsigned col = 0U; col < 5U; col++)
+        {
             CPPUNIT_ASSERT((*test4Output)[row][col] == temp[row]);
+        }
+    }
 
     auto test5Output = *(this->testMatrix11) - *(this->testMatrix1);
     CPPUNIT_ASSERT(test5Output->allElementsAre(2));

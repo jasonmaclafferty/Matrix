@@ -68,8 +68,12 @@ int main()
     MatrixAlgebra::createRandomIntMatrix(matrix3, -5, 100);
     MatrixAlgebra::createRandomIntMatrix(matrix5, -10000, 12000);
     for (unsigned row = 0U; row < 10; row++)
+    {
         for (unsigned col = 0U; col < 10; col++)
+        {
             matrix4[row][col] = static_cast<double>(matrix2[row][col]) / 1.719;
+        }
+    }
 
     std::ofstream ioTestFile("IOTestFile");
     ioTestFile << "Test operator<< overload for file streams." << std::endl;
