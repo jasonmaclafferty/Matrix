@@ -37,8 +37,8 @@ void MatrixBaseTestFixture::setUp()
     this->matrix1->setElement(2, 2, 1);
 
     std::vector<float> temp     =   { 3.14, 5.17, 1.007, 2.30, 10.1, 1.25, 3.37, 2.718, 5.23, 7.09 };
-    unsigned numOfRows          =   this->matrix4->getNumOfRows();
-    unsigned numOfColumns       =   this->matrix4->getNumOfColumns();
+    unsigned numOfRows          =   this->matrix4->getNumberOfRows();
+    unsigned numOfColumns       =   this->matrix4->getNumberOfColumns();
     for (unsigned row = 0U; row < numOfRows; row++)
     {
         for (unsigned col = 0U; col < numOfColumns; col++)
@@ -58,8 +58,8 @@ void MatrixBaseTestFixture::testIsSquare()
 
 void MatrixBaseTestFixture::testIsZero()
 {
-    int matrix1NumOfRows    =   this->matrix1->getNumOfRows();
-    int matrix1NumOfCols    =   this->matrix1->getNumOfColumns();
+    int matrix1NumOfRows    =   this->matrix1->getNumberOfRows();
+    int matrix1NumOfCols    =   this->matrix1->getNumberOfColumns();
     for (int matrix1Row = 0; matrix1Row < matrix1NumOfRows; matrix1Row++)
     {
         for (int matrix1Col = 0; matrix1Col < matrix1NumOfCols; matrix1Col++)
@@ -88,7 +88,7 @@ void MatrixBaseTestFixture::testIsIdentity()
     (*(this->matrix1))[0][0] = 1; (*(this->matrix1))[1][1] = 1; (*(this->matrix1))[2][2] = 1;
     CPPUNIT_ASSERT(this->matrix1->isIdentity()); // All 1's on the diagonal with 0's everywhere else should be the Identity Matrix.
 
-    int matrix6NumOfRows = this->matrix6->getNumOfRows();
+    int matrix6NumOfRows = this->matrix6->getNumberOfRows();
     for (int row = 0; row < matrix6NumOfRows; row++)
     {
         (*(this->matrix6))[row][row] = 1;
@@ -206,10 +206,10 @@ void MatrixBaseTestFixture::testAssignmentOverload()
 
 void MatrixBaseTestFixture::testConstructor()
 {
-    CPPUNIT_ASSERT(this->matrix1->getNumOfRows() == 3U && this->matrix1->getNumOfColumns() == 3U);
+    CPPUNIT_ASSERT(this->matrix1->getNumberOfRows() == 3U && this->matrix1->getNumberOfColumns() == 3U);
 
-    unsigned matrix2NumOfCols   =   this->matrix2->getNumOfColumns();
-    unsigned matrix2NumOfRows   =   this->matrix2->getNumOfRows();
+    unsigned matrix2NumOfCols   =   this->matrix2->getNumberOfColumns();
+    unsigned matrix2NumOfRows   =   this->matrix2->getNumberOfRows();
     CPPUNIT_ASSERT(matrix2NumOfRows == 2U && matrix2NumOfCols == 5U);
     for (unsigned row = 0U; row < matrix2NumOfRows; row++)
     {
@@ -219,8 +219,8 @@ void MatrixBaseTestFixture::testConstructor()
         }
     }
 
-    unsigned matrix3NumOfColumns    =   this->matrix3->getNumOfColumns();
-    unsigned matrix3NumOfRows       =   this->matrix3->getNumOfRows();
+    unsigned matrix3NumOfColumns    =   this->matrix3->getNumberOfColumns();
+    unsigned matrix3NumOfRows       =   this->matrix3->getNumberOfRows();
     for (unsigned row = 0U; row < matrix3NumOfRows; row++)
     {
         for (unsigned col = 0U; col < matrix3NumOfColumns; col++)
@@ -229,8 +229,8 @@ void MatrixBaseTestFixture::testConstructor()
         }
     }
 
-    unsigned matrix4NumOfColumns   =   this->matrix4->getNumOfColumns();
-    unsigned matrix4NumOfRows   =   this->matrix2->getNumOfRows();
+    unsigned matrix4NumOfColumns   =   this->matrix4->getNumberOfColumns();
+    unsigned matrix4NumOfRows   =   this->matrix2->getNumberOfRows();
     std::vector<float> temp = { 3.14, 5.17, 1.007, 2.30, 10.1, 1.25, 3.37, 2.718, 5.23, 7.09 };
     for (unsigned row = 0U; row < matrix4NumOfRows; row++)
     {
@@ -278,7 +278,7 @@ void MatrixBaseTestFixture::testSetElement()
     this->matrix1->setElement(2, 2, 377);
     CPPUNIT_ASSERT(this->matrix1->getElement(2, 2) == 377);
 
-    unsigned matrix9NumberOfRows = this->matrix9->getNumOfRows();
+    unsigned matrix9NumberOfRows = this->matrix9->getNumberOfRows();
     for (unsigned row = 0U; row < matrix9NumberOfRows; row++)
     {
         this->matrix9->setElement(row, 0, 297);

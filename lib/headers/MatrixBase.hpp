@@ -26,16 +26,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace MatrixAlgebra
 {
-    template <typename ElemType>
+    template <typename ElementType>
     class MatrixBase
     {
         protected:
-            std::vector< std::vector<ElemType> > data;
+            std::vector< std::vector<ElementType> > data;
 
-            unsigned numOfRows, numOfColumns;
+            unsigned numberOfRows, numberOfColumns;
 
             // Initialization function which does all of the heavy lifting for the MatrixBase class constructors.
-            void init(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
+            void init(unsigned numberOfRows, unsigned numberOfColumns, ElementType elementInitializationValue);
 
         public:
             // MatrixBase class constructor accepting parameters specified the desired number of rows and columns for the matrix.
@@ -43,10 +43,10 @@ namespace MatrixAlgebra
 
             // MatrixBase class constructor accepting as arguments the desired number of rows and columns .
             // for the matrix to be created along with what value each matrix element should have.
-            MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElemType elemInitVal);
+            MatrixBase(unsigned numberOfRows, unsigned numberOfColumns, ElementType elementInitializationValue);
 
             // Copy Constructor
-            MatrixBase(const MatrixBase<ElemType>& matrixToCopyFrom);
+            MatrixBase(const MatrixBase<ElementType>& matrixToCopyFrom);
 
             // Returns a Boolean value indicating whether or not the matrix is the identity matrix.
             // An identity matrix is defined to have the value of 1 for all the elements along the matrix diagonal and 0's everywhere else.
@@ -65,54 +65,54 @@ namespace MatrixAlgebra
             // the number of rows equals the number of columns.
             bool isSquare();
 
-            // Returns the matrix element at position "row", "col" if  given a valid row, col position--otherwise the return value is unspecified.
-            virtual ElemType getElement(unsigned row, unsigned col) const; 
+            // Returns the matrix element at position "row", "column" if  given a valid row, column position--otherwise the return value is unspecified.
+            virtual ElementType getElement(unsigned row, unsigned column) const; 
 
-            // Assigns the value "newElemVal" to the matrix element at position "row", "col" if a valid row and column are given--otherwise nothing is done.
-            virtual void setElement(unsigned row, unsigned col, ElemType newElemVal);
+            // Assigns the value "newElemVal" to the matrix element at position "row", "column" if a valid row and column are given--otherwise nothing is done.
+            virtual void setElement(unsigned row, unsigned column, ElementType newElemVal);
 
             // write matrix to an output stream with the specified field width
             virtual void output(std::ostream& out, int fieldWidth);
 
             // checks if all of the elements of the matrix have the specified value
-            virtual bool allElementsAre(ElemType val);
+            virtual bool allElementsAre(ElementType val);
 
             // Returns the Boolean result of comparing two matricies for equality. Two matrices are considered equal if they have the same dimensions
             // and all of their corresponding elements are equal.
             // If matricies of int or unsigned values are equal, then their corresponding values are guaranteed to be exactly equal.
             // Otherwise, if the matricies contain values of type double or float, then corresponding values will be within +/- 0.000001 
             // of each other for equal matricies.
-            virtual bool equal(const MatrixBase<ElemType>& matrix) const;
+            virtual bool equal(const MatrixBase<ElementType>& matrix) const;
 
             // Return the number of rows in the matrix.
-            unsigned getNumOfRows() const;
+            unsigned getNumberOfRows() const;
 
             // Return the number of columns in the matrix.
-            unsigned getNumOfColumns() const;
+            unsigned getNumberOfColumns() const;
             
             // A convenient operator overload to compare two matrix objects for equality.
-            virtual bool operator==(const MatrixBase<ElemType>& matrix);
+            virtual bool operator==(const MatrixBase<ElementType>& matrix);
 
             // Overload operator= to allow copying the contents of one matrix to another.
-            virtual MatrixBase<ElemType>& operator=(const MatrixBase<ElemType>& matrix);
+            virtual MatrixBase<ElementType>& operator=(const MatrixBase<ElementType>& matrix);
 
             // Overload operator!= to compare two matricies for negated equality
-            virtual bool operator!=(const MatrixBase<ElemType>& matrix);
+            virtual bool operator!=(const MatrixBase<ElementType>& matrix);
 
-            // Overload operator[] to allow indexing of a matrix like this MatrixBaseInstance[row][col]
-            virtual std::vector<ElemType>& operator[](std::size_t row);
+            // Overload operator[] to allow indexing of a matrix like this MatrixBaseInstance[row][column]
+            virtual std::vector<ElementType>& operator[](std::size_t row);
 
             // Overload operator[] to allow read-only indexing of a matrix
-            virtual const std::vector<ElemType>& operator[](std::size_t row) const;
+            virtual const std::vector<ElementType>& operator[](std::size_t row) const;
 
     };
 
     // Overload for operator<< to allow writing a matrix to an output stream such as a file or the console.
-    template <typename ElemType>
-    std::ostream& operator<<(std::ostream& out, const MatrixBase<ElemType>& matrix)
+    template <typename ElementType>
+    std::ostream& operator<<(std::ostream& out, const MatrixBase<ElementType>& matrix)
     {
-        unsigned matrixNumberOfColumns  =   matrix.getNumOfColumns();
-        unsigned matrixNumberOfRows     =   matrix.getNumOfRows();
+        unsigned matrixNumberOfColumns  =   matrix.getNumberOfColumns();
+        unsigned matrixNumberOfRows     =   matrix.getNumberOfRows();
         for (unsigned row = 0U; row < matrixNumberOfRows; row++)
         {
             for (unsigned col = 0U; col < matrixNumberOfColumns; col++)

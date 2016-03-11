@@ -37,8 +37,8 @@ namespace MatrixAlgebra
         std::linear_congruential_engine<std::uint_fast32_t, 48271, 0, 2147483647> generator;
         std::uniform_int_distribution<int> distribution(lowerBound, upperBound);
         auto dice                       =   std::bind(distribution, generator);
-        unsigned matrixNumOfRows        =   matrix.getNumOfRows();
-        unsigned matrixNumOfColumns     =   matrix.getNumOfColumns();
+        unsigned matrixNumOfRows        =   matrix.getNumberOfRows();
+        unsigned matrixNumOfColumns     =   matrix.getNumberOfColumns();
 
         for (unsigned row = 0U; row < matrixNumOfRows; row++)
         {
