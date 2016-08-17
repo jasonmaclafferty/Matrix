@@ -1,0 +1,15 @@
+# ignore swap files
+*.*.swp
+.*.*.swp
+
+# ignore build output
+lib/bin/*.*
+lib/bin/*
+tests/bin/*
+tests/bin/*.*
+
+# ignore FileLicenseHeader
+FileLicenseHeader
+
+# ignore vim session file
+Session.vim
